@@ -1,8 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aqua.Core", "Aqua.Core\Aqua.Core.csproj", "{74A74593-20CA-4C16-946E-B9AF538C3C78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aqua.XamarinForms", "Aqua.XamarinForms\Aqua.XamarinForms.csproj", "{6ECAC11A-9F67-4BF1-8DD6-7572F9258B48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aqua.XamarinForms.Autofac", "Aqua.XamarinForms.Autofac\Aqua.XamarinForms.Autofac.csproj", "{97C87F9B-1858-41A6-A447-F723A13285E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{74A74593-20CA-4C16-946E-B9AF538C3C78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74A74593-20CA-4C16-946E-B9AF538C3C78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74A74593-20CA-4C16-946E-B9AF538C3C78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74A74593-20CA-4C16-946E-B9AF538C3C78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ECAC11A-9F67-4BF1-8DD6-7572F9258B48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ECAC11A-9F67-4BF1-8DD6-7572F9258B48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ECAC11A-9F67-4BF1-8DD6-7572F9258B48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ECAC11A-9F67-4BF1-8DD6-7572F9258B48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97C87F9B-1858-41A6-A447-F723A13285E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97C87F9B-1858-41A6-A447-F723A13285E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97C87F9B-1858-41A6-A447-F723A13285E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97C87F9B-1858-41A6-A447-F723A13285E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
