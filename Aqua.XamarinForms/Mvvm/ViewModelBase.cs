@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Aqua.Core.Interfaces;
 using Aqua.Core.Utils;
 using Aqua.XamarinForms.Services.Navigation;
 
 namespace Aqua.XamarinForms.Mvvm
 {
-    public class ViewModelBase : RaisableObject
+    public class ViewModelBase : RaisableObject, IResolvable
     {
         private string _title = string.Empty;
         public string Title

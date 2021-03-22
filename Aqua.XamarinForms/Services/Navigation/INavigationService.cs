@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Aqua.Core.Attributes;
 using Aqua.Core.Interfaces;
 using Aqua.XamarinForms.Mvvm;
 using Aqua.XamarinForms.Services.Navigation.Classes;
@@ -12,6 +13,7 @@ using Xamarin.Forms;
 
 namespace Aqua.XamarinForms.Services.Navigation
 {
+    [AsSingleInstance]
     public interface INavigationService : IResolvable
     {
         #region Stacks

@@ -1,9 +1,11 @@
 ﻿using System;
 
+using Aqua.Core.Attributes;
 using Aqua.Core.Interfaces;
 
 namespace Aqua.XamarinForms.Services.Navigation.Interfaces
 {
+    [AsSingleInstance]
     public interface IResolver : IResolvable
     {
         T Resolve<T>() where T : class;

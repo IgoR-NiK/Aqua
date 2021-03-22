@@ -12,4 +12,10 @@
     <ItemGroup>
       <ProjectReference Include="..\Aqua.Core\Aqua.Core.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Behaviors\EventToCommandBehavior.cs">
+        <DependentUpon>BindableBehaviorBase.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>

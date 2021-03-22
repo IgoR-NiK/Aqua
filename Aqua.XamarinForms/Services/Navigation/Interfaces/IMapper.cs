@@ -1,5 +1,6 @@
 ﻿using System;
 
+using Aqua.Core.Attributes;
 using Aqua.Core.Interfaces;
 using Aqua.XamarinForms.Mvvm;
 
@@ -7,6 +8,7 @@ using Xamarin.Forms;
 
 namespace Aqua.XamarinForms.Services.Navigation.Interfaces
 {
+    [AsSingleInstance]
     public interface IMapper : IResolvable
     {
         bool UseAutoMappingViewModelToView { get; set; }
