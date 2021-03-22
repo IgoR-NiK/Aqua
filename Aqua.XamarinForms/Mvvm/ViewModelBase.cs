@@ -7,7 +7,7 @@ using Aqua.XamarinForms.Services.Navigation;
 
 namespace Aqua.XamarinForms.Mvvm
 {
-    public class ViewModelBase : RaisableObject, IResolvable
+    public abstract class ViewModelBase : RaisableObject, IResolvable
     {
         private string _title = string.Empty;
         public string Title
