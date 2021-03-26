@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 using Aqua.Core.Attributes;
 using Aqua.Core.Interfaces;
@@ -11,6 +12,8 @@ namespace Aqua.XamarinForms.Services.Navigation.Interfaces
     [AsSingleInstance]
     public interface IMapper : IResolvable
     {
+        Assembly[] AssembliesForSearch { get; set; }
+        
         bool UseAutoMappingViewModelToView { get; set; }
         
         void Map<TViewModel, TView>()

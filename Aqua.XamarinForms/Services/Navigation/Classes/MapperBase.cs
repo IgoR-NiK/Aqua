@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using Aqua.Core.Extensions;
 using Aqua.XamarinForms.Mvvm;
@@ -15,6 +16,8 @@ namespace Aqua.XamarinForms.Services.Navigation.Classes
         protected Dictionary<Type, Type> ViewModelTypeToViewTypeMap { get; } = new Dictionary<Type, Type>();
         protected Dictionary<Type, Type> ViewTypeToViewModelTypeMap { get; } = new Dictionary<Type, Type>();
 
+        public Assembly[] AssembliesForSearch { get; set; }
+        
         public bool UseAutoMappingViewModelToView { get; set; } = true;
 
         public abstract void Map<TViewModel, TView>()
@@ -25,12 +28,14 @@ namespace Aqua.XamarinForms.Services.Navigation.Classes
         {
             if (!UseAutoMappingViewModelToView) 
                 return;
+
+            var assembliesForSearch = AssembliesForSearch ?? AppDomain.CurrentDomain.GetAssemblies();
             
-            var viewModelTypes = AppDomain.CurrentDomain.GetAssemblies()
+            var viewModelTypes = assembliesForSearch
                 .SelectMany(it => it.GetTypes())
                 .Where(ViewModelPredicate);
 
-            var viewTypes = AppDomain.CurrentDomain.GetAssemblies()
+            var viewTypes = assembliesForSearch
                 .SelectMany(it => it.GetTypes())
                 .Where(it =>
                     typeof(Page).IsAssignableFrom(it)
@@ -49,8 +54,8 @@ namespace Aqua.XamarinForms.Services.Navigation.Classes
                 if (view == null)
                     throw new ArgumentNullException(nameof(view), $"The view cannot be found for {vm.Name}");
 
-                ViewModelTypeToViewTypeMap.Add(vm, view);
-                ViewTypeToViewModelTypeMap.Add(view, vm);
+                ViewModelTypeToViewTypeMap.TryAdd(vm, view);
+                ViewTypeToViewModelTypeMap.TryAdd(view, vm);
             });
         }
 
