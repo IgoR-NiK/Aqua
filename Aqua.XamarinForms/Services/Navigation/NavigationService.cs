@@ -31,8 +31,8 @@ namespace Aqua.XamarinForms.Services.Navigation
 		private Func<Page, NavigationPage> _navigationPageCreator;
 		
 		private NavigationPage NavigationView
-			=> Application.Current.MainPage is MasterDetailPage masterDetailPage
-				? (NavigationPage)masterDetailPage.Detail
+			=> Application.Current.MainPage is FlyoutPage flyoutPage
+				? (NavigationPage)flyoutPage.Detail
 				: (NavigationPage)Application.Current.MainPage;
 
 		public NavigationService(IResolver resolver, IMapper mapper)
@@ -65,7 +65,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 			where TViewModel : ViewModelBase
 		{
 			stack = GetStack(stackType);
-			index =((List<ViewModelBase>)stack).IndexOf(viewModel);
+			index = ((List<ViewModelBase>)stack).IndexOf(viewModel);
 
 			return index >= 0;
 		}
@@ -838,88 +838,88 @@ namespace Aqua.XamarinForms.Services.Navigation
         #region SetDetailView
 
         public void SetDetailView<TViewModel>(
-	        bool withCloseMasterView = true)
+	        bool withCloseFlyoutView = true)
 	        where TViewModel : ViewModelBase
         {
 	        SetDetailView<TViewModel>(
 		        null,
-		        withCloseMasterView);
+		        withCloseFlyoutView);
         }
         
         public void SetDetailView<TViewModel>(
 	        Action<TViewModel> viewModelInitialization,
-	        bool withCloseMasterView = true)
+	        bool withCloseFlyoutView = true)
 	        where TViewModel : ViewModelBase
         {
 	        SetDetailViewPrivate<TViewModel, object>(
 		        null,
 		        viewModelInitialization,
-		        withCloseMasterView);
+		        withCloseFlyoutView);
         }
 
         public void SetDetailView<TViewModel, TParam>(
 	        TParam param,
-	        bool withCloseMasterView = true)
+	        bool withCloseFlyoutView = true)
 	        where TViewModel : ViewModelBase, IWithInit<TParam>
         {
 	        SetDetailView<TViewModel, TParam>(
 		        param,
 		        null,
-		        withCloseMasterView);
+		        withCloseFlyoutView);
         }
 
         public void SetDetailView<TViewModel, TParam>(
 	        TParam param,
 	        Action<TViewModel> viewModelInitialization,
-	        bool withCloseMasterView = true)
+	        bool withCloseFlyoutView = true)
 	        where TViewModel : ViewModelBase, IWithInit<TParam>
         {
 	        SetDetailViewPrivate(
 		        param,
 		        viewModelInitialization,
-		        withCloseMasterView);
+		        withCloseFlyoutView);
         }
 
         public void SetDetailView(
 	        Type viewModelType,
-	        bool withCloseMasterView = true)
+	        bool withCloseFlyoutView = true)
         {
 	        SetDetailView(
 		        viewModelType,
 		        null,
 		        null,
-		        withCloseMasterView);
+		        withCloseFlyoutView);
         }
         
         public void SetDetailView(
 	        Type viewModelType,
 	        Action<ViewModelBase> viewModelInitialization,
-	        bool withCloseMasterView = true)
+	        bool withCloseFlyoutView = true)
         {
 	        SetDetailView(
 		        viewModelType,
 		        null,
 		        viewModelInitialization,
-		        withCloseMasterView);
+		        withCloseFlyoutView);
         }
 
         public void SetDetailView(
 	        Type viewModelType,
 	        object param,
-	        bool withCloseMasterView = true)
+	        bool withCloseFlyoutView = true)
         {
 	        SetDetailView(
 		        viewModelType,
 		        param,
 		        null,
-		        withCloseMasterView);
+		        withCloseFlyoutView);
         }
 
         public void SetDetailView(
 	        Type viewModelType,
 	        object param,
 	        Action<ViewModelBase> viewModelInitialization,
-	        bool withCloseMasterView = true)
+	        bool withCloseFlyoutView = true)
         {
 	        if (!typeof(ViewModelBase).IsAssignableFrom(viewModelType))
 		        throw new ArgumentException($"{nameof(viewModelType)} must be inherited from the {nameof(ViewModelBase)}");
@@ -930,19 +930,19 @@ namespace Aqua.XamarinForms.Services.Navigation
 		        new[] { viewModelType, param?.GetType() ?? typeof(object) },
 		        param,
 		        viewModelInitialization,
-		        withCloseMasterView);
+		        withCloseFlyoutView);
         }
         
         #endregion
 
-        #region CloseMasterView
+        #region CloseFlyoutView
 
-        public void CloseMasterView()
+        public void CloseFlyoutView()
 		{
-			if (!(Application.Current.MainPage is MasterDetailPage masterDetailPage))
-				throw new Exception($"Application.Current.MainPage must be the {nameof(MasterDetailPage)} to call the method '{nameof(CloseMasterView)}'.");
+			if (!(Application.Current.MainPage is FlyoutPage flyoutPage))
+				throw new Exception($"Application.Current.MainPage must be the {nameof(FlyoutPage)} to call the method '{nameof(CloseFlyoutView)}'.");
 
-			masterDetailPage.IsPresented = false;
+			flyoutPage.IsPresented = false;
 		}
 
 		#endregion
@@ -973,7 +973,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 			
 			var newView = CreateView<TViewModel, TParam, object>(param, viewModelInitialization, null);
 
-			Application.Current.MainPage = newView is MasterDetailPage ? newView : NavigationPageCreator.Invoke(newView);
+			Application.Current.MainPage = newView is FlyoutPage ? newView : NavigationPageCreator.Invoke(newView);
 			
 			NavigationView.Popped += (sender, args) => Clear(args.Page);
 		}
@@ -1093,20 +1093,20 @@ namespace Aqua.XamarinForms.Services.Navigation
 		private void SetDetailViewPrivate<TViewModel, TParam>(
 			TParam param, 
 			Action<TViewModel> viewModelInitialization, 
-			bool withCloseMasterView = true) 
+			bool withCloseFlyoutView = true) 
 			where TViewModel : ViewModelBase
 		{
-			if (!(Application.Current.MainPage is MasterDetailPage masterDetailPage))
-				throw new Exception($"Application.Current.MainPage must be the {nameof(MasterDetailPage)} to call the method '{nameof(SetDetailView)}'.");
+			if (!(Application.Current.MainPage is FlyoutPage flyoutPage))
+				throw new Exception($"Application.Current.MainPage must be the {nameof(FlyoutPage)} to call the method '{nameof(SetDetailView)}'.");
 			
 			ClearAll();
 			
 			var newView = CreateView<TViewModel, TParam, object>(param, viewModelInitialization, null);
 
-			if (withCloseMasterView)
-				CloseMasterView();
+			if (withCloseFlyoutView)
+				CloseFlyoutView();
 
-			masterDetailPage.Detail = NavigationPageCreator.Invoke(newView);
+			flyoutPage.Detail = NavigationPageCreator.Invoke(newView);
 			
 			NavigationView.Popped += (sender, args) => Clear(args.Page);
 		}
@@ -1158,8 +1158,8 @@ namespace Aqua.XamarinForms.Services.Navigation
 			
 			var childViews = view is TabbedPage tabbedPage
 				? tabbedPage.Children
-				: view is MasterDetailPage masterDetailPage
-					? new[] { masterDetailPage.Master, masterDetailPage.Detail }
+				: view is FlyoutPage flyoutPage
+					? new[] { flyoutPage.Flyout, flyoutPage.Detail }
 					: Array.Empty<Page>();
 			
 			foreach (var childView in childViews)
@@ -1351,7 +1351,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 					
 					default:
 						throw new InvalidEnumArgumentException(
-							$"Value {stackType} of enum {typeof(StackType).Name} is not supported");
+							$"Value {stackType} of enum {nameof(StackType)} is not supported");
 				}
 			}
 			
@@ -1444,7 +1444,10 @@ namespace Aqua.XamarinForms.Services.Navigation
 
 				public async Task NavigateToAsync(Page page, bool withAnimation = true)
 				{
-					await PopupNavigation.Instance.PushAsync(page as PopupPage, withAnimation);
+					if (!(page is PopupPage popupPage))
+						throw new ArgumentException($"{nameof(page)} must be inherited from the {nameof(PopupPage)}");
+					
+					await PopupNavigation.Instance.PushAsync(popupPage, withAnimation);
 				}
 
 				public async Task CloseAsync(bool withAnimation = true)

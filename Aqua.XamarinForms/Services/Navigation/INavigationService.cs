@@ -355,50 +355,50 @@ namespace Aqua.XamarinForms.Services.Navigation
         #region SetDetailView
 
         void SetDetailView<TViewModel>(
-            bool withCloseMasterView = true)
+            bool withCloseFlyoutView = true)
             where TViewModel : ViewModelBase;
         
         void SetDetailView<TViewModel>(
             Action<TViewModel> viewModelInitialization,
-            bool withCloseMasterView = true)
+            bool withCloseFlyoutView = true)
             where TViewModel : ViewModelBase;
         
         void SetDetailView<TViewModel, TParam>(
             TParam param, 
-            bool withCloseMasterView = true)
+            bool withCloseFlyoutView = true)
             where TViewModel : ViewModelBase, IWithInit<TParam>;
         
         void SetDetailView<TViewModel, TParam>(
             TParam param,
             Action<TViewModel> viewModelInitialization,
-            bool withCloseMasterView = true)
+            bool withCloseFlyoutView = true)
             where TViewModel : ViewModelBase, IWithInit<TParam>;
 
         void SetDetailView(
             Type viewModelType,
-            bool withCloseMasterView = true);
+            bool withCloseFlyoutView = true);
 
         void SetDetailView(
             Type viewModelType,
             Action<ViewModelBase> viewModelInitialization,
-            bool withCloseMasterView = true);
+            bool withCloseFlyoutView = true);
         
         void SetDetailView(
             Type viewModelType, 
             object param, 
-            bool withCloseMasterView = true);
+            bool withCloseFlyoutView = true);
 
         void SetDetailView(
             Type viewModelType,
             object param,
             Action<ViewModelBase> viewModelInitialization,
-            bool withCloseMasterView = true);
+            bool withCloseFlyoutView = true);
 
         #endregion
 
-        #region CloseMasterView
+        #region CloseFlyoutView
 
-        void CloseMasterView();
+        void CloseFlyoutView();
 
         #endregion
 
