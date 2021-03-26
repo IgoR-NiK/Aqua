@@ -22,25 +22,23 @@ namespace Aqua.XamarinForms.Services.Navigation
 {
     public sealed class NavigationService : INavigationService
     {
-        private readonly IResolver _resolver;
-        private readonly IMapper _mapper;
+	    private readonly INavigationServiceConfigurator _navigationServiceConfigurator;
+	    private readonly IResolver _resolver;
         
 		private readonly CanNavigateNow _canNavigateNow = new CanNavigateNow(true);
 		private readonly Dictionary<ViewModelBase, IViewModelWrapper> _viewModelWrappers = new Dictionary<ViewModelBase, IViewModelWrapper>();
 
-		private Func<Page, NavigationPage> _navigationPageCreator;
-		
 		private NavigationPage NavigationView
 			=> Application.Current.MainPage is FlyoutPage flyoutPage
 				? (NavigationPage)flyoutPage.Detail
 				: (NavigationPage)Application.Current.MainPage;
 
-		public NavigationService(IResolver resolver, IMapper mapper)
+		public NavigationService(INavigationServiceConfigurator navigationServiceConfigurator, IResolver resolver)
 		{
+			_navigationServiceConfigurator = navigationServiceConfigurator;
 			_resolver = resolver;
-			_mapper = mapper;
 			
-			_mapper.AutoMappingViewModelToView();
+			_navigationServiceConfigurator.AutoMappingViewModelToView();
 
 			PopupNavigation.Instance.Popped += (sender, args) => Clear(args.Page);
 			Application.Current.ModalPopped += (sender, args) => Clear(args.Modal);
@@ -90,12 +88,6 @@ namespace Aqua.XamarinForms.Services.Navigation
 		}
 
 		#endregion
-		
-		public Func<Page, NavigationPage> NavigationPageCreator
-		{
-			get => _navigationPageCreator ?? (page => new NavigationPage(page));
-			set => _navigationPageCreator = value;
-		}
 		
 		public ViewModelBase GetParentFor<TViewModel>(TViewModel viewModel)
 			where TViewModel : ViewModelBase
@@ -973,7 +965,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 			
 			var newView = CreateView<TViewModel, TParam, object>(param, viewModelInitialization, null);
 
-			Application.Current.MainPage = newView is FlyoutPage ? newView : NavigationPageCreator.Invoke(newView);
+			Application.Current.MainPage = newView is FlyoutPage ? newView : _navigationServiceConfigurator.NavigationPageCreator.Invoke(newView);
 			
 			NavigationView.Popped += (sender, args) => Clear(args.Page);
 		}
@@ -1106,7 +1098,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 			if (withCloseFlyoutView)
 				CloseFlyoutView();
 
-			flyoutPage.Detail = NavigationPageCreator.Invoke(newView);
+			flyoutPage.Detail = _navigationServiceConfigurator.NavigationPageCreator.Invoke(newView);
 			
 			NavigationView.Popped += (sender, args) => Clear(args.Page);
 		}
@@ -1117,7 +1109,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 			CallbackParam<TResult> callbackParam) 
 			where TViewModel : ViewModelBase
 		{
-			var viewType = _mapper.GetViewTypeFor<TViewModel>();
+			var viewType = _navigationServiceConfigurator.GetViewTypeFor<TViewModel>();
 			var view = (Page)Activator.CreateInstance(viewType);
 			
 			var viewModel = (TViewModel)_resolver.Resolve(typeof(TViewModel), param);
@@ -1169,7 +1161,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 
 				if (!Attribute.IsDefined(currentView.GetType(), typeof(ParentBindingContextAttribute)))
 				{
-					var viewModelType = _mapper.GetViewModelTypeFor(currentView);
+					var viewModelType = _navigationServiceConfigurator.GetViewModelTypeFor(currentView);
 					currentViewModel = (ViewModelBase)_resolver.Resolve(viewModelType, param);
 					if (currentViewModel is TParentViewModel parentViewModelType)
 					{

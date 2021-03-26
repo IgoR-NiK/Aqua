@@ -11,8 +11,10 @@ using Xamarin.Forms;
 
 namespace Aqua.XamarinForms.Services.Navigation.Classes
 {
-    public abstract class MapperBase : IMapper
+    public abstract class NavigationServiceConfiguratorBase : INavigationServiceConfigurator
     {
+        private Func<Page, NavigationPage> _navigationPageCreator;
+        
         protected Dictionary<Type, Type> ViewModelTypeToViewTypeMap { get; } = new Dictionary<Type, Type>();
         protected Dictionary<Type, Type> ViewTypeToViewModelTypeMap { get; } = new Dictionary<Type, Type>();
 
@@ -20,18 +22,25 @@ namespace Aqua.XamarinForms.Services.Navigation.Classes
         
         public bool UseAutoMappingViewModelToView { get; set; } = true;
 
+        public Func<Page, NavigationPage> NavigationPageCreator
+        {
+            get => _navigationPageCreator ?? (page => new NavigationPage(page));
+            set => _navigationPageCreator = value;
+        }
+
         public abstract void Map<TViewModel, TView>()
             where TViewModel : ViewModelBase
             where TView : Page, new();
 
-        void IMapper.AutoMappingViewModelToView()
+        void INavigationServiceConfigurator.AutoMappingViewModelToView()
         {
             if (!UseAutoMappingViewModelToView) 
                 return;
 
             var assembliesForSearch =
                 (AssembliesForSearch ?? AppDomain.CurrentDomain.GetAssemblies())
-                    .Union(new[] { typeof(NavigationService).Assembly });
+                    .Union(new[] { typeof(NavigationService).Assembly })
+                    .ToArray();
             
             var viewModelTypes = assembliesForSearch
                 .SelectMany(it => it.GetTypes())
@@ -61,12 +70,12 @@ namespace Aqua.XamarinForms.Services.Navigation.Classes
             });
         }
 
-        Type IMapper.GetViewTypeFor<TViewModel>()
+        Type INavigationServiceConfigurator.GetViewTypeFor<TViewModel>()
         {
             return ViewModelTypeToViewTypeMap[typeof(TViewModel)];
         }
 
-        Type IMapper.GetViewModelTypeFor(Page view)
+        Type INavigationServiceConfigurator.GetViewModelTypeFor(Page view)
         {
             return ViewTypeToViewModelTypeMap[view.GetType()];
         }

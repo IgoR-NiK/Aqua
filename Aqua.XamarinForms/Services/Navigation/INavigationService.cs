@@ -9,8 +9,6 @@ using Aqua.XamarinForms.Services.Navigation.Classes;
 using Aqua.XamarinForms.Services.Navigation.Enums;
 using Aqua.XamarinForms.Services.Navigation.Interfaces;
 
-using Xamarin.Forms;
-
 namespace Aqua.XamarinForms.Services.Navigation
 {
     [AsSingleInstance]
@@ -33,8 +31,6 @@ namespace Aqua.XamarinForms.Services.Navigation
             where TViewModel : ViewModelBase;
 
         #endregion
-        
-        Func<Page, NavigationPage> NavigationPageCreator { get; set; }
         
         ViewModelBase GetParentFor<TViewModel>(TViewModel viewModel)
             where TViewModel : ViewModelBase;

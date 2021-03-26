@@ -10,11 +10,13 @@ using Xamarin.Forms;
 namespace Aqua.XamarinForms.Services.Navigation.Interfaces
 {
     [AsSingleInstance]
-    public interface IMapper : IResolvable
+    public interface INavigationServiceConfigurator : IResolvable
     {
         Assembly[] AssembliesForSearch { get; set; }
         
         bool UseAutoMappingViewModelToView { get; set; }
+        
+        Func<Page, NavigationPage> NavigationPageCreator { get; set; }
         
         void Map<TViewModel, TView>()
             where TViewModel : ViewModelBase

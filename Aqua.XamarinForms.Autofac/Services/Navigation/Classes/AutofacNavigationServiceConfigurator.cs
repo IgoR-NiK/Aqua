@@ -5,7 +5,7 @@ using Aqua.XamarinForms.Services.Navigation.Classes;
 
 namespace Aqua.XamarinForms.Autofac.Services.Navigation.Classes
 {
-    public class AutofacMapper : DefaultMapper
+    public class AutofacNavigationServiceConfigurator : DefaultNavigationServiceConfigurator
     {
         public override void Map<TViewModel, TView>()
         {
