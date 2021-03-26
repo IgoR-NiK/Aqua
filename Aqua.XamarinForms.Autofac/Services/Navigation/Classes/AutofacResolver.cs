@@ -2,10 +2,19 @@
 
 using Aqua.XamarinForms.Services.Navigation.Classes;
 
+using Autofac;
+
 namespace Aqua.XamarinForms.Autofac.Services.Navigation.Classes
 {
     public class AutofacResolver : DefaultResolver
     {
+        private readonly ILifetimeScope _lifetimeScope;
+        
+        public AutofacResolver(ILifetimeScope lifetimeScope)
+        {
+            _lifetimeScope = lifetimeScope;
+        }
+        
         public override T Resolve<T>() where T : class
         {
             return Resolve(typeof(T)) as T;
@@ -16,7 +25,7 @@ namespace Aqua.XamarinForms.Autofac.Services.Navigation.Classes
             if (type.IsValueType)
                 throw new InvalidOperationException($"{type.Name} must be a class");
             
-            return Activator.CreateInstance(type);
+            return _lifetimeScope.Resolve(type);
         }
     }
 }
