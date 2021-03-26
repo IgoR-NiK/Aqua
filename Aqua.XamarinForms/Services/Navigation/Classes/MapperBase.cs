@@ -29,7 +29,9 @@ namespace Aqua.XamarinForms.Services.Navigation.Classes
             if (!UseAutoMappingViewModelToView) 
                 return;
 
-            var assembliesForSearch = AssembliesForSearch ?? AppDomain.CurrentDomain.GetAssemblies();
+            var assembliesForSearch =
+                (AssembliesForSearch ?? AppDomain.CurrentDomain.GetAssemblies())
+                    .Union(new[] { typeof(NavigationService).Assembly });
             
             var viewModelTypes = assembliesForSearch
                 .SelectMany(it => it.GetTypes())
