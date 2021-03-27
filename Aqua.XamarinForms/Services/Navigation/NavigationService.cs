@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -68,7 +69,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 			return index >= 0;
 		}
 
-		public bool TryGetStackFor<TViewModel>(TViewModel viewModel, out StackType? stackType, out IReadOnlyList<ViewModelBase> stack, out int index)
+		public bool TryGetStackFor<TViewModel>(TViewModel viewModel, [NotNullWhen(true)] out StackType? stackType, out IReadOnlyList<ViewModelBase> stack, out int index)
 			where TViewModel : ViewModelBase
 		{
 			foreach (var type in StackAlgorithmsFactory.StackTypes)
@@ -1011,7 +1012,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 			}
 		}
 		
-		private bool CanClose<TViewModel>(TViewModel viewModel, out StackType? stackType)
+		private bool CanClose<TViewModel>(TViewModel viewModel, [NotNullWhen(true)] out StackType? stackType)
 			where TViewModel : ViewModelBase
 		{
 			var mainParent = GetMainParentFor(viewModel);
