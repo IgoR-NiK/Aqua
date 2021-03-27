@@ -14,19 +14,19 @@ namespace Aqua.XamarinForms.Behaviors
         #region BindableProperties
 
 		public static BindableProperty EventNameProperty =
-			BindableProperty.CreateAttached("EventName", typeof(string), typeof(EventToCommandBehavior), null, BindingMode.OneWay);
+			BindableProperty.CreateAttached("EventName", typeof(string), typeof(EventToCommandBehavior), null);
 
 		public static BindableProperty CommandProperty =
-			BindableProperty.CreateAttached("Command", typeof(ICommand), typeof(EventToCommandBehavior), null, BindingMode.OneWay);
+			BindableProperty.CreateAttached("Command", typeof(ICommand), typeof(EventToCommandBehavior), null);
 
 		public static BindableProperty CommandParameterProperty =
-			BindableProperty.CreateAttached("CommandParameter", typeof(object), typeof(EventToCommandBehavior), null, BindingMode.OneWay);
+			BindableProperty.CreateAttached("CommandParameter", typeof(object), typeof(EventToCommandBehavior), null);
 
 		public static BindableProperty EventArgsConverterProperty =
-			BindableProperty.CreateAttached("EventArgsConverter", typeof(IValueConverter), typeof(EventToCommandBehavior), null, BindingMode.OneWay);
+			BindableProperty.CreateAttached("EventArgsConverter", typeof(IValueConverter), typeof(EventToCommandBehavior), null);
 
 		public static BindableProperty EventArgsConverterParameterProperty =
-			BindableProperty.CreateAttached("EventArgsConverterParameter", typeof(object), typeof(EventToCommandBehavior), null, BindingMode.OneWay);
+			BindableProperty.CreateAttached("EventArgsConverterParameter", typeof(object), typeof(EventToCommandBehavior), null);
 
 		#endregion
 
