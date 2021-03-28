@@ -5,6 +5,7 @@ using System.Reflection;
 
 using Aqua.Core.Attributes;
 using Aqua.Core.Extensions;
+using Aqua.Core.Helpers;
 using Aqua.Core.Interfaces;
 using Aqua.XamarinForms.Services.Navigation;
 
@@ -20,7 +21,7 @@ namespace Aqua.XamarinForms.Autofac.Helpers
                 return;
             
             var assemblies =
-                (assembliesForSearch ?? AppDomain.CurrentDomain.GetAssemblies())
+                (assembliesForSearch ?? AssemblyHelper.GetDependentAssemblies(typeof(AquaApplication).Assembly))
                     .Union(new[] { typeof(IResolvable).Assembly, typeof(NavigationService).Assembly, typeof(AquaApplication).Assembly })
                     .ToArray();
 

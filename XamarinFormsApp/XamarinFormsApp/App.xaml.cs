@@ -1,8 +1,5 @@
-﻿using System;
-using System.Reflection;
-using Aqua.XamarinForms.Autofac;
-using Aqua.XamarinForms.Services.Navigation.Interfaces;
-using Xamarin.Forms;
+﻿using Aqua.XamarinForms.Autofac;
+
 using Xamarin.Forms.Xaml;
 using XamarinFormsApp.ViewModels;
 
@@ -15,15 +12,8 @@ namespace XamarinFormsApp
         public App()
         {
             InitializeComponent();
-
-            AssembliesForSearch = new[] { Assembly.GetExecutingAssembly() };
             
             Run<MainViewModel>();
-        }
-
-        protected override void NavigationServiceConfiguring(INavigationServiceConfigurator configurator)
-        {
-            configurator.AssembliesForSearch = new[] { Assembly.GetExecutingAssembly() };
         }
     }
 }

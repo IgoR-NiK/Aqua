@@ -18,5 +18,10 @@ namespace Aqua.Core.Extensions
         {
             return source.Contains(value);
         }
+        
+        public static bool IsOneOf<T>(this T value, IEnumerable<T> source)
+        {
+            return source.Contains(value);
+        }
     }
 }

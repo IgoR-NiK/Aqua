@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 
 using Aqua.Core.Extensions;
+using Aqua.Core.Helpers;
 using Aqua.XamarinForms.Mvvm;
 using Aqua.XamarinForms.Services.Navigation.Interfaces;
 
@@ -38,7 +39,7 @@ namespace Aqua.XamarinForms.Services.Navigation.Classes
                 return;
 
             var assembliesForSearch =
-                (AssembliesForSearch ?? AppDomain.CurrentDomain.GetAssemblies())
+                (AssembliesForSearch ?? AssemblyHelper.GetDependentAssemblies(typeof(NavigationService).Assembly))
                     .Union(new[] { typeof(NavigationService).Assembly })
                     .ToArray();
             
