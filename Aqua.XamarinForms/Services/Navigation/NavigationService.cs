@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 using Aqua.Core.Helpers;
@@ -1160,7 +1161,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 				var currentView = childView is NavigationPage navigationPage ? navigationPage.RootPage : childView;
 				var currentViewModel = null as ViewModelBase;
 
-				if (!Attribute.IsDefined(currentView.GetType(), typeof(ParentBindingContextAttribute)))
+				if (!currentView.GetType().IsDefined(typeof(ParentBindingContextAttribute)))
 				{
 					var viewModelType = _navigationServiceConfigurator.GetViewModelTypeFor(currentView);
 					currentViewModel = (ViewModelBase)_resolver.Resolve(viewModelType, param);
