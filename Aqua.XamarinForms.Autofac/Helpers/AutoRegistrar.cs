@@ -46,7 +46,7 @@ namespace Aqua.XamarinForms.Autofac.Helpers
             }
             
             implementations
-                .Where(it => !services.Any(s => s.IsAssignableFrom(it)))
+                .Where(it => !it.IsAbstract && !services.Any(s => s.IsAssignableFrom(it)))
                 .ForEach(it => RegisterType(containerBuilder, it));
         }
 
