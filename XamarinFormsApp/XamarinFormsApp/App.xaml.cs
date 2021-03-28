@@ -1,33 +1,29 @@
 ﻿using System;
+using System.Reflection;
+using Aqua.XamarinForms.Autofac;
+using Aqua.XamarinForms.Services.Navigation.Interfaces;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XamarinFormsApp.ViewModels;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
 namespace XamarinFormsApp
 {
-    public partial class App : Application
+    public partial class App : AquaApplication
     {
         public App()
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            AssembliesForSearch = new[] { Assembly.GetExecutingAssembly() };
+            
+            Run<MainViewModel>();
         }
 
-        protected override void OnStart()
+        protected override void NavigationServiceConfiguring(INavigationServiceConfigurator configurator)
         {
-            // Handle when your app starts
-        }
-
-        protected override void OnSleep()
-        {
-            // Handle when your app sleeps
-        }
-
-        protected override void OnResume()
-        {
-            // Handle when your app resumes
+            configurator.AssembliesForSearch = new[] { Assembly.GetExecutingAssembly() };
         }
     }
 }

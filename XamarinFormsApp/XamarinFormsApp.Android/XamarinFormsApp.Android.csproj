@@ -48,6 +48,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.10" />
         <PackageReference Include="Xamarin.AndroidX.MediaRouter" Version="1.2.2.1" />
         <PackageReference Include="Xamarin.AndroidX.Palette" Version="1.0.0.7" />
         <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
@@ -74,6 +75,10 @@
         <AndroidResource Include="Resources\values\colors.xml" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\..\Aqua.XamarinForms.Autofac\Aqua.XamarinForms.Autofac.csproj">
+          <Project>{97c87f9b-1858-41a6-a447-f723a13285e0}</Project>
+          <Name>Aqua.XamarinForms.Autofac</Name>
+        </ProjectReference>
         <ProjectReference Include="..\XamarinFormsApp\XamarinFormsApp.csproj">
             <Project>{0283DA01-A136-44EB-BB4A-8BCCD32A2FC7}</Project>
             <Name>XamarinFormsApp</Name>

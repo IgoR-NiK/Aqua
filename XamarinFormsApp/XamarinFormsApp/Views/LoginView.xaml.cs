@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace XamarinFormsApp
+namespace XamarinFormsApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : ContentPage
+    public partial class LoginView : ContentPage
     {
-        public MainPage()
+        public LoginView()
         {
             InitializeComponent();
         }
