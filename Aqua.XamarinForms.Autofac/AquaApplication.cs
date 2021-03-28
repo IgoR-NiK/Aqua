@@ -17,8 +17,8 @@ namespace Aqua.XamarinForms.Autofac
     public class AquaApplication : Application
     {
         public Assembly[] AssembliesForSearch { get; set; }
-        
-        public bool UseAutoRegistrationServices { get; set; }
+
+        public bool UseAutoRegistrationServices { get; set; } = true;
         
         protected void Run<TViewModel>() 
             where TViewModel : ViewModelBase

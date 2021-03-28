@@ -27,6 +27,7 @@ namespace Aqua.XamarinForms.Autofac.Helpers
             var allResolvable = assemblies
                 .SelectMany(it => it.GetTypes()
                     .Where(type => typeof(IResolvable).IsAssignableFrom(type) 
+                                   && !type.IsOneOf(typeof(IResolvable), typeof(IResolvable<>), typeof(IResolvableFactory<>), typeof(IResolvableFactory<,>), typeof(IResolvableFactory<,,>))
                                    && !type.IsDefined(typeof(ManualRegistrationAttribute))))
                 .ToArray();
 
