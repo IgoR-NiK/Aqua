@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Reflection;
 
 using Aqua.Core.Extensions;
+using Aqua.XamarinForms.Autofac.Helpers;
 using Aqua.XamarinForms.Mvvm;
 using Aqua.XamarinForms.Services.Navigation;
 using Aqua.XamarinForms.Services.Navigation.Interfaces;
@@ -14,6 +16,8 @@ namespace Aqua.XamarinForms.Autofac
 {
     public class AquaApplication : Application
     {
+        public Assembly[] AssembliesForSearch { get; set; }
+        
         public bool UseAutoRegistrationServices { get; set; }
         
         protected void Run<TViewModel>() 
@@ -29,7 +33,7 @@ namespace Aqua.XamarinForms.Autofac
             
             modules.ForEach(it => containerBuilder.RegisterModule(it));
             ContainerBuilderConfiguring(containerBuilder);
-            AutoRegistrationServices(containerBuilder);
+            AutoRegistrar.RegistrationServices(containerBuilder, UseAutoRegistrationServices, AssembliesForSearch);
 
             var container = containerBuilder.Build();
             ContainerConfiguring(container);
@@ -51,12 +55,6 @@ namespace Aqua.XamarinForms.Autofac
 
         protected virtual void NavigationServiceConfiguring(INavigationServiceConfigurator configurator)
         {
-        }
-
-        private void AutoRegistrationServices(ContainerBuilder containerBuilder)
-        {
-            if (!UseAutoRegistrationServices)
-                return;
         }
     }
 }
