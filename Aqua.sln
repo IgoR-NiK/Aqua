@@ -6,6 +6,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aqua.XamarinForms", "Aqua.X
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aqua.XamarinForms.Autofac", "Aqua.XamarinForms.Autofac\Aqua.XamarinForms.Autofac.csproj", "{97C87F9B-1858-41A6-A447-F723A13285E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsApp", "XamarinFormsApp\XamarinFormsApp\XamarinFormsApp.csproj", "{CE654A16-DEFF-4ED2-BC76-557CEF1760A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsApp.Android", "XamarinFormsApp\XamarinFormsApp.Android\XamarinFormsApp.Android.csproj", "{43EE7A6D-28C9-4469-83A1-75E3882E2A2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsApp.iOS", "XamarinFormsApp\XamarinFormsApp.iOS\XamarinFormsApp.iOS.csproj", "{24CE9FC1-EAD1-457D-808B-321F3B17672F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +30,17 @@ Global
 		{97C87F9B-1858-41A6-A447-F723A13285E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97C87F9B-1858-41A6-A447-F723A13285E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97C87F9B-1858-41A6-A447-F723A13285E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE654A16-DEFF-4ED2-BC76-557CEF1760A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE654A16-DEFF-4ED2-BC76-557CEF1760A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE654A16-DEFF-4ED2-BC76-557CEF1760A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE654A16-DEFF-4ED2-BC76-557CEF1760A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43EE7A6D-28C9-4469-83A1-75E3882E2A2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43EE7A6D-28C9-4469-83A1-75E3882E2A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43EE7A6D-28C9-4469-83A1-75E3882E2A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43EE7A6D-28C9-4469-83A1-75E3882E2A2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24CE9FC1-EAD1-457D-808B-321F3B17672F}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
+		{24CE9FC1-EAD1-457D-808B-321F3B17672F}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
+		{24CE9FC1-EAD1-457D-808B-321F3B17672F}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
+		{24CE9FC1-EAD1-457D-808B-321F3B17672F}.Release|Any CPU.Build.0 = Release|iPhoneSimulator
 	EndGlobalSection
 EndGlobal
