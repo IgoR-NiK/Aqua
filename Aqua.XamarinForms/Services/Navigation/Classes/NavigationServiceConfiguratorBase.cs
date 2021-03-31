@@ -39,7 +39,7 @@ namespace Aqua.XamarinForms.Services.Navigation.Classes
                 return;
 
             var assembliesForSearch =
-                (AssembliesForSearch ?? AssemblyHelper.GetDependentAssemblies(typeof(NavigationService).Assembly))
+                (AssembliesForSearch ?? typeof(NavigationService).GetDependentAssemblies())
                     .Union(new[] { typeof(NavigationService).Assembly })
                     .ToArray();
             

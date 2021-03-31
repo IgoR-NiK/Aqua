@@ -21,7 +21,7 @@ namespace Aqua.XamarinForms.Autofac.Helpers
                 return;
             
             var assemblies =
-                (assembliesForSearch ?? AssemblyHelper.GetDependentAssemblies(typeof(AquaApplication).Assembly))
+                (assembliesForSearch ?? typeof(AquaApplication).GetDependentAssemblies())
                     .Union(new[] { typeof(IResolvable).Assembly, typeof(NavigationService).Assembly, typeof(AquaApplication).Assembly })
                     .ToArray();
 
