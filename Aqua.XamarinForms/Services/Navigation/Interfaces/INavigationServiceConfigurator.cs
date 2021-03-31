@@ -20,7 +20,7 @@ namespace Aqua.XamarinForms.Services.Navigation.Interfaces
         
         void Map<TViewModel, TView>()
             where TViewModel : ViewModelBase
-            where TView : Page, new();
+            where TView : Page;
 
         internal void AutoMappingViewModelToView();
         

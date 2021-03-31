@@ -3,6 +3,8 @@
 using Aqua.XamarinForms.Mvvm;
 using Aqua.XamarinForms.Services.Navigation.Classes;
 
+using Xamarin.Forms;
+
 namespace Aqua.XamarinForms.Autofac.Services.Navigation.Classes
 {
     public class AutofacNavigationServiceConfigurator : DefaultNavigationServiceConfigurator
@@ -15,6 +17,10 @@ namespace Aqua.XamarinForms.Autofac.Services.Navigation.Classes
 
         protected override Func<Type, bool> ViewModelPredicate => 
             it => typeof(ViewModelBase).IsAssignableFrom(it) 
+                  && !it.IsAbstract;
+
+        protected override Func<Type, bool> ViewPredicate =>
+            it => typeof(Page).IsAssignableFrom(it) 
                   && !it.IsAbstract;
     }
 }

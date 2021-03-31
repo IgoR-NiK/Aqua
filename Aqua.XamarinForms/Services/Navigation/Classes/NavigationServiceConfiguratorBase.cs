@@ -31,7 +31,7 @@ namespace Aqua.XamarinForms.Services.Navigation.Classes
 
         public abstract void Map<TViewModel, TView>()
             where TViewModel : ViewModelBase
-            where TView : Page, new();
+            where TView : Page;
 
         void INavigationServiceConfigurator.AutoMappingViewModelToView()
         {
@@ -49,10 +49,7 @@ namespace Aqua.XamarinForms.Services.Navigation.Classes
 
             var viewTypes = assembliesForSearch
                 .SelectMany(it => it.GetTypes())
-                .Where(it =>
-                    typeof(Page).IsAssignableFrom(it)
-                    && !it.IsAbstract
-                    && it.GetConstructor(Type.EmptyTypes) != null)
+                .Where(ViewPredicate)
                 .ToList();
 
             viewModelTypes.ForEach(vm =>
@@ -82,5 +79,7 @@ namespace Aqua.XamarinForms.Services.Navigation.Classes
         }
         
         protected abstract Func<Type, bool> ViewModelPredicate { get; }
+        
+        protected abstract Func<Type, bool> ViewPredicate { get; }
     }
 }

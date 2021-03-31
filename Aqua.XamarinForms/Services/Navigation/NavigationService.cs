@@ -1112,7 +1112,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 			where TViewModel : ViewModelBase
 		{
 			var viewType = _navigationServiceConfigurator.GetViewTypeFor<TViewModel>();
-			var view = (Page)Activator.CreateInstance(viewType);
+			var view = (Page)_resolver.Resolve(viewType, param);
 			
 			var viewModel = (TViewModel)_resolver.Resolve(typeof(TViewModel), param);
 			viewModelInitialization?.Invoke(viewModel);
