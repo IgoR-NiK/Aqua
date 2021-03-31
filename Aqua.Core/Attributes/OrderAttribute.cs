@@ -5,11 +5,11 @@ namespace Aqua.Core.Attributes
     [AttributeUsage(AttributeTargets.Class)]
     public class OrderAttribute : Attribute
     {
-        public int Value { get; }
+        public int Weight { get; }
         
-        public OrderAttribute(int value)
+        public OrderAttribute(int weight)
         {
-            Value = value;
+            Weight = weight;
         }
     }
 }
