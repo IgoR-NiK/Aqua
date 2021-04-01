@@ -50,7 +50,7 @@ namespace Aqua.XamarinForms.Services.Navigation.Classes
             var viewTypes = assembliesForSearch
                 .SelectMany(it => it.GetTypes())
                 .Where(ViewPredicate)
-                .ToList();
+                .ToDictionary(it => it.Name.ToUpperInvariant());
 
             viewModelTypes.ForEach(vm =>
             {
@@ -58,7 +58,7 @@ namespace Aqua.XamarinForms.Services.Navigation.Classes
 
                 viewModelName = viewModelName.Replace("VIEWMODEL", string.Empty);
 
-                var view = viewTypes.SingleOrDefault(v => v.Name.ToUpperInvariant() == $"{viewModelName}VIEW");
+                var view = viewTypes.GetValueOrDefault($"{viewModelName}VIEW");
 
                 if (view == null)
                     throw new ArgumentNullException(nameof(view), $"The view cannot be found for {vm.Name}");
