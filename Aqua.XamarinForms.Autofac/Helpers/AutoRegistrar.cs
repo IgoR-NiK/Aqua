@@ -32,8 +32,8 @@ namespace Aqua.XamarinForms.Autofac.Helpers
                                    && !type.IsDefined(typeof(ManualRegistrationAttribute))))
                 .ToArray();
 
-            var implementations = allResolvable.Where(it => it.IsClass).ToArray();
-            var services = allResolvable.Where(it => it.IsInterface).ToArray();
+            var implementations = allResolvable.Where(it => it.IsClass).ToHashSet();
+            var services = allResolvable.Where(it => it.IsInterface);
 
             foreach (var service in services)
             {
@@ -45,14 +45,16 @@ namespace Aqua.XamarinForms.Autofac.Helpers
                 descendants
                     .OrderByDescending(it => (it.GetCustomAttribute(typeof(OrderAttribute), false) as OrderAttribute)?.Weight ?? 0)
                     .ForEach(it => RegisterType(containerBuilder, it, service));
+                
+                implementations.ExceptWith(descendants);
             }
             
             implementations
-                .Where(it => !it.IsAbstract && !services.Any(s => s.IsAssignableFrom(it)))
+                .Where(it => !it.IsAbstract)
                 .ForEach(it => RegisterType(containerBuilder, it));
         }
 
-        private static HashSet<Type> GetDescendantLeaves(Type baseType, Type[] typesForSearch)
+        private static HashSet<Type> GetDescendantLeaves(Type baseType, HashSet<Type> typesForSearch)
         {
             var result = new HashSet<Type>();
 
