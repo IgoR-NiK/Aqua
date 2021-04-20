@@ -2,9 +2,11 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+using Aqua.Core.Utils;
+
 namespace Aqua.Core.Commands
 {
-    public class AsyncCommand : ICommand
+    public class AsyncCommand : RaisableObject, ICommand
     {
         private readonly Func<object, Task> _execute;
         private readonly Func<object, bool> _canExecute;
@@ -14,15 +16,11 @@ namespace Aqua.Core.Commands
         public bool IsActive
         {
             get => _isActive;
-            private set
+            private set => SetProperty(ref _isActive, value, () =>
             {
-                if (_isActive != value)
-                {
-                    _isActive = value;
-                    IsActiveChanged?.Invoke(value);
-                    ChangeCanExecute();
-                }
-            }
+                IsActiveChanged?.Invoke(value);
+                ChangeCanExecute();
+            });
         }
 
         public AsyncCommand(Func<object, Task> execute)
