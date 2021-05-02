@@ -18,28 +18,22 @@ namespace Aqua.Core.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value)
+            return value switch
             {
-                case null: 
-                    throw new ArgumentNullException(nameof(value));
-                case bool boolean:
-                    return boolean ? True : False;
-                default:
-                    throw new InvalidOperationException($"The {nameof(value)} must be a {nameof(Boolean)}");
-            }
+                null => throw new ArgumentNullException(nameof(value)),
+                bool boolean => boolean ? True : False,
+                _ => throw new InvalidOperationException($"The {nameof(value)} must be a {nameof(Boolean)}")
+            };
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value)
+            return value switch
             {
-                case null:
-                    throw new ArgumentNullException(nameof(value));
-                case T tValue:
-                    return EqualityComparer<T>.Default.Equals(tValue, True);
-                default:
-                    throw new InvalidOperationException($"The {nameof(value)} must be a {typeof(T).Name}");
-            }
+                null => throw new ArgumentNullException(nameof(value)),
+                T tValue => EqualityComparer<T>.Default.Equals(tValue, True),
+                _ => throw new InvalidOperationException($"The {nameof(value)} must be a {typeof(T).Name}")
+            };
         }
     }
 }
