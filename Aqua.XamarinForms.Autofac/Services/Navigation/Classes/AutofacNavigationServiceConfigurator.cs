@@ -14,6 +14,18 @@ namespace Aqua.XamarinForms.Autofac.Services.Navigation.Classes
             ViewModelTypeToViewTypeMap.Add(typeof(TViewModel), typeof(TView));
             ViewTypeToViewModelTypeMap.Add(typeof(TView), typeof(TViewModel));
         }
+        
+        public override void Map(Type viewModelType, Type viewType)
+        {
+            if (!typeof(ViewModelBase).IsAssignableFrom(viewModelType))
+                throw new ArgumentException($"{viewModelType.Name} must be inherited from the {nameof(ViewModelBase)}");
+            
+            if (!typeof(Page).IsAssignableFrom(viewType))
+                throw new ArgumentException($"{viewType.Name} must be inherited from the {nameof(Page)}");
+            
+            ViewModelTypeToViewTypeMap.Add(viewModelType, viewType);
+            ViewTypeToViewModelTypeMap.Add(viewType, viewModelType);
+        }
 
         protected override Func<Type, bool> ViewModelPredicate => 
             it => typeof(ViewModelBase).IsAssignableFrom(it) 
