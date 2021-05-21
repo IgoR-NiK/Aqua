@@ -16,15 +16,6 @@ namespace Aqua.XamarinForms.Mvvm
             set => SetProperty(ref _title, value);
         }
 
-        private bool _isBusy;
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set => SetProperty(ref _isBusy, value, () => RaisePropertyChanged(nameof(IsNotBusy)));
-        }
-
-        public bool IsNotBusy => !IsBusy;
-
         protected ViewModelBase Parent => NavigationService.GetParentFor(this);
 
         protected ViewModelBase MainParent => NavigationService.GetMainParentFor(this);
