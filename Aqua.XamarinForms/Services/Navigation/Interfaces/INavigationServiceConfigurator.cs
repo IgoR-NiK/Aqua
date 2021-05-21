@@ -22,6 +22,8 @@ namespace Aqua.XamarinForms.Services.Navigation.Interfaces
             where TViewModel : ViewModelBase
             where TView : Page;
 
+        void Map(Type viewModelType, Type viewType);
+
         internal void AutoMappingViewModelToView();
         
         internal Type GetViewTypeFor<TViewModel>() 

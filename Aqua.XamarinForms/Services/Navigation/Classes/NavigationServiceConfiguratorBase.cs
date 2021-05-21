@@ -33,6 +33,8 @@ namespace Aqua.XamarinForms.Services.Navigation.Classes
             where TViewModel : ViewModelBase
             where TView : Page;
 
+        public abstract void Map(Type viewModelType, Type viewType);
+        
         void INavigationServiceConfigurator.AutoMappingViewModelToView()
         {
             if (!UseAutoMappingViewModelToView) 
