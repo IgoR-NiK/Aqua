@@ -175,7 +175,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 		public void SetMainView(Type viewModelType, object param, Action<ViewModelBase> viewModelInitialization)
 		{
 			if (!typeof(ViewModelBase).IsAssignableFrom(viewModelType))
-				throw new ArgumentException($"{nameof(viewModelType)} must be inherited from the {nameof(ViewModelBase)}");
+				throw new ArgumentException($"{viewModelType.Name} must be inherited from the {nameof(ViewModelBase)}");
 
 			ReflectionHelper.CallByReflectionFrom(
 				this,
@@ -417,7 +417,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 			bool withAnimation = true)
 		{
 			if (!typeof(ViewModelBase).IsAssignableFrom(viewModelType))
-				throw new ArgumentException($"{nameof(viewModelType)} must be inherited from the {nameof(ViewModelBase)}");
+				throw new ArgumentException($"{viewModelType.Name} must be inherited from the {nameof(ViewModelBase)}");
 
 			await ReflectionHelper.CallByReflectionFromAsync(
 				this,
@@ -631,7 +631,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 	        CallbackParam<TResult> callbackParam)
         {
 	        if (!typeof(ViewModelBase).IsAssignableFrom(viewModelType))
-		        throw new ArgumentException($"{nameof(viewModelType)} must be inherited from the {nameof(ViewModelBase)}");
+		        throw new ArgumentException($"{viewModelType.Name} must be inherited from the {nameof(ViewModelBase)}");
 
 	        ReflectionHelper.CallByReflectionFrom(
 		        this,
@@ -784,7 +784,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 	        bool withAnimation = true)
         {
 	        if (!typeof(ViewModelBase).IsAssignableFrom(viewModelType))
-		        throw new ArgumentException($"{nameof(viewModelType)} must be inherited from the {nameof(ViewModelBase)}");
+		        throw new ArgumentException($"{viewModelType.Name} must be inherited from the {nameof(ViewModelBase)}");
 
 	        await ReflectionHelper.CallByReflectionFromAsync(
 		        this,
@@ -916,7 +916,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 	        bool withCloseFlyoutView = true)
         {
 	        if (!typeof(ViewModelBase).IsAssignableFrom(viewModelType))
-		        throw new ArgumentException($"{nameof(viewModelType)} must be inherited from the {nameof(ViewModelBase)}");
+		        throw new ArgumentException($"{viewModelType.Name} must be inherited from the {nameof(ViewModelBase)}");
 
 	        ReflectionHelper.CallByReflectionFrom(
 		        this,
@@ -1097,10 +1097,10 @@ namespace Aqua.XamarinForms.Services.Navigation
 			
 			var newView = CreateView<TViewModel, TParam, object>(param, viewModelInitialization, null);
 
+			flyoutPage.Detail = _navigationServiceConfigurator.NavigationPageCreator.Invoke(newView);
+			
 			if (withCloseFlyoutView)
 				CloseFlyoutView();
-
-			flyoutPage.Detail = _navigationServiceConfigurator.NavigationPageCreator.Invoke(newView);
 			
 			NavigationView.Popped += (sender, args) => Clear(args.Page);
 		}
