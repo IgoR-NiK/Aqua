@@ -8,8 +8,8 @@ namespace Aqua.Core.Commands
 {
     public class AsyncCommand : RaisableObject, ICommand
     {
-        private readonly Func<object, Task> _execute;
-        private readonly Func<object, bool> _canExecute;
+        private protected Func<object, Task> _execute;
+        private protected Func<object, bool> _canExecute;
 
         private bool _isActive;
 
@@ -23,6 +23,12 @@ namespace Aqua.Core.Commands
             });
         }
 
+        public AsyncCommand()
+        {
+            _execute = ExecuteInternal;
+            _canExecute = CanExecuteInternal;
+        }
+        
         public AsyncCommand(Func<object, Task> execute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
@@ -81,5 +87,9 @@ namespace Aqua.Core.Commands
         {
             IsActive = false;
         }
+
+        protected virtual Task ExecuteInternal(object parameter) => Task.CompletedTask;
+
+        protected virtual bool CanExecuteInternal(object parameter) => true;
     }
 }
