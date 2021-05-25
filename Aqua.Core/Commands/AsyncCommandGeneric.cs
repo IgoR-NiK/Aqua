@@ -5,11 +5,7 @@ namespace Aqua.Core.Commands
 {
     public class AsyncCommand<T> : AsyncCommand
     {
-        public AsyncCommand()
-        {
-            _execute = o => ExecuteInternal((T)o);
-            _canExecute = o => IsValidParameter(o) && CanExecuteInternal((T)o);
-        }
+        public AsyncCommand() { }
         
         public AsyncCommand(Func<T, Task> execute)
             : base(o => execute((T)o), IsValidParameter)
@@ -29,10 +25,10 @@ namespace Aqua.Core.Commands
         }
 
         protected sealed override Task ExecuteInternal(object parameter) 
-            => base.ExecuteInternal(parameter);
+            => ExecuteInternal((T)parameter);
 
         protected sealed override bool CanExecuteInternal(object parameter)
-            => base.CanExecuteInternal(parameter);
+            => IsValidParameter(parameter) && CanExecuteInternal((T)parameter);
         
         protected virtual Task ExecuteInternal(T parameter) => Task.CompletedTask;
 
