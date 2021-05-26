@@ -5,16 +5,18 @@ namespace Aqua.Core.Extensions
 {
     public static class ObservableCollectionExtension
     {
-        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> source)
+        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> items)
+            => new ObservableCollection<T> { items };
+
+        public static void Add<T>(this ObservableCollection<T> @this, IEnumerable<T> items)
+            => @this.AddRange(items);
+
+        public static void AddRange<T>(this ObservableCollection<T> @this, IEnumerable<T> items)
         {
-            var collection = new ObservableCollection<T>();
-
-            foreach (var item in source)
+            foreach (var item in items)
             {
-                collection.Add(item);
+                @this.Add(item);
             }
-
-            return collection;
         }
     }
 }
