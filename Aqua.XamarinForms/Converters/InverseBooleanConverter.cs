@@ -6,9 +6,7 @@ namespace Aqua.XamarinForms.Converters
 {
     public sealed class InverseBooleanConverter : BooleanConverterBase<bool>, IValueConverter
     {
-        public InverseBooleanConverter() 
-            : base(false, true)
-        {
-        }
+        public InverseBooleanConverter()
+            : base(false, true) { }
     }
 }
