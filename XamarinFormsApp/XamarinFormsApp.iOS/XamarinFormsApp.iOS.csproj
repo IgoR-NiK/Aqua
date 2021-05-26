@@ -106,7 +106,7 @@
         <Reference Include="Xamarin.iOS" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.10" />
+        <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.11" />
         <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     </ItemGroup>
     <ItemGroup>
