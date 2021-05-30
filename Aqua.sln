@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsApp.Android", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsApp.iOS", "XamarinFormsApp\XamarinFormsApp.iOS\XamarinFormsApp.iOS.csproj", "{24CE9FC1-EAD1-457D-808B-321F3B17672F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aqua.Wpf", "Aqua.Wpf\Aqua.Wpf.csproj", "{95BEC4ED-4BB1-4608-AFD9-660D4615A628}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{24CE9FC1-EAD1-457D-808B-321F3B17672F}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
 		{24CE9FC1-EAD1-457D-808B-321F3B17672F}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
 		{24CE9FC1-EAD1-457D-808B-321F3B17672F}.Release|Any CPU.Build.0 = Release|iPhoneSimulator
+		{95BEC4ED-4BB1-4608-AFD9-660D4615A628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95BEC4ED-4BB1-4608-AFD9-660D4615A628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95BEC4ED-4BB1-4608-AFD9-660D4615A628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95BEC4ED-4BB1-4608-AFD9-660D4615A628}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
