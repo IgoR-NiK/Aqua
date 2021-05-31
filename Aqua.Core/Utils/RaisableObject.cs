@@ -12,12 +12,12 @@ namespace Aqua.Core.Utils
             SetProperty(ref property, value, null, propertyName);
         }
 
-        protected void SetProperty<T>(ref T property, T value, Action onValueChanged, [CallerMemberName] string propertyName = null)
+        protected void SetProperty<T>(ref T property, T value, Action<T> onValueChanged, [CallerMemberName] string propertyName = null)
         {
             if (!EqualityComparer<T>.Default.Equals(property, value))
             {
                 property = value;
-                onValueChanged?.Invoke();
+                onValueChanged?.Invoke(property);
                 RaisePropertyChanged(propertyName);
             }
         }
