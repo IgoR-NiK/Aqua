@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aqua.Wpf", "Aqua.Wpf\Aqua.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp", "WpfApp\WpfApp.csproj", "{18BF586F-4057-4706-8130-3527002B97F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aqua.Core.Tests", "Aqua.Core.Tests\Aqua.Core.Tests.csproj", "{4C09AC44-1EBA-4CBB-BFC5-C2A397EAA9BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,5 +56,9 @@ Global
 		{18BF586F-4057-4706-8130-3527002B97F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18BF586F-4057-4706-8130-3527002B97F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18BF586F-4057-4706-8130-3527002B97F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C09AC44-1EBA-4CBB-BFC5-C2A397EAA9BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C09AC44-1EBA-4CBB-BFC5-C2A397EAA9BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C09AC44-1EBA-4CBB-BFC5-C2A397EAA9BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C09AC44-1EBA-4CBB-BFC5-C2A397EAA9BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
