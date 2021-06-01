@@ -94,7 +94,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 		public ViewModelBase GetParentFor<TViewModel>(TViewModel viewModel)
 			where TViewModel : ViewModelBase
 		{
-			return _viewModelWrappers[viewModel].Parent;
+			return _viewModelWrappers.GetValueOrDefault(viewModel)?.Parent;
 		}
 
 		public ViewModelBase GetMainParentFor<TViewModel>(TViewModel viewModel)
@@ -113,7 +113,7 @@ namespace Aqua.XamarinForms.Services.Navigation
 		public IReadOnlyList<ViewModelBase> GetChildrenFor<TViewModel>(TViewModel viewModel)
 			where TViewModel : ViewModelBase
 		{
-			return _viewModelWrappers[viewModel].Children;
+			return _viewModelWrappers.GetValueOrDefault(viewModel)?.Children ?? new List<ViewModelBase>();
 		}
 
 		public ViewModelBase GetPreviousFor<TViewModel>(TViewModel viewModel) 
