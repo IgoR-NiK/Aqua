@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Aqua.Core.Mvvm;
 using Aqua.Core.Utils;
@@ -30,8 +31,8 @@ namespace Aqua.XamarinForms.Mvvm
             NavigationService = navigationService;
         }
 
-        public virtual void OnAppearing() { }
+        public virtual Task OnAppearing() => Task.CompletedTask;
 
-        public virtual void OnDisappearing() { }
+        public virtual Task OnDisappearing() => Task.CompletedTask;
     }
 }

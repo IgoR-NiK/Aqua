@@ -1119,8 +1119,8 @@ namespace Aqua.XamarinForms.Services.Navigation
 
 			view.BindingContext = viewModel;
 			
-			view.Appearing += (sender, args) => viewModel.OnAppearing();
-			view.Disappearing += (sender, args) => viewModel.OnDisappearing();
+			view.Appearing += async (sender, args) => await viewModel.OnAppearing();
+			view.Disappearing += async (sender, args) => await viewModel.OnDisappearing();
 
 			var children = SetBingingContextForChildren(
 				view,
@@ -1172,8 +1172,8 @@ namespace Aqua.XamarinForms.Services.Navigation
 
 					currentView.BindingContext = currentViewModel;
 					
-					currentView.Appearing += (sender, args) => currentViewModel.OnAppearing();
-					currentView.Disappearing += (sender, args) => currentViewModel.OnDisappearing();
+					currentView.Appearing += async (sender, args) => await currentViewModel.OnAppearing();
+					currentView.Disappearing += async (sender, args) => await currentViewModel.OnDisappearing();
 				}
 
 				var children = SetBingingContextForChildren(

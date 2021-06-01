@@ -1,4 +1,6 @@
-﻿using Aqua.Core.Interfaces;
+﻿using System.Threading.Tasks;
+
+using Aqua.Core.Interfaces;
 
 namespace Aqua.Core.Mvvm
 {
@@ -6,8 +8,8 @@ namespace Aqua.Core.Mvvm
     {
         string Title { get; set; }
 
-        void OnAppearing();
+        Task OnAppearing();
 
-        void OnDisappearing();
+        Task OnDisappearing();
     }
 }
