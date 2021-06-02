@@ -42,6 +42,25 @@ namespace Aqua.Core.Tests
             
             Assert.AreEqual(7, x);
         }
+
+        [Test]
+        public void DoubleSetPropertyTest()
+        {
+            var x = 0;
+
+            var dog = new Dog();
+            dog.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(Dog.Age))
+                    x++;
+            };
+
+            dog.Age = 7;            
+            Assert.AreEqual(1, x);
+
+            dog.Age = 7;
+            Assert.AreEqual(1, x);
+        }
         
         private class Dog : RaisableObject
         {
