@@ -4,4 +4,13 @@
         <TargetFramework>netstandard2.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Compile Update="Commands\AsyncCommand.cs">
+        <DependentUpon>IAquaCommand.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Commands\AsyncCommand{T1}.cs">
+        <DependentUpon>AsyncCommand.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

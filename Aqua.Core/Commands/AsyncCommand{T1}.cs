@@ -24,6 +24,9 @@ namespace Aqua.Core.Commands
                 throw new ArgumentNullException(nameof(canExecute));
         }
 
+        public async Task ExecuteAsync(T parameter)
+            => await base.ExecuteAsync(parameter);
+
         protected sealed override Task ExecuteInternal(object parameter) 
             => ExecuteInternal((T)parameter);
 

@@ -6,20 +6,20 @@ using Aqua.Core.Utils;
 
 namespace Aqua.Core.Commands
 {
-    public class AsyncCommand : RaisableObject, ICommand
+    public class AsyncCommand : RaisableObject, IAquaCommand
     {
         private readonly Func<object, Task> _execute;
         private readonly Func<object, bool> _canExecute;
 
-        private bool _isActive;
+        private bool _isExecuting;
 
-        public bool IsActive
+        public bool IsExecuting
         {
-            get => _isActive;
-            private set => SetProperty(ref _isActive, value, () =>
+            get => _isExecuting;
+            private set => SetProperty(ref _isExecuting, value, it =>
             {
-                IsActiveChanged?.Invoke(value);
-                ChangeCanExecute();
+                IsExecutingChanged?.Invoke(it);
+                RaiseCanExecuteChanged();
             });
         }
 
@@ -55,33 +55,38 @@ namespace Aqua.Core.Commands
 
         public event EventHandler CanExecuteChanged;
 
-        public event Action<bool> IsActiveChanged;
+        public event Action<bool> IsExecutingChanged;
 
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object parameter = null)
         {
-            return !IsActive && (_canExecute?.Invoke(parameter) ?? CanExecuteInternal(parameter));
+            return !IsExecuting && (_canExecute?.Invoke(parameter) ?? CanExecuteInternal(parameter));
         }
 
-        public async void Execute(object parameter)
+        async void ICommand.Execute(object parameter)
+        {
+            await ExecuteAsync(parameter);
+        }
+        
+        public async Task ExecuteAsync(object parameter = null)
         {
             if (!CanExecute(parameter))
                 return;
 
-            IsActive = true;
+            IsExecuting = true;
 
             await (_execute?.Invoke(parameter) ?? ExecuteInternal(parameter));
 
-            IsActive = false;
+            IsExecuting = false;
         }
 
-        public void ChangeCanExecute()
+        public void RaiseCanExecuteChanged()
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public void IsNotActive()
+        public void IsNotExecuting()
         {
-            IsActive = false;
+            IsExecuting = false;
         }
 
         protected virtual Task ExecuteInternal(object parameter) => Task.CompletedTask;
