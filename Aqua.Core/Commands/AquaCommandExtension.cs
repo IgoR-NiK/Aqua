@@ -1,29 +1,31 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Linq.Expressions;
 
+using Aqua.Core.Extensions;
 using Aqua.Core.Helpers;
 
 namespace Aqua.Core.Commands
 {
     public static class AquaCommandExtension
     {
-        public static TCommand ListenOn<TCommand, TObject, TProperty>(this TCommand command, TObject @object, Expression<Func<TObject, TProperty>> property) 
+        public static TCommand ListenOn<TCommand, TObject>(this TCommand command, TObject @object, params Expression<Func<TObject, object>>[] properties) 
             where TCommand : IAquaCommand
             where TObject : INotifyPropertyChanged
         {
-            var propertyName = ExpressionHelper.GetPropertyName(property);
+            var propertyNames = properties.Select(ExpressionHelper.GetPropertyName).ToArray();
             
-            return command.ListenOn(@object, propertyName);
+            return command.ListenOn(@object, propertyNames);
         }
         
-        public static TCommand ListenOn<TCommand, TObject>(this TCommand command, TObject @object, string propertyName) 
+        public static TCommand ListenOn<TCommand, TObject>(this TCommand command, TObject @object, params string[] propertyNames) 
             where TCommand : IAquaCommand
             where TObject : INotifyPropertyChanged
         {
             @object.PropertyChanged += (sender, e) =>
             {
-                if (e.PropertyName == propertyName)
+                if (e.PropertyName.IsOneOf(propertyNames))
                     command.RaiseCanExecuteChanged();
             };
 
