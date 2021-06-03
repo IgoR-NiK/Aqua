@@ -6,10 +6,19 @@
 
     <ItemGroup>
       <Compile Update="Commands\AsyncCommand.cs">
-        <DependentUpon>IAquaCommand.cs</DependentUpon>
+        <DependentUpon>AquaCommandBase.cs</DependentUpon>
       </Compile>
       <Compile Update="Commands\AsyncCommand{T1}.cs">
         <DependentUpon>AsyncCommand.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Commands\AquaCommandBase.cs">
+        <DependentUpon>IAquaCommand.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Commands\AquaCommand.cs">
+        <DependentUpon>AquaCommandBase.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Commands\AquaCommand{T1}.cs">
+        <DependentUpon>AquaCommand.cs</DependentUpon>
       </Compile>
     </ItemGroup>
 

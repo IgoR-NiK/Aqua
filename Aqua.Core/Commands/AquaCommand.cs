@@ -1,57 +1,56 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace Aqua.Core.Commands
 {
-    public class AsyncCommand : AquaCommandBase
+    public class AquaCommand : AquaCommandBase
     {
-        private readonly Func<object, Task> _execute;
+        private readonly Action<object> _execute;
         
-        public AsyncCommand() { }
-        
-        public AsyncCommand(Func<object, Task> execute)
+        public AquaCommand() { }
+
+        public AquaCommand(Action<object> execute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
 
-        public AsyncCommand(Func<Task> execute)
+        public AquaCommand(Action execute)
             : this(_ => execute())
         {
             if (execute == null)
                 throw new ArgumentNullException(nameof(execute));
         }
 
-        public AsyncCommand(Func<object, Task> execute, Func<object, bool> canExecute)
+        public AquaCommand(Action<object> execute, Func<object, bool> canExecute)
             : base(canExecute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
 
-        public AsyncCommand(Func<Task> execute, Func<bool> canExecute)
+        public AquaCommand(Action execute, Func<bool> canExecute)
             : this(_ => execute(), _ => canExecute())
         {
             if (execute == null)
                 throw new ArgumentNullException(nameof(execute));
-
+            
             if (canExecute == null)
                 throw new ArgumentNullException(nameof(canExecute));
         }
-
-        private protected sealed override async void ExecuteCore(object parameter)
-            => await ExecuteAsync(parameter);
-
-        public async Task ExecuteAsync(object parameter = null)
+        
+        private protected sealed override void ExecuteCore(object parameter)
+            => Execute(parameter);
+        
+        public void Execute(object parameter = null)
         {
             if (!CanExecute(parameter))
                 return;
 
             IsExecuting = true;
 
-            await (_execute ?? ExecuteInternal).Invoke(parameter);
+            (_execute ?? ExecuteInternal).Invoke(parameter);
 
             IsExecuting = false;
         }
-
-        protected virtual Task ExecuteInternal(object parameter) => Task.CompletedTask;
+        
+        protected virtual void ExecuteInternal(object parameter) { }
     }
 }

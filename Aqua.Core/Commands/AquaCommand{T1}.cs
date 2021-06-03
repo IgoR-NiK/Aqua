@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace Aqua.Core.Commands
 {
-    public class AsyncCommand<T> : AsyncCommand
+    public class AquaCommand<T> : AquaCommand
     {
-        public AsyncCommand() { }
+        public AquaCommand() { }
         
-        public AsyncCommand(Func<T, Task> execute)
+        public AquaCommand(Action<T> execute)
             : base(o => execute((T)o), IsValidParameter<T>)
         {
             if (execute == null)
                 throw new ArgumentNullException(nameof(execute));
         }
 
-        public AsyncCommand(Func<T, Task> execute, Func<T, bool> canExecute)
+        public AquaCommand(Action<T> execute, Func<T, bool> canExecute)
             : base(o => execute((T)o), o => IsValidParameter<T>(o) && canExecute((T)o))
         {
             if (execute == null)
@@ -24,19 +23,19 @@ namespace Aqua.Core.Commands
                 throw new ArgumentNullException(nameof(canExecute));
         }
 
-        public Task ExecuteAsync(T parameter)
-            => base.ExecuteAsync(parameter);
+        public void Execute(T parameter)
+            => base.Execute(parameter);
         
         public bool CanExecute(T parameter)
             => base.CanExecute(parameter);
 
-        protected sealed override Task ExecuteInternal(object parameter) 
+        protected sealed override void ExecuteInternal(object parameter) 
             => ExecuteInternal((T)parameter);
 
         protected sealed override bool CanExecuteInternal(object parameter)
             => IsValidParameter<T>(parameter) && CanExecuteInternal((T)parameter);
         
-        protected virtual Task ExecuteInternal(T parameter) => Task.CompletedTask;
+        protected virtual void ExecuteInternal(T parameter) { }
 
         protected virtual bool CanExecuteInternal(T parameter) => true;
     }
