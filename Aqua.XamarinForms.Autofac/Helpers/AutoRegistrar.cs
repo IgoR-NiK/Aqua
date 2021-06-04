@@ -41,7 +41,7 @@ namespace Aqua.XamarinForms.Autofac.Helpers
                     continue;
 
                 descendants
-                    .OrderByDescending(it => (it.GetCustomAttribute(typeof(OrderAttribute), false) as OrderAttribute)?.Weight ?? 0)
+                    .OrderBy(it => (it.GetCustomAttribute(typeof(OrderAttribute), false) as OrderAttribute)?.Value ?? 0)
                     .ForEach(it => RegisterType(containerBuilder, it, service));
                 
                 implementations.ExceptWith(descendants);

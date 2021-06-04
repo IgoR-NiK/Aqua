@@ -6,6 +6,9 @@ namespace Aqua.Core.Tests
     [TestFixture]
     public class RaisableObjectTest
     {
+        /// <summary>
+        /// Тест сеттера и геттера
+        /// </summary>
         [Test]
         public void SimpleTest()
         {
@@ -16,6 +19,9 @@ namespace Aqua.Core.Tests
             Assert.AreEqual("Rocky", dog.Name);
         }
 
+        /// <summary>
+        /// Тест делегата OnValueChanged при изменении Age
+        /// </summary>
         [Test]
         public void OnValueChangedTest()
         {
@@ -26,6 +32,9 @@ namespace Aqua.Core.Tests
             Assert.AreEqual("I am 7 old", dog.Name);
         }
 
+        /// <summary>
+        /// Тест события PropertyChanged
+        /// </summary>
         [Test]
         public void RaisePropertyChangedTest()
         {
@@ -43,6 +52,9 @@ namespace Aqua.Core.Tests
             Assert.AreEqual(7, x);
         }
 
+        /// <summary>
+        /// При повторной установке одного и того же значения сеттер не выполняется
+        /// </summary>
         [Test]
         public void DoubleSetPropertyTest()
         {
@@ -55,9 +67,11 @@ namespace Aqua.Core.Tests
                     x++;
             };
 
+            // При первой установке PropertyChanged сеттер вызывается
             dog.Age = 7;            
             Assert.AreEqual(1, x);
 
+            // При повторной установке сеттер не выполняется
             dog.Age = 7;
             Assert.AreEqual(1, x);
         }

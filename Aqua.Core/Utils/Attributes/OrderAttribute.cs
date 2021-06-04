@@ -2,14 +2,17 @@
 
 namespace Aqua.Core.Utils
 {
+    /// <summary>
+    /// Сортировка по возрастанию по Value
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class OrderAttribute : Attribute
     {
-        public int Weight { get; }
+        public int Value { get; }
         
-        public OrderAttribute(int weight)
+        public OrderAttribute(int value)
         {
-            Weight = weight;
+            Value = value;
         }
     }
 }
