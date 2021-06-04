@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-using Aqua.Core.Extensions;
-
-namespace Aqua.Core.Helpers
+namespace Aqua.Core.Utils
 {
     public static class ExpressionHelper
     {

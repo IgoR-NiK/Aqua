@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace Aqua.Core.Attributes
+namespace Aqua.Core.IoC
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
-    public class ManualRegistrationAttribute : Attribute
+    public class AsSingleInstanceAttribute : Attribute
     {
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Input;
 
 namespace Aqua.Core.Commands
 {
-    public interface IAquaCommand : ICommand
+    public interface IAquaCommand : ICommand, INotifyPropertyChanged
     {
         bool IsExecuting { get; }
         

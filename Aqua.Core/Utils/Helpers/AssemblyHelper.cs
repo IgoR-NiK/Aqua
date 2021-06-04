@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using Aqua.Core.Extensions;
-
-namespace Aqua.Core.Helpers
+namespace Aqua.Core.Utils
 {
     public static class AssemblyHelper
     {

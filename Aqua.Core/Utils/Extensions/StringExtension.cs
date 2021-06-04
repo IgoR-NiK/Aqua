@@ -1,4 +1,4 @@
-﻿namespace Aqua.Core.Extensions
+﻿namespace Aqua.Core.Utils
 {
     public static class StringExtension
     {

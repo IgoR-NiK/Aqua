@@ -2,9 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 
-using Aqua.Core.Extensions;
-
-namespace Aqua.Core.Helpers
+namespace Aqua.Core.Utils
 {
     public static class ReflectionHelper
     {

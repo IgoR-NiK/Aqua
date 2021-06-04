@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-using Aqua.Core.Interfaces;
+using Aqua.Core.IoC;
 
 namespace Aqua.Core.Mvvm
 {

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Aqua.Core.Extensions
+namespace Aqua.Core.Utils
 {
     public static class MethodInfoExtension
     {

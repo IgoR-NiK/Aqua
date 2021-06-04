@@ -1,4 +1,4 @@
-﻿namespace Aqua.Core.Interfaces
+﻿namespace Aqua.Core.Utils
 {
     public interface IWithInit<in TParam>
     {

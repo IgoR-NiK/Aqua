@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Aqua.Core.Attributes
+namespace Aqua.Core.Utils
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class OrderAttribute : Attribute

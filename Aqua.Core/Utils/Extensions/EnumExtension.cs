@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 
-namespace Aqua.Core.Extensions
+namespace Aqua.Core.Utils
 {
     public static class EnumExtension
     {

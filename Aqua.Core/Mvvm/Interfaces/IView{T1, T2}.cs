@@ -1,4 +1,4 @@
-﻿using Aqua.Core.Interfaces;
+﻿using Aqua.Core.Utils;
 
 namespace Aqua.Core.Mvvm
 {
