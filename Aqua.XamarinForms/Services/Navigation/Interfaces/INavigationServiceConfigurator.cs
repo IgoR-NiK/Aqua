@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-using Aqua.Core.Attributes;
-using Aqua.Core.Interfaces;
+using Aqua.Core.IoC;
 using Aqua.XamarinForms.Mvvm;
 
 using Xamarin.Forms;

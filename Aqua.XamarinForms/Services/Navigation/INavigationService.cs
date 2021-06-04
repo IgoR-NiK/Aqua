@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Aqua.Core.Attributes;
-using Aqua.Core.Interfaces;
+using Aqua.Core.IoC;
+using Aqua.Core.Utils;
 using Aqua.XamarinForms.Mvvm;
 using Aqua.XamarinForms.Services.Navigation.Classes;
 using Aqua.XamarinForms.Services.Navigation.Enums;

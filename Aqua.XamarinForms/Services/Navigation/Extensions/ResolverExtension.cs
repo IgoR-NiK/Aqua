@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Aqua.Core.Interfaces;
+using Aqua.Core.Utils;
 using Aqua.XamarinForms.Services.Navigation.Interfaces;
 
 namespace Aqua.XamarinForms.Services.Navigation.Extensions

@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using Aqua.Core.Attributes;
-using Aqua.Core.Extensions;
-using Aqua.Core.Helpers;
-using Aqua.Core.Interfaces;
+using Aqua.Core.IoC;
+using Aqua.Core.Utils;
 using Aqua.XamarinForms.Services.Navigation;
 
 using Autofac;

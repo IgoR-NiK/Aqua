@@ -1,5 +1,5 @@
-﻿using Aqua.Core.Interfaces;
-using Aqua.Core.Mvvm;
+﻿using Aqua.Core.Mvvm;
+using Aqua.Core.Utils;
 
 namespace Aqua.XamarinForms.Mvvm
 {

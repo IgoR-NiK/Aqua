@@ -1,5 +1,5 @@
-﻿using Aqua.Core.Attributes;
-using Aqua.Core.Interfaces;
+﻿using Aqua.Core.IoC;
+using Aqua.Core.Utils;
 
 namespace XamarinFormsApp
 {

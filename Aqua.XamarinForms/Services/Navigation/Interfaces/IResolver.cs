@@ -1,7 +1,6 @@
 ﻿using System;
 
-using Aqua.Core.Attributes;
-using Aqua.Core.Interfaces;
+using Aqua.Core.IoC;
 
 namespace Aqua.XamarinForms.Services.Navigation.Interfaces
 {

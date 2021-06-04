@@ -1,5 +1,4 @@
-﻿using Aqua.Core.Interfaces;
-
+﻿using Aqua.Core.IoC;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

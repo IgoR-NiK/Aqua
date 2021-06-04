@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-using Aqua.Core.Extensions;
+using Aqua.Core.Utils;
 using Aqua.XamarinForms.Autofac.Helpers;
 using Aqua.XamarinForms.Mvvm;
 using Aqua.XamarinForms.Services.Navigation;
