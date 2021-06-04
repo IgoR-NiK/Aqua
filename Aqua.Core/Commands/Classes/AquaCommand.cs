@@ -8,20 +8,14 @@ namespace Aqua.Core.Commands
         
         public AquaCommand() { }
 
-        public AquaCommand(Action<object> execute)
-        {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-        }
-
         public AquaCommand(Action execute)
             : this(_ => execute())
         {
             if (execute == null)
                 throw new ArgumentNullException(nameof(execute));
         }
-
-        public AquaCommand(Action<object> execute, Func<object, bool> canExecute)
-            : base(canExecute)
+        
+        public AquaCommand(Action<object> execute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
@@ -34,6 +28,12 @@ namespace Aqua.Core.Commands
             
             if (canExecute == null)
                 throw new ArgumentNullException(nameof(canExecute));
+        }
+        
+        public AquaCommand(Action<object> execute, Func<object, bool> canExecute)
+            : base(canExecute)
+        {
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
         
         private protected sealed override void ExecuteCore(object parameter)
