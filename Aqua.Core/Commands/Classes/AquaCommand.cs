@@ -4,53 +4,45 @@ namespace Aqua.Core.Commands
 {
     public class AquaCommand : AquaCommandBase
     {
-        private readonly Action<object> _execute;
+        private readonly Action _execute;
+        private readonly Func<bool> _canExecute;
         
         public AquaCommand() { }
 
         public AquaCommand(Action execute)
-            : this(_ => execute())
-        {
-            if (execute == null)
-                throw new ArgumentNullException(nameof(execute));
-        }
-        
-        public AquaCommand(Action<object> execute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
 
         public AquaCommand(Action execute, Func<bool> canExecute)
-            : this(_ => execute(), _ => canExecute())
+            : this(execute)
         {
-            if (execute == null)
-                throw new ArgumentNullException(nameof(execute));
-            
-            if (canExecute == null)
-                throw new ArgumentNullException(nameof(canExecute));
+            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
-        
-        public AquaCommand(Action<object> execute, Func<object, bool> canExecute)
-            : base(canExecute)
+
+        public void Execute()
         {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-        }
-        
-        private protected sealed override void ExecuteCore(object parameter)
-            => Execute(parameter);
-        
-        public void Execute(object parameter = null)
-        {
-            if (!CanExecute(parameter))
+            if (!CanExecute())
                 return;
 
             IsExecuting = true;
 
-            (_execute ?? ExecuteInternal).Invoke(parameter);
+            (_execute ?? ExecuteInternal).Invoke();
 
             IsExecuting = false;
         }
-        
-        protected virtual void ExecuteInternal(object parameter) { }
+
+        public bool CanExecute()
+            => !IsExecuting && (_canExecute ?? CanExecuteInternal).Invoke();
+
+        protected virtual void ExecuteInternal() { }
+
+        protected virtual bool CanExecuteInternal() => true;
+
+        private protected sealed override void ExecuteCore(object parameter)
+            => Execute();
+
+        private protected sealed override bool CanExecuteCore(object parameter)
+            => CanExecute();
     }
 }

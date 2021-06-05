@@ -9,13 +9,19 @@
         <DependentUpon>AquaCommandBase.cs</DependentUpon>
       </Compile>
       <Compile Update="Commands\Classes\AquaCommand{T1}.cs">
-        <DependentUpon>AquaCommand.cs</DependentUpon>
+        <DependentUpon>AquaCommandBase.cs</DependentUpon>
       </Compile>
       <Compile Update="Commands\Classes\AsyncCommand.cs">
         <DependentUpon>AquaCommandBase.cs</DependentUpon>
       </Compile>
       <Compile Update="Commands\Classes\AsyncCommand{T1}.cs">
-        <DependentUpon>AsyncCommand.cs</DependentUpon>
+        <DependentUpon>AquaCommandBase.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Commands\Classes\AsyncCancelledCommand.cs">
+        <DependentUpon>AquaCommandBase.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Commands\Classes\AsyncCancelledCommand{T1}.cs">
+        <DependentUpon>AquaCommandBase.cs</DependentUpon>
       </Compile>
     </ItemGroup>
 

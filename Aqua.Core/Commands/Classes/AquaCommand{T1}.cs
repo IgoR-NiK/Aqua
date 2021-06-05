@@ -2,41 +2,50 @@
 
 namespace Aqua.Core.Commands
 {
-    public class AquaCommand<T> : AquaCommand
+    public class AquaCommand<T> : AquaCommandBase
     {
+        private readonly Action<T> _execute;
+        private readonly Func<T, bool> _canExecute;
+        
         public AquaCommand() { }
         
         public AquaCommand(Action<T> execute)
-            : base(o => execute((T)o), IsValidParameter<T>)
         {
-            if (execute == null)
-                throw new ArgumentNullException(nameof(execute));
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
 
         public AquaCommand(Action<T> execute, Func<T, bool> canExecute)
-            : base(o => execute((T)o), o => IsValidParameter<T>(o) && canExecute((T)o))
+            : this(execute)
         {
-            if (execute == null)
-                throw new ArgumentNullException(nameof(execute));
-
-            if (canExecute == null)
-                throw new ArgumentNullException(nameof(canExecute));
+            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
 
         public void Execute(T parameter)
-            => base.Execute(parameter);
+        {
+            if (!CanExecute(parameter))
+                return;
+            
+            IsExecuting = true;
+
+            (_execute ?? ExecuteInternal).Invoke(parameter);
+
+            IsExecuting = false;
+        }
         
         public bool CanExecute(T parameter)
-            => base.CanExecute(parameter);
-
-        protected sealed override void ExecuteInternal(object parameter) 
-            => ExecuteInternal((T)parameter);
-
-        protected sealed override bool CanExecuteInternal(object parameter)
-            => IsValidParameter<T>(parameter) && CanExecuteInternal((T)parameter);
+            => !IsExecuting && (_canExecute ?? CanExecuteInternal).Invoke(parameter);
         
         protected virtual void ExecuteInternal(T parameter) { }
 
         protected virtual bool CanExecuteInternal(T parameter) => true;
+
+        private protected sealed override void ExecuteCore(object parameter)
+        {
+            if (IsValidParameter<T>(parameter))
+                Execute((T)parameter);
+        }
+
+        private protected sealed override bool CanExecuteCore(object parameter)
+            => IsValidParameter<T>(parameter) && CanExecute((T)parameter);
     }
 }

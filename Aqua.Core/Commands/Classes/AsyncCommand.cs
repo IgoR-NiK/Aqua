@@ -5,53 +5,45 @@ namespace Aqua.Core.Commands
 {
     public class AsyncCommand : AquaCommandBase
     {
-        private readonly Func<object, Task> _execute;
+        private readonly Func<Task> _execute;
+        private readonly Func<bool> _canExecute;
         
         public AsyncCommand() { }
         
         public AsyncCommand(Func<Task> execute)
-            : this(_ => execute())
-        {
-            if (execute == null)
-                throw new ArgumentNullException(nameof(execute));
-        }
-        
-        public AsyncCommand(Func<object, Task> execute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
 
         public AsyncCommand(Func<Task> execute, Func<bool> canExecute)
-            : this(_ => execute(), _ => canExecute())
+            : this(execute)
         {
-            if (execute == null)
-                throw new ArgumentNullException(nameof(execute));
-
-            if (canExecute == null)
-                throw new ArgumentNullException(nameof(canExecute));
+            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
         
-        public AsyncCommand(Func<object, Task> execute, Func<object, bool> canExecute)
-            : base(canExecute)
+        public async Task ExecuteAsync()
         {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-        }
-
-        private protected sealed override async void ExecuteCore(object parameter)
-            => await ExecuteAsync(parameter);
-
-        public async Task ExecuteAsync(object parameter = null)
-        {
-            if (!CanExecute(parameter))
+            if (!CanExecute())
                 return;
 
             IsExecuting = true;
 
-            await (_execute ?? ExecuteInternal).Invoke(parameter);
+            await (_execute ?? ExecuteInternal).Invoke();
 
             IsExecuting = false;
         }
+        
+        public bool CanExecute()
+            => !IsExecuting && (_canExecute ?? CanExecuteInternal).Invoke();
+        
+        protected virtual Task ExecuteInternal() => Task.CompletedTask;
 
-        protected virtual Task ExecuteInternal(object parameter) => Task.CompletedTask;
+        protected virtual bool CanExecuteInternal() => true;
+        
+        private protected sealed override async void ExecuteCore(object parameter)
+            => await ExecuteAsync();
+
+        private protected sealed override bool CanExecuteCore(object parameter)
+            => CanExecute();
     }
 }
