@@ -46,6 +46,7 @@ namespace Aqua.Core.Tests
             
             Assert.AreEqual(1, logs.Count);
             Assert.AreEqual("Command canceled", logs.Single());
+            Assert.False(command.IsExecuting);
         }
         
         [Test]
@@ -76,6 +77,7 @@ namespace Aqua.Core.Tests
             
             Assert.AreEqual(1, logs.Count);
             Assert.AreEqual("Command canceled", logs.Single());
+            Assert.False(command.IsExecuting);
         }
         
         [Test]
@@ -106,6 +108,7 @@ namespace Aqua.Core.Tests
             
             Assert.AreEqual(1, logs.Count);
             Assert.AreEqual("Command completed successfully", logs.Single());
+            Assert.False(command.IsExecuting);
         }
     }
 }
