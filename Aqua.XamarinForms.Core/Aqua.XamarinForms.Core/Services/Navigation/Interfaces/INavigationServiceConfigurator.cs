@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-using Aqua.Core.IoC;
+using Aqua.Core.Ioc;
 using Aqua.XamarinForms.Core.Mvvm;
 
 using Xamarin.Forms;

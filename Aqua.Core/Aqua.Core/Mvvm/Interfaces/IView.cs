@@ -1,4 +1,4 @@
-﻿using Aqua.Core.IoC;
+﻿using Aqua.Core.Ioc;
 
 namespace Aqua.Core.Mvvm
 {

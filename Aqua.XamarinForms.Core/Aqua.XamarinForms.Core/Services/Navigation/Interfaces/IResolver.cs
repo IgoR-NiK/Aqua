@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Aqua.Core.IoC;
+using Aqua.Core.Ioc;
 
 namespace Aqua.XamarinForms.Core.Services.Navigation
 {

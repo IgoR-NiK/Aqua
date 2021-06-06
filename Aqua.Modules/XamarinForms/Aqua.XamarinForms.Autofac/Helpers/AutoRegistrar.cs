@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using Aqua.Core.IoC;
+using Aqua.Core.Ioc;
 using Aqua.Core.Utils;
 using Aqua.XamarinForms.Core.Services.Navigation;
 

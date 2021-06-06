@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Aqua.Core.IoC;
+using Aqua.Core.Ioc;
 using Aqua.Core.Utils;
 using Aqua.XamarinForms.Core.Mvvm;
 

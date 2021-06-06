@@ -1,4 +1,4 @@
-﻿namespace Aqua.Core.IoC
+﻿namespace Aqua.Core.Ioc
 {
     public interface IResolvable
     {
