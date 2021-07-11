@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Aqua.Core.Ioc;
 
 namespace Aqua.Core.Contexts
 {
-    public interface IContext
+    public interface IContext : IResolvable
     {
         IContext ParentContext { get; }
         

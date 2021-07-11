@@ -7,5 +7,10 @@ namespace Aqua.Core.Configs
         public IAppContext Context { get; }
         
         public bool WithAnimation { get; set; } = true;
+
+        public NavigationAppConfig(IAppContext context)
+        {
+            Context = context;
+        }
     }
 }
