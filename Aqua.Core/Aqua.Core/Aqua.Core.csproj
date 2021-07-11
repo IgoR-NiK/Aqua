@@ -32,6 +32,9 @@
       <Compile Update="Contexts\Interfaces\IViewModelContext.cs">
         <DependentUpon>IContext.cs</DependentUpon>
       </Compile>
+      <Compile Update="Configs\Interfaces\INavigationConfig{T1}.cs">
+        <DependentUpon>IConfig{T1}.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
