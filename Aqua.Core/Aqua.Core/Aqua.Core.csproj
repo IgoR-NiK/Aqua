@@ -35,9 +35,6 @@
       <Compile Update="Configs\Interfaces\INavigationConfig{T1}.cs">
         <DependentUpon>IConfig{T1}.cs</DependentUpon>
       </Compile>
-      <Compile Update="Configs\Interfaces\IConfig{T1}.cs">
-        <DependentUpon>IConfig.cs</DependentUpon>
-      </Compile>
       <Compile Update="Configs\Interfaces\INavigationConfig.cs">
         <DependentUpon>IConfig.cs</DependentUpon>
       </Compile>
