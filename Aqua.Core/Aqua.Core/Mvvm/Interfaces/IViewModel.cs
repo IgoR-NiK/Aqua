@@ -1,13 +1,12 @@
 ﻿using System.Threading.Tasks;
 
+using Aqua.Core.Contexts;
 using Aqua.Core.Ioc;
 
 namespace Aqua.Core.Mvvm
 {
-    public interface IViewModel : IResolvable
+    public interface IViewModel : IViewModelContext, IResolvable
     {
-        string Title { get; set; }
-
         Task OnAppearing();
 
         Task OnDisappearing();
