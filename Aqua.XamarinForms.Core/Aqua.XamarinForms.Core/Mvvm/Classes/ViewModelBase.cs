@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Aqua.Core.Contexts;
 using Aqua.Core.Mvvm;
 using Aqua.Core.Utils;
 using Aqua.XamarinForms.Core.Services.Navigation;
@@ -15,11 +17,15 @@ namespace Aqua.XamarinForms.Core.Mvvm
             set => SetProperty(ref _title, value);
         }
 
-        protected ViewModelBase Parent => NavigationService.GetParentFor(this);
+        public IContext ParentContext { get; }
+        
+        public IEnumerable<IContext> ChildrenContexts { get; }
 
-        protected ViewModelBase MainParent => NavigationService.GetMainParentFor(this);
+        protected ViewModelBase ParentViewModel => ParentContext as ViewModelBase;
 
-        protected IReadOnlyList<ViewModelBase> Children => NavigationService.GetChildrenFor(this);
+        protected ViewModelBase MainViewModel => this.FindContext<ViewModelBase>(it => !(it.ParentContext is ViewModelBase));
+
+        protected IEnumerable<ViewModelBase> ChildrenViewModels => ChildrenContexts.OfType<ViewModelBase>();
 
         protected ViewModelBase Previous => NavigationService.GetPreviousFor(this);
 
