@@ -61,7 +61,7 @@ namespace Aqua.Core.Tests
             var x = 0;
 
             var dog = new Dog();
-            dog.PropertyChanged += (sender, args) =>
+            dog.PropertyChanged += (_, args) =>
             {
                 if (args.PropertyName == nameof(Dog.Age))
                     x++;
