@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Aqua.Core.Ioc;
+using Aqua.Core.Mvvm;
 using Aqua.Core.Utils;
-using Aqua.XamarinForms.Core.Mvvm;
 
 namespace Aqua.XamarinForms.Core.Services.Navigation
 {

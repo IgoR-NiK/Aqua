@@ -6,8 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using Aqua.Core.Mvvm;
 using Aqua.Core.Utils;
-using Aqua.XamarinForms.Core.Mvvm;
 using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;

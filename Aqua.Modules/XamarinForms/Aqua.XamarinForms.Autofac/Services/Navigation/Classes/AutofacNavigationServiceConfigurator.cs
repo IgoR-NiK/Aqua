@@ -1,5 +1,5 @@
 ﻿using System;
-using Aqua.XamarinForms.Core.Mvvm;
+using Aqua.Core.Mvvm;
 using Aqua.XamarinForms.Core.Services.Navigation;
 
 using Xamarin.Forms;

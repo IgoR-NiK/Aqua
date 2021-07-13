@@ -1,5 +1,6 @@
 ﻿using System;
-using Aqua.XamarinForms.Core.Mvvm;
+
+using Aqua.Core.Mvvm;
 
 using Xamarin.Forms;
 

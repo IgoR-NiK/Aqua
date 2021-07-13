@@ -1,6 +1,5 @@
 ﻿using Aqua.Core.Commands;
-using Aqua.XamarinForms.Core.Mvvm;
-using Aqua.XamarinForms.Core.Services.Navigation;
+using Aqua.Core.Mvvm;
 
 namespace XamarinFormsApp.ViewModels
 {
@@ -21,10 +20,5 @@ namespace XamarinFormsApp.ViewModels
         }
         
         public AquaCommand TestCommand { get; }
-        
-        public MainViewModel(INavigationService navigationService) 
-            : base(navigationService)
-        {
-        }
     }
 }
