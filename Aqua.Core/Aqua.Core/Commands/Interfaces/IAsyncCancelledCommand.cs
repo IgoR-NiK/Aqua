@@ -2,7 +2,7 @@
 
 namespace Aqua.Core.Commands
 {
-    public interface IAsyncCancelledCommand : IAquaCommand
+    public interface IAsyncCancelledCommand : IAsyncCommand
     {
         TimeSpan? Timeout { get; set; }
 

@@ -1,5 +1,7 @@
-﻿using Aqua.Core.Commands;
+﻿using System.Threading.Tasks;
+using Aqua.Core.Commands;
 using Aqua.Core.Mvvm;
+using Aqua.Core.Utils;
 
 namespace XamarinFormsApp.ViewModels
 {
@@ -19,6 +21,12 @@ namespace XamarinFormsApp.ViewModels
             set => SetProperty(ref _age, value);
         }
         
-        public AquaCommand TestCommand { get; }
+        public AsyncCommand TestCommand { get; }
+
+        public MainViewModel()
+        {
+            TestCommand = new AsyncCommand(() => Task.Delay(10000), () => !Text.IsNullOrEmpty())
+                .ListenOn(this, it => it.Text);
+        }
     }
 }

@@ -42,6 +42,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsApp.Android", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsApp.iOS", "Apps\XamarinForms\XamarinFormsApp\XamarinFormsApp.iOS\XamarinFormsApp.iOS.csproj", "{24CE9FC1-EAD1-457D-808B-321F3B17672F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aqua.XamarinForms.Controls", "Aqua.Modules\XamarinForms\Aqua.XamarinForms.Controls\Aqua.XamarinForms.Controls.csproj", "{933DFA82-D184-46D4-8B80-E3DDB42FA31F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -96,6 +98,10 @@ Global
 		{24CE9FC1-EAD1-457D-808B-321F3B17672F}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
 		{24CE9FC1-EAD1-457D-808B-321F3B17672F}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
 		{24CE9FC1-EAD1-457D-808B-321F3B17672F}.Release|Any CPU.Build.0 = Release|iPhoneSimulator
+		{933DFA82-D184-46D4-8B80-E3DDB42FA31F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{933DFA82-D184-46D4-8B80-E3DDB42FA31F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{933DFA82-D184-46D4-8B80-E3DDB42FA31F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{933DFA82-D184-46D4-8B80-E3DDB42FA31F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E7BE340B-6269-446C-B942-A187F5D57A60} = {17F62914-65B1-4450-AD84-6201454562ED}
@@ -114,5 +120,6 @@ Global
 		{8B6E15FE-5450-4E3B-B9F7-8F7219F904E9} = {B5BD6BB4-151F-4E81-8C77-214B6B348078}
 		{43EE7A6D-28C9-4469-83A1-75E3882E2A2B} = {B5BD6BB4-151F-4E81-8C77-214B6B348078}
 		{24CE9FC1-EAD1-457D-808B-321F3B17672F} = {B5BD6BB4-151F-4E81-8C77-214B6B348078}
+		{933DFA82-D184-46D4-8B80-E3DDB42FA31F} = {2B236CED-F7B3-4981-8E7D-E949EAC2C4B8}
 	EndGlobalSection
 EndGlobal

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Aqua.Core.Commands
 {
-    public class AsyncCommand<T> : AquaCommandBase
+    public class AsyncCommand<T> : AquaCommandBase, IAsyncCommand
     {
         private readonly Func<T, Task> _execute;
         private readonly Func<T, bool> _canExecute;

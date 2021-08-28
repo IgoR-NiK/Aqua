@@ -17,5 +17,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\Aqua.Modules\XamarinForms\Aqua.XamarinForms.Autofac\Aqua.XamarinForms.Autofac.csproj" />
+      <ProjectReference Include="..\..\..\..\Aqua.Modules\XamarinForms\Aqua.XamarinForms.Controls\Aqua.XamarinForms.Controls.csproj" />
     </ItemGroup>
 </Project>
