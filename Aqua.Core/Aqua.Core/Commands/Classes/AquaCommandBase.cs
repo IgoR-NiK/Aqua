@@ -14,11 +14,13 @@ namespace Aqua.Core.Commands
             private protected set => SetProperty(ref _isExecuting, value, it =>
             {
                 IsExecutingChanged?.Invoke(it);
-                RaiseCanExecuteChanged();
+                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
             });
         }
         
         public event EventHandler CanExecuteChanged;
+
+        public event Action CheckCanExecuteFunc;
         
         public event Action<bool> IsExecutingChanged;
 
@@ -26,6 +28,7 @@ namespace Aqua.Core.Commands
 
         public void RaiseCanExecuteChanged()
         {
+            CheckCanExecuteFunc?.Invoke();
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -43,11 +46,16 @@ namespace Aqua.Core.Commands
         private protected abstract void ExecuteCore(object parameter);
 
         private protected abstract bool CanExecuteCore(object parameter);
+
+        private protected abstract bool CanExecuteFunc(object parameter);
         
         void ICommand.Execute(object parameter)
             => ExecuteCore(parameter);
 
         bool ICommand.CanExecute(object parameter)
             => CanExecuteCore(parameter);
+
+        bool IAquaCommand.CanExecuteFunc(object parameter)
+            => CanExecuteFunc(parameter);
     }
 }

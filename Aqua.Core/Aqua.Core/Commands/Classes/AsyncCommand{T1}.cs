@@ -48,5 +48,8 @@ namespace Aqua.Core.Commands
 
         private protected sealed override bool CanExecuteCore(object parameter)
             => IsValidParameter<T>(parameter) && CanExecute((T)parameter);
+        
+        private protected sealed override bool CanExecuteFunc(object parameter)
+            => IsValidParameter<T>(parameter) && (_canExecute ?? CanExecuteInternal).Invoke((T)parameter);
     }
 }

@@ -44,5 +44,8 @@ namespace Aqua.Core.Commands
 
         private protected sealed override bool CanExecuteCore(object parameter)
             => CanExecute();
+        
+        private protected sealed override bool CanExecuteFunc(object parameter)
+            => (_canExecute ?? CanExecuteInternal).Invoke();
     }
 }

@@ -8,42 +8,60 @@
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
                 <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             
-            <Entry Text="{Binding Text}" />
-            <aqua:AquaAsyncButton Command="{Binding TestCommand}" 
-                                  Text="Сейчас я в состоянии Enabled. Могу запустить долгую задачу"
+            <aqua:AquaButton Command="{Binding TestCommand}" 
+                                  Text="Enabled               Stopped"
                                   CornerRadius="40"
                                   Margin="30"
-                                  BackgroundColor="#9A1C2E"
+                                  BackgroundColor="#4B91FF"
                                   TextColor="White"
-                                  Grid.Row="1">
+                                  Grid.RowSpan="4">
                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup Name="IsExecutingStates">
                         <VisualState Name="Normal" />
                         <VisualState Name="Disabled">
                             <VisualState.Setters>
                                 <Setter Property="Button.BackgroundColor" Value="#A29CA7" />
-                                <Setter Property="Button.TextColor" Value="#757892" />
-                                <Setter Property="Button.Text" Value="Сейчас я в состоянии Disabled. Введите что-то в текстовое поле и я заработаю." />
+                                <Setter Property="Button.Text" Value="Disabled               Stopped" />
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState Name="IsExecuting">
                             <VisualState.Setters>
-                                <Setter Property="Button.Text" Value="" />
+                                <Setter Property="Button.BackgroundColor" Value="#9A1C2E" />
+                                <Setter Property="Button.Text" Value="Enabled               Is executing" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState Name="IsExecutingDisabled">
+                            <VisualState.Setters>
+                                <Setter Property="Button.BackgroundColor" Value="#6A9A66" />
+                                <Setter Property="Button.Text" Value="Disabled               Is executing" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
-            </aqua:AquaAsyncButton>
+            </aqua:AquaButton>
             
-            <Image Source="loading.gif" 
-                   IsAnimationPlaying="{Binding TestCommand.IsExecuting}" 
-                   IsVisible="{Binding TestCommand.IsExecuting}"
-                   Margin="100"
-                   Grid.Row="1" />
+            <Grid Grid.Row="2" 
+                  Grid.RowSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                
+                <Image Source="loading.gif"
+                       IsAnimationPlaying="{Binding TestCommand.IsExecuting}"
+                       IsVisible="{Binding TestCommand.IsExecuting}"
+                       Grid.Column="1" />
+            </Grid>
+            
+            <Entry Text="{Binding Text}" Grid.Row="4" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

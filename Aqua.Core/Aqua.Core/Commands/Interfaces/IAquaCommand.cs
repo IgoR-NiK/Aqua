@@ -10,6 +10,10 @@ namespace Aqua.Core.Commands
         
         event Action<bool> IsExecutingChanged;
 
+        event Action CheckCanExecuteFunc;
+
+        bool CanExecuteFunc(object parameter);
+
         void RaiseCanExecuteChanged();
 
         void IsNotExecuting();
