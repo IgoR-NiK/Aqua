@@ -79,9 +79,21 @@
         <AndroidResource Include="Resources\values\colors.xml" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\..\..\..\Aqua.Core\Aqua.Core\Aqua.Core.csproj">
+          <Project>{340bf694-a598-496d-b76e-652df6bb8eb1}</Project>
+          <Name>Aqua.Core</Name>
+        </ProjectReference>
         <ProjectReference Include="..\..\..\..\Aqua.Modules\XamarinForms\Aqua.XamarinForms.Autofac\Aqua.XamarinForms.Autofac.csproj">
           <Project>{d73dce97-f92e-4481-9d2a-cc6e6f979a21}</Project>
           <Name>Aqua.XamarinForms.Autofac</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\..\Aqua.Modules\XamarinForms\Aqua.XamarinForms.Controls\Aqua.XamarinForms.Controls.csproj">
+          <Project>{933dfa82-d184-46d4-8b80-e3ddb42fa31f}</Project>
+          <Name>Aqua.XamarinForms.Controls</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\..\Aqua.XamarinForms.Core\Aqua.XamarinForms.Core\Aqua.XamarinForms.Core.csproj">
+          <Project>{eb0c0869-7501-4e2d-8b36-c52a8683d661}</Project>
+          <Name>Aqua.XamarinForms.Core</Name>
         </ProjectReference>
         <ProjectReference Include="..\XamarinFormsApp\XamarinFormsApp.csproj">
             <Project>{0283DA01-A136-44EB-BB4A-8BCCD32A2FC7}</Project>
