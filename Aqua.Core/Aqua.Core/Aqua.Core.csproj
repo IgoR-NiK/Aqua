@@ -56,6 +56,9 @@
       <Compile Update="Commands\Interfaces\IAsyncCancelledCommand.cs">
         <DependentUpon>IAsyncCancelledCommandBase.cs</DependentUpon>
       </Compile>
+      <Compile Update="Commands\Interfaces\IAsyncCancelledCommand{T1}.cs">
+        <DependentUpon>IAsyncCancelledCommandBase.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
