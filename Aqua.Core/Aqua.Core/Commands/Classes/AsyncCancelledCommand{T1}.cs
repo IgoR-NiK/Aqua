@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Aqua.Core.Commands
 {
-    public class AsyncCancelledCommand<T> : AquaCommandBase, IAsyncCancelledCommand
+    public class AsyncCancelledCommand<T> : AquaCommandBase, IAsyncCancelledCommand<T>
     {
         private CancellationTokenSource _cancellationTokenSource;
         

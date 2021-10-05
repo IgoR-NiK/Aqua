@@ -1,6 +1,11 @@
-﻿namespace Aqua.Core.Commands
+﻿using System.Threading.Tasks;
+
+namespace Aqua.Core.Commands
 {
-    public interface IAsyncCommand : IAquaCommand
+    public interface IAsyncCommand : IAquaCommandBase
     {
+        Task ExecuteAsync();
+
+        bool CanExecute();
     }
 }

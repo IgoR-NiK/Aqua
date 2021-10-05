@@ -1,11 +1,6 @@
-﻿using System;
-
-namespace Aqua.Core.Commands
+﻿namespace Aqua.Core.Commands
 {
-    public interface IAsyncCancelledCommand : IAsyncCommand
+    public interface IAsyncCancelledCommand : IAsyncCancelledCommandBase, IAsyncCommand
     {
-        TimeSpan? Timeout { get; set; }
-
-        void Cancel();
     }
 }

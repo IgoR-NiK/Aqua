@@ -38,6 +38,24 @@
       <Compile Update="Configs\Interfaces\INavigationConfig.cs">
         <DependentUpon>IConfig.cs</DependentUpon>
       </Compile>
+      <Compile Update="Commands\Interfaces\IAquaCommand.cs">
+        <DependentUpon>IAquaCommandBase.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Commands\Interfaces\IAquaCommand{T1}.cs">
+        <DependentUpon>IAquaCommandBase.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Commands\Interfaces\IAsyncCommand.cs">
+        <DependentUpon>IAquaCommandBase.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Commands\Interfaces\IAsyncCommand{T1}.cs">
+        <DependentUpon>IAquaCommandBase.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Commands\Interfaces\IAsyncCancelledCommandBase.cs">
+        <DependentUpon>IAquaCommandBase.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Commands\Interfaces\IAsyncCancelledCommand.cs">
+        <DependentUpon>IAsyncCancelledCommandBase.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

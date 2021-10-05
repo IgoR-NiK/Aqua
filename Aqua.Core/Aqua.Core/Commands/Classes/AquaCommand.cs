@@ -2,7 +2,7 @@
 
 namespace Aqua.Core.Commands
 {
-    public class AquaCommand : AquaCommandBase
+    public class AquaCommand : AquaCommandBase, IAquaCommand
     {
         private readonly Action _execute;
         private readonly Func<bool> _canExecute;

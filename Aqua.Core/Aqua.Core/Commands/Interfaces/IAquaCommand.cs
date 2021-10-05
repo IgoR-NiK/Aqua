@@ -1,21 +1,9 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows.Input;
-
-namespace Aqua.Core.Commands
+﻿namespace Aqua.Core.Commands
 {
-    public interface IAquaCommand : ICommand, INotifyPropertyChanged
+    public interface IAquaCommand : IAquaCommandBase
     {
-        bool IsExecuting { get; }
-        
-        event Action<bool> IsExecutingChanged;
+        void Execute();
 
-        event Action CheckCanExecuteFunc;
-
-        bool CanExecuteFunc(object parameter);
-
-        void RaiseCanExecuteChanged();
-
-        void IsNotExecuting();
+        bool CanExecute();
     }
 }

@@ -5,7 +5,7 @@ using Aqua.Core.Utils;
 
 namespace Aqua.Core.Commands
 {
-    public abstract class AquaCommandBase : RaisableObject, IAquaCommand
+    public abstract class AquaCommandBase : RaisableObject, IAquaCommandBase
     {
         private bool _isExecuting;
         public bool IsExecuting
@@ -55,7 +55,7 @@ namespace Aqua.Core.Commands
         bool ICommand.CanExecute(object parameter)
             => CanExecuteCore(parameter);
 
-        bool IAquaCommand.CanExecuteFunc(object parameter)
+        bool IAquaCommandBase.CanExecuteFunc(object parameter)
             => CanExecuteFunc(parameter);
     }
 }

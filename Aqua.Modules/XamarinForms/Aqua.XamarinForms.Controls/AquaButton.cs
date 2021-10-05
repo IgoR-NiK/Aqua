@@ -40,10 +40,10 @@ namespace Aqua.XamarinForms.Controls
         {
             var aquaButton = (AquaButton)bindableObject;
             
-            if (oldValue is IAquaCommand aquaCommand)
+            if (oldValue is IAquaCommandBase aquaCommandBase)
             {
-                aquaCommand.IsExecutingChanged -= aquaButton.OnCommandIsExecutingChanged;
-                aquaCommand.CheckCanExecuteFunc -= aquaButton.OnCommandCheckCanExecuteFunc;
+                aquaCommandBase.IsExecutingChanged -= aquaButton.OnCommandIsExecutingChanged;
+                aquaCommandBase.CheckCanExecuteFunc -= aquaButton.OnCommandCheckCanExecuteFunc;
             }
         }
         
@@ -56,10 +56,10 @@ namespace Aqua.XamarinForms.Controls
                 ((Button)bindableObject).Command = newCommand;
             }
 
-            if (newValue is IAquaCommand aquaCommand)
+            if (newValue is IAquaCommandBase aquaCommandBase)
             {
-                aquaCommand.IsExecutingChanged += aquaButton.OnCommandIsExecutingChanged;
-                aquaCommand.CheckCanExecuteFunc += aquaButton.OnCommandCheckCanExecuteFunc;
+                aquaCommandBase.IsExecutingChanged += aquaButton.OnCommandIsExecutingChanged;
+                aquaCommandBase.CheckCanExecuteFunc += aquaButton.OnCommandCheckCanExecuteFunc;
             }
         }
         
@@ -81,14 +81,14 @@ namespace Aqua.XamarinForms.Controls
 
         protected override void ChangeVisualState()
         {
-            if (!(Command is IAquaCommand aquaCommand
-                  && aquaCommand.IsExecuting))
+            if (!(Command is IAquaCommandBase aquaCommandBase
+                  && aquaCommandBase.IsExecuting))
             {
                 base.ChangeVisualState();
                 return;
             }
 
-            if (aquaCommand.CanExecuteFunc(CommandParameter))
+            if (aquaCommandBase.CanExecuteFunc(CommandParameter))
             {
                 var _ = VisualStateManager.GoToState(this, IsExecutingVisualState)
                         || VisualStateManager.GoToState(this, VisualStateManager.CommonStates.Normal);
