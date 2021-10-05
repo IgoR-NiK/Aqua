@@ -9,4 +9,8 @@
       <ProjectReference Include="..\..\Aqua.Core\Aqua.Core\Aqua.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="DryIoc.dll" Version="4.8.1" />
+    </ItemGroup>
+
 </Project>
