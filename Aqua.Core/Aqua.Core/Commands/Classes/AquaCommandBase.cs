@@ -17,6 +17,13 @@ namespace Aqua.Core.Commands
                 CanExecuteChanged?.Invoke(this, EventArgs.Empty);
             });
         }
+
+        private bool _isFaulted;
+        public bool IsFaulted
+        {
+            get => _isFaulted;
+            private protected set => SetProperty(ref _isFaulted, value);
+        }
         
         public event EventHandler CanExecuteChanged;
 

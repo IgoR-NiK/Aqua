@@ -2,7 +2,7 @@
 
 namespace Aqua.Core.Commands
 {
-    public interface IAquaCommand<in TParam> : IAquaCommandBase, IWithCanExecute<TParam>
+    public interface IAquaCommand<TParam> : IAquaCommandBase, IWithCanExecute<TParam>, IWithFaultedHandler<TParam>
     {
         void Execute(TParam parameter);
     }

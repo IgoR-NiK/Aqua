@@ -2,7 +2,7 @@
 
 namespace Aqua.Core.Commands
 {
-    public interface IAquaCommand : IAquaCommandBase, IWithCanExecute
+    public interface IAquaCommand : IAquaCommandBase, IWithCanExecute, IWithFaultedHandler
     {
         void Execute();
     }

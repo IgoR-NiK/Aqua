@@ -8,6 +8,8 @@ namespace Aqua.Core.Commands
     {
         bool IsExecuting { get; }
         
+        bool IsFaulted { get; }
+        
         event Action<bool> IsExecutingChanged;
 
         event Action CheckCanExecuteFunc;

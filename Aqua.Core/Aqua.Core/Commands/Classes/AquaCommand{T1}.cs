@@ -7,6 +7,8 @@ namespace Aqua.Core.Commands
         private readonly Action<TParam> _execute;
         private readonly Func<TParam, bool> _canExecute;
         
+        public Action<TParam, Exception> FaultedHandler { get; set; }
+        
         protected AquaCommand() { }
         
         public AquaCommand(Action<TParam> execute)
@@ -26,16 +28,29 @@ namespace Aqua.Core.Commands
                 return;
             
             IsExecuting = true;
+            IsFaulted = false;
 
-            (_execute ?? ExecuteInternal).Invoke(parameter);
-
-            IsExecuting = false;
+            try
+            {
+                (_execute ?? ExecuteInternal).Invoke(parameter);
+            }
+            catch (Exception exception)
+            {
+                IsFaulted = true;
+                (FaultedHandler ?? FaultedHandlerInternal).Invoke(parameter, exception);
+            }
+            finally
+            {
+                IsExecuting = false;
+            }
         }
         
         public bool CanExecute(TParam parameter)
             => !IsExecuting && (_canExecute ?? CanExecuteInternal).Invoke(parameter);
         
         protected virtual void ExecuteInternal(TParam parameter) { }
+        
+        protected virtual void FaultedHandlerInternal(TParam parameter, Exception exception) { }
 
         protected virtual bool CanExecuteInternal(TParam parameter) => true;
 

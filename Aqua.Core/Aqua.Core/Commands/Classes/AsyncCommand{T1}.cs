@@ -15,7 +15,11 @@ namespace Aqua.Core.Commands
         
         public Action<TParam, OperationCanceledException> CancelledHandler { get; set; }
         
+        public Action<TParam, Exception> FaultedHandler { get; set; }
+        
         public Func<TParam, OperationCanceledException, Task> CancelledHandlerAsync { get; set; }
+        
+        public Func<TParam, Exception, Task> FaultedHandlerAsync { get; set; }
         
         private bool _isCancelled;
         public bool IsCancelled
@@ -44,6 +48,7 @@ namespace Aqua.Core.Commands
             
             IsExecuting = true;
             IsCancelled = false;
+            IsFaulted = false;
 
             _cancellationTokenSource = new CancellationTokenSource();
             
@@ -60,6 +65,12 @@ namespace Aqua.Core.Commands
                 IsCancelled = true;
                 (CancelledHandler ?? CancelledHandlerInternal).Invoke(parameter, exception);
                 await (CancelledHandlerAsync ?? CancelledHandlerAsyncInternal).Invoke(parameter, exception);
+            }
+            catch (Exception exception)
+            {
+                IsFaulted = true;
+                (FaultedHandler ?? FaultedHandlerInternal).Invoke(parameter, exception);
+                await (FaultedHandlerAsync ?? FaultedHandlerAsyncInternal).Invoke(parameter, exception);
             }
             finally
             {
@@ -79,7 +90,11 @@ namespace Aqua.Core.Commands
 
         protected virtual void CancelledHandlerInternal(TParam parameter, OperationCanceledException exception) { }
         
+        protected virtual void FaultedHandlerInternal(TParam parameter, Exception exception) { }
+
         protected virtual Task CancelledHandlerAsyncInternal(TParam parameter, OperationCanceledException exception) => Task.CompletedTask;
+        
+        protected virtual Task FaultedHandlerAsyncInternal(TParam parameter, Exception exception) => Task.CompletedTask;
 
         protected virtual bool CanExecuteInternal(TParam parameter) => true;
 

@@ -58,5 +58,19 @@ namespace Aqua.Core.Commands
             command.CancelledHandlerAsync = cancelledHandlerAsync;
             return command;
         }
+        
+        public static TCommand WithFaultedHandlerAsync<TCommand>(this TCommand command, Func<Exception, Task> faultedHandlerAsync)
+            where TCommand : IAsyncCommand
+        {
+            command.FaultedHandlerAsync = faultedHandlerAsync;
+            return command;
+        }
+        
+        public static TCommand WithFaultedHandlerAsync<TCommand, TParam>(this TCommand command, Func<TParam, Exception, Task> faultedHandlerAsync)
+            where TCommand : IAsyncCommand<TParam>
+        {
+            command.FaultedHandlerAsync = faultedHandlerAsync;
+            return command;
+        }
     }
 }
