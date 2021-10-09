@@ -2,25 +2,25 @@
 
 namespace Aqua.Core.Commands
 {
-    public class AquaCommand<T> : AquaCommandBase, IAquaCommand<T>
+    public class AquaCommand<TParam> : AquaCommandBase, IAquaCommand<TParam>
     {
-        private readonly Action<T> _execute;
-        private readonly Func<T, bool> _canExecute;
+        private readonly Action<TParam> _execute;
+        private readonly Func<TParam, bool> _canExecute;
         
-        public AquaCommand() { }
+        protected AquaCommand() { }
         
-        public AquaCommand(Action<T> execute)
+        public AquaCommand(Action<TParam> execute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         }
 
-        public AquaCommand(Action<T> execute, Func<T, bool> canExecute)
+        public AquaCommand(Action<TParam> execute, Func<TParam, bool> canExecute)
             : this(execute)
         {
             _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
 
-        public void Execute(T parameter)
+        public void Execute(TParam parameter)
         {
             if (!CanExecute(parameter))
                 return;
@@ -32,23 +32,23 @@ namespace Aqua.Core.Commands
             IsExecuting = false;
         }
         
-        public bool CanExecute(T parameter)
+        public bool CanExecute(TParam parameter)
             => !IsExecuting && (_canExecute ?? CanExecuteInternal).Invoke(parameter);
         
-        protected virtual void ExecuteInternal(T parameter) { }
+        protected virtual void ExecuteInternal(TParam parameter) { }
 
-        protected virtual bool CanExecuteInternal(T parameter) => true;
+        protected virtual bool CanExecuteInternal(TParam parameter) => true;
 
         private protected sealed override void ExecuteCore(object parameter)
         {
-            if (IsValidParameter<T>(parameter))
-                Execute((T)parameter);
+            if (IsValidParameter<TParam>(parameter))
+                Execute((TParam)parameter);
         }
 
         private protected sealed override bool CanExecuteCore(object parameter)
-            => IsValidParameter<T>(parameter) && CanExecute((T)parameter);
+            => IsValidParameter<TParam>(parameter) && CanExecute((TParam)parameter);
         
         private protected sealed override bool CanExecuteFunc(object parameter)
-            => IsValidParameter<T>(parameter) && (_canExecute ?? CanExecuteInternal).Invoke((T)parameter);
+            => IsValidParameter<TParam>(parameter) && (_canExecute ?? CanExecuteInternal).Invoke((TParam)parameter);
     }
 }

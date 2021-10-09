@@ -17,12 +17,6 @@
       <Compile Update="Commands\Classes\AsyncCommand{T1}.cs">
         <DependentUpon>AquaCommandBase.cs</DependentUpon>
       </Compile>
-      <Compile Update="Commands\Classes\AsyncCancelledCommand.cs">
-        <DependentUpon>AquaCommandBase.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Commands\Classes\AsyncCancelledCommand{T1}.cs">
-        <DependentUpon>AquaCommandBase.cs</DependentUpon>
-      </Compile>
       <Compile Update="Contexts\Interfaces\IAppContext.cs">
         <DependentUpon>IContext.cs</DependentUpon>
       </Compile>
@@ -49,15 +43,6 @@
       </Compile>
       <Compile Update="Commands\Interfaces\IAsyncCommand{T1}.cs">
         <DependentUpon>IAquaCommandBase.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Commands\Interfaces\IAsyncCancelledCommandBase.cs">
-        <DependentUpon>IAquaCommandBase.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Commands\Interfaces\IAsyncCancelledCommand.cs">
-        <DependentUpon>IAsyncCancelledCommandBase.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Commands\Interfaces\IAsyncCancelledCommand{T1}.cs">
-        <DependentUpon>IAsyncCancelledCommandBase.cs</DependentUpon>
       </Compile>
     </ItemGroup>
 

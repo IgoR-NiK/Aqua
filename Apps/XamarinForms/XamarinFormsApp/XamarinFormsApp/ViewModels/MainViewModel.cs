@@ -25,7 +25,7 @@ namespace XamarinFormsApp.ViewModels
 
         public MainViewModel()
         {
-            TestCommand = new AsyncCommand(() => Task.Delay(10000), () => !Text.IsNullOrEmpty())
+            TestCommand = new AsyncCommand(_ => Task.Delay(10000), () => !Text.IsNullOrEmpty())
                 .ListenOn(this, it => it.Text);
         }
     }

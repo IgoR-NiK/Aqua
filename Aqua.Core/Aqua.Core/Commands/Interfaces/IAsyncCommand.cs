@@ -1,11 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Aqua.Core.Utils;
 
 namespace Aqua.Core.Commands
 {
-    public interface IAsyncCommand : IAquaCommandBase
+    public interface IAsyncCommand : IAquaCommandBase, IWithCanExecute, IWithCancel, IWithTimeout
     {
         Task ExecuteAsync();
 
-        bool CanExecute();
+        Action<OperationCanceledException> Cancelled { get; set; }
+        
+        Func<OperationCanceledException, Task> CancelledAsync { get; set; }
     }
 }

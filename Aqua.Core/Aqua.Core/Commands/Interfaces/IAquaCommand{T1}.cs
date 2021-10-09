@@ -1,9 +1,9 @@
-﻿namespace Aqua.Core.Commands
-{
-    public interface IAquaCommand<in T> : IAquaCommandBase
-    {
-        void Execute(T parameter);
+﻿using Aqua.Core.Utils;
 
-        bool CanExecute(T parameter);
+namespace Aqua.Core.Commands
+{
+    public interface IAquaCommand<in TParam> : IAquaCommandBase, IWithCanExecute<TParam>
+    {
+        void Execute(TParam parameter);
     }
 }

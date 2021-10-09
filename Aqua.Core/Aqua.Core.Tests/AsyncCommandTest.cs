@@ -4,18 +4,19 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Aqua.Core.Commands;
+using Aqua.Core.Utils;
 using NUnit.Framework;
 
 namespace Aqua.Core.Tests
 {
     [TestFixture]
-    public class AsyncCancelledCommandTest
+    public class AsyncCommandTest
     {
         [Test]
         public void ManualCancelCommandTest()
         {
             var logs = new List<string>();
-            var command = new AsyncCancelledCommand(Execute, Cancelled);
+            var command = new AsyncCommand(Execute).WithCancelledAsync(Cancelled);
 
             // Команда выполняется 4 секунды и что-то асинхронно делает
             // По окончании пишем в логгер об успехе
@@ -55,7 +56,7 @@ namespace Aqua.Core.Tests
             var logs = new List<string>();
             
             // Даем команде 2 секунды на выполнение
-            var command = new AsyncCancelledCommand(Execute, Cancelled).WithTimeout(2000);
+            var command = new AsyncCommand(Execute).WithCancelledAsync(Cancelled).WithTimeout(2000);
 
             // Команда выполняется 4 секунды и что-то асинхронно делает
             // По окончании пишем в логгер об успехе
@@ -86,7 +87,7 @@ namespace Aqua.Core.Tests
             var logs = new List<string>();
             
             // Даем команде 5 секунд на выполнение
-            var command = new AsyncCancelledCommand(Execute, Cancelled).WithTimeout(5000);
+            var command = new AsyncCommand(Execute).WithCancelledAsync(Cancelled).WithTimeout(5000);
 
             // Команда выполняется 4 секунды и что-то асинхронно делает
             // По окончании пишем в логгер об успехе
