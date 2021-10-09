@@ -16,7 +16,7 @@ namespace Aqua.Core.Tests
         public void ManualCancelCommandTest()
         {
             var logs = new List<string>();
-            var command = new AsyncCommand(Execute).WithCancelledAsync(Cancelled);
+            var command = new AsyncCommand(Execute).WithCancelledHandlerAsync(Cancelled);
 
             // Команда выполняется 4 секунды и что-то асинхронно делает
             // По окончании пишем в логгер об успехе
@@ -56,7 +56,7 @@ namespace Aqua.Core.Tests
             var logs = new List<string>();
             
             // Даем команде 2 секунды на выполнение
-            var command = new AsyncCommand(Execute).WithCancelledAsync(Cancelled).WithTimeout(2000);
+            var command = new AsyncCommand(Execute).WithCancelledHandlerAsync(Cancelled).WithTimeout(2000);
 
             // Команда выполняется 4 секунды и что-то асинхронно делает
             // По окончании пишем в логгер об успехе
@@ -87,7 +87,7 @@ namespace Aqua.Core.Tests
             var logs = new List<string>();
             
             // Даем команде 5 секунд на выполнение
-            var command = new AsyncCommand(Execute).WithCancelledAsync(Cancelled).WithTimeout(5000);
+            var command = new AsyncCommand(Execute).WithCancelledHandlerAsync(Cancelled).WithTimeout(5000);
 
             // Команда выполняется 4 секунды и что-то асинхронно делает
             // По окончании пишем в логгер об успехе

@@ -13,9 +13,16 @@ namespace Aqua.Core.Commands
         
         public TimeSpan? Timeout { get; set; }
         
-        public Action<TParam, OperationCanceledException> Cancelled { get; set; }
+        public Action<TParam, OperationCanceledException> CancelledHandler { get; set; }
         
-        public Func<TParam, OperationCanceledException, Task> CancelledAsync { get; set; }
+        public Func<TParam, OperationCanceledException, Task> CancelledHandlerAsync { get; set; }
+        
+        private bool _isCancelled;
+        public bool IsCancelled
+        {
+            get => _isCancelled;
+            private set => SetProperty(ref _isCancelled, value);
+        }
         
         protected AsyncCommand() { }
         
@@ -36,6 +43,7 @@ namespace Aqua.Core.Commands
                 return;
             
             IsExecuting = true;
+            IsCancelled = false;
 
             _cancellationTokenSource = new CancellationTokenSource();
             
@@ -49,8 +57,9 @@ namespace Aqua.Core.Commands
             catch (OperationCanceledException exception)
                 when (_cancellationTokenSource.IsCancellationRequested)
             {
-                (Cancelled ?? CancelledInternal).Invoke(parameter, exception);
-                await (CancelledAsync ?? CancelledAsyncInternal).Invoke(parameter, exception);
+                IsCancelled = true;
+                (CancelledHandler ?? CancelledHandlerInternal).Invoke(parameter, exception);
+                await (CancelledHandlerAsync ?? CancelledHandlerAsyncInternal).Invoke(parameter, exception);
             }
             finally
             {
@@ -68,9 +77,9 @@ namespace Aqua.Core.Commands
         
         protected virtual Task ExecuteAsyncInternal(TParam parameter, CancellationToken token) => Task.CompletedTask;
 
-        protected virtual void CancelledInternal(TParam parameter, OperationCanceledException exception) { }
+        protected virtual void CancelledHandlerInternal(TParam parameter, OperationCanceledException exception) { }
         
-        protected virtual Task CancelledAsyncInternal(TParam parameter, OperationCanceledException exception) => Task.CompletedTask;
+        protected virtual Task CancelledHandlerAsyncInternal(TParam parameter, OperationCanceledException exception) => Task.CompletedTask;
 
         protected virtual bool CanExecuteInternal(TParam parameter) => true;
 

@@ -31,31 +31,31 @@ namespace Aqua.Core.Commands
             return command;
         }
         
-        public static TCommand WithCancelled<TCommand>(this TCommand command, Action<OperationCanceledException> cancelled)
+        public static TCommand WithCancelledHandler<TCommand>(this TCommand command, Action<OperationCanceledException> cancelledHandler)
             where TCommand : IAsyncCommand
         {
-            command.Cancelled = cancelled;
+            command.CancelledHandler = cancelledHandler;
             return command;
         }
 
-        public static TCommand WithCancelledAsync<TCommand>(this TCommand command, Func<OperationCanceledException, Task> cancelledAsync)
+        public static TCommand WithCancelledHandlerAsync<TCommand>(this TCommand command, Func<OperationCanceledException, Task> cancelledHandlerAsync)
             where TCommand : IAsyncCommand
         {
-            command.CancelledAsync = cancelledAsync;
+            command.CancelledHandlerAsync = cancelledHandlerAsync;
             return command;
         }
         
-        public static TCommand WithCancelled<TCommand, TParam>(this TCommand command, Action<TParam, OperationCanceledException> cancelled)
+        public static TCommand WithCancelledHandler<TCommand, TParam>(this TCommand command, Action<TParam, OperationCanceledException> cancelledHandler)
             where TCommand : IAsyncCommand<TParam>
         {
-            command.Cancelled = cancelled;
+            command.CancelledHandler = cancelledHandler;
             return command;
         }
 
-        public static TCommand WithCancelledAsync<TCommand, TParam>(this TCommand command, Func<TParam, OperationCanceledException, Task> cancelledAsync)
+        public static TCommand WithCancelledHandlerAsync<TCommand, TParam>(this TCommand command, Func<TParam, OperationCanceledException, Task> cancelledHandlerAsync)
             where TCommand : IAsyncCommand<TParam>
         {
-            command.CancelledAsync = cancelledAsync;
+            command.CancelledHandlerAsync = cancelledHandlerAsync;
             return command;
         }
     }

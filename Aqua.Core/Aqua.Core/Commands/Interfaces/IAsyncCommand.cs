@@ -4,12 +4,12 @@ using Aqua.Core.Utils;
 
 namespace Aqua.Core.Commands
 {
-    public interface IAsyncCommand : IAquaCommandBase, IWithCanExecute, IWithCancel, IWithTimeout
+    public interface IAsyncCommand : IAquaCommandBase, IWithCanExecute, IWithCancel, IWithIsCancelled, IWithTimeout
     {
         Task ExecuteAsync();
 
-        Action<OperationCanceledException> Cancelled { get; set; }
+        Action<OperationCanceledException> CancelledHandler { get; set; }
         
-        Func<OperationCanceledException, Task> CancelledAsync { get; set; }
+        Func<OperationCanceledException, Task> CancelledHandlerAsync { get; set; }
     }
 }

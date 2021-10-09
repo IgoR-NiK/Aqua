@@ -13,9 +13,16 @@ namespace Aqua.Core.Commands
         
         public TimeSpan? Timeout { get; set; }
         
-        public Action<OperationCanceledException> Cancelled { get; set; }
+        public Action<OperationCanceledException> CancelledHandler { get; set; }
         
-        public Func<OperationCanceledException, Task> CancelledAsync { get; set; }
+        public Func<OperationCanceledException, Task> CancelledHandlerAsync { get; set; }
+
+        private bool _isCancelled;
+        public bool IsCancelled
+        {
+            get => _isCancelled;
+            private set => SetProperty(ref _isCancelled, value);
+        }
         
         protected AsyncCommand() { }
         
@@ -36,6 +43,7 @@ namespace Aqua.Core.Commands
                 return;
 
             IsExecuting = true;
+            IsCancelled = false;
 
             _cancellationTokenSource = new CancellationTokenSource();
             
@@ -49,8 +57,9 @@ namespace Aqua.Core.Commands
             catch (OperationCanceledException exception)
                 when (_cancellationTokenSource.IsCancellationRequested)
             {
-                (Cancelled ?? CancelledInternal).Invoke(exception);
-                await (CancelledAsync ?? CancelledAsyncInternal).Invoke(exception);
+                IsCancelled = true;
+                (CancelledHandler ?? CancelledHandlerInternal).Invoke(exception);
+                await (CancelledHandlerAsync ?? CancelledHandlerAsyncInternal).Invoke(exception);
             }
             finally
             {
@@ -68,9 +77,9 @@ namespace Aqua.Core.Commands
         
         protected virtual Task ExecuteAsyncInternal(CancellationToken token) => Task.CompletedTask;
 
-        protected virtual void CancelledInternal(OperationCanceledException exception) { }
+        protected virtual void CancelledHandlerInternal(OperationCanceledException exception) { }
         
-        protected virtual Task CancelledAsyncInternal(OperationCanceledException exception) => Task.CompletedTask;
+        protected virtual Task CancelledHandlerAsyncInternal(OperationCanceledException exception) => Task.CompletedTask;
 
         protected virtual bool CanExecuteInternal() => true;
         
