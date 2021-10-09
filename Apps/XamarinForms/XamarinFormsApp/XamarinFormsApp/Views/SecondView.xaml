@@ -2,12 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:XamarinFormsApp.ViewModels;assembly=XamarinFormsApp"
-             x:DataType="viewModels:MainViewModel"
-             x:Class="XamarinFormsApp.Views.MainView">
+             x:DataType="viewModels:SecondViewModel"
+             x:Class="XamarinFormsApp.Views.SecondView">
     <ContentPage.Content>
         <StackLayout>
-            <Editor Text="{Binding Text}" />
-            <Button Command="{Binding GoToSecondCommand}" Text="Goto second" />
+            <Button Command="{Binding GoToExceptionCommand}" Text="Goto exception" />
+            <Button Command="{Binding CloseCommand}" Text="Close" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

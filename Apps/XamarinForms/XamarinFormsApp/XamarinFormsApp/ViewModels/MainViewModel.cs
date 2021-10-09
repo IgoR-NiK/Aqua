@@ -1,7 +1,6 @@
-﻿using System.Threading.Tasks;
-using Aqua.Core.Commands;
+﻿using Aqua.Core.Commands;
 using Aqua.Core.Mvvm;
-using Aqua.Core.Utils;
+using Aqua.XamarinForms.Core.Services.Navigation;
 
 namespace XamarinFormsApp.ViewModels
 {
@@ -14,19 +13,11 @@ namespace XamarinFormsApp.ViewModels
             set => SetProperty(ref _text, value);
         }
         
-        private int _age;
-        public int Age
-        {
-            get => _age;
-            set => SetProperty(ref _age, value);
-        }
-        
-        public AsyncCommand TestCommand { get; }
+        public AsyncCommand GoToSecondCommand { get; }
 
-        public MainViewModel()
+        public MainViewModel(INavigationService navigationService)
         {
-            TestCommand = new AsyncCommand(_ => Task.Delay(10000), () => !Text.IsNullOrEmpty())
-                .ListenOn(this, it => it.Text);
+            GoToSecondCommand = new AsyncCommand(_ => navigationService.NavigateToAsync<SecondViewModel, string>(Text));
         }
     }
 }
