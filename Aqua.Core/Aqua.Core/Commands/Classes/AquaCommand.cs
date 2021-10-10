@@ -37,7 +37,14 @@ namespace Aqua.Core.Commands
             catch (Exception exception)
             {
                 IsFaulted = true;
-                (FaultedHandler ?? FaultedHandlerInternal).Invoke(exception);
+                if (FaultedHandler != null)
+                {
+                    FaultedHandler(exception);
+                }
+                else
+                {
+                    throw;
+                }
             }
             finally
             {
@@ -49,8 +56,6 @@ namespace Aqua.Core.Commands
             => !IsExecuting && (_canExecute ?? CanExecuteInternal).Invoke();
 
         protected virtual void ExecuteInternal() { }
-        
-        protected virtual void FaultedHandlerInternal(Exception exception) { }
 
         protected virtual bool CanExecuteInternal() => true;
 

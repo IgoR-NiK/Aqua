@@ -111,5 +111,49 @@ namespace Aqua.Core.Tests
             Assert.AreEqual("Command completed successfully", logs.Single());
             Assert.False(command.IsExecuting);
         }
+
+        [Test]
+        public async Task ExceptionHandlerAsyncCommandTest()
+        {
+            var test = string.Empty;
+            
+            var command = new AsyncCommand(Execute);
+            
+            // Моделируем выброс исключения в фоновой задаче
+            Task Execute(CancellationToken token)
+                => Task.Run(async () =>
+                {
+                    for (var i = 0; i < 10; i++)
+                        await Task.Delay(100, token);
+
+                    throw new Exception("Test exception");
+                }, token);
+
+            // Запускаем фоновую задачу и ожидаем результат
+            // Т.к. обработчик в команду не был передан, то ожидаем, что исключение выбросится из команды
+            await TryAsync(command);
+            Assert.AreEqual("Outer catch", test);
+
+            // Указываем обработчик ошибок
+            var commandWithFaultedHandler = command
+                .WithFaultedHandlerAsync(e => Task.Run(() => test = "Command catch"));
+
+            // Запускаем фоновую задачу и ожидаем результат
+            // Т.к. обработчик в команду был передан, то ожидаем, что исключение обработается командой
+            await TryAsync(commandWithFaultedHandler);
+            Assert.AreEqual("Command catch", test);
+            
+            async Task TryAsync(IAsyncCommand asyncCommand)
+            {
+                try
+                {
+                    await asyncCommand.ExecuteAsync();
+                }
+                catch (Exception exception)
+                {
+                    test = "Outer catch";
+                }
+            }
+        }
     }
 }

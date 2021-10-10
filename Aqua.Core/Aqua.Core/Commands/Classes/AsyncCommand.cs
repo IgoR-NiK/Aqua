@@ -63,14 +63,28 @@ namespace Aqua.Core.Commands
                 when (_cancellationTokenSource.IsCancellationRequested)
             {
                 IsCancelled = true;
-                (CancelledHandler ?? CancelledHandlerInternal).Invoke(exception);
-                await (CancelledHandlerAsync ?? CancelledHandlerAsyncInternal).Invoke(exception);
+                if (CancelledHandler != null || CancelledHandlerAsync != null)
+                {
+                    CancelledHandler?.Invoke(exception);
+                    await (CancelledHandlerAsync?.Invoke(exception) ?? Task.CompletedTask);
+                }
+                else
+                {
+                    throw;
+                }
             }
             catch (Exception exception)
             {
                 IsFaulted = true;
-                (FaultedHandler ?? FaultedHandlerInternal).Invoke(exception);
-                await (FaultedHandlerAsync ?? FaultedHandlerAsyncInternal).Invoke(exception);
+                if (FaultedHandler != null || FaultedHandlerAsync != null)
+                {
+                    FaultedHandler?.Invoke(exception);
+                    await (FaultedHandlerAsync?.Invoke(exception) ?? Task.CompletedTask);
+                }
+                else
+                {
+                    throw;
+                }
             }
             finally
             {
@@ -87,14 +101,6 @@ namespace Aqua.Core.Commands
         public void Cancel() => _cancellationTokenSource?.Cancel();
         
         protected virtual Task ExecuteAsyncInternal(CancellationToken token) => Task.CompletedTask;
-
-        protected virtual void CancelledHandlerInternal(OperationCanceledException exception) { }
-        
-        protected virtual void FaultedHandlerInternal(Exception exception) { }
-        
-        protected virtual Task CancelledHandlerAsyncInternal(OperationCanceledException exception) => Task.CompletedTask;
-        
-        protected virtual Task FaultedHandlerAsyncInternal(Exception exception) => Task.CompletedTask;
 
         protected virtual bool CanExecuteInternal() => true;
         

@@ -63,14 +63,28 @@ namespace Aqua.Core.Commands
                 when (_cancellationTokenSource.IsCancellationRequested)
             {
                 IsCancelled = true;
-                (CancelledHandler ?? CancelledHandlerInternal).Invoke(parameter, exception);
-                await (CancelledHandlerAsync ?? CancelledHandlerAsyncInternal).Invoke(parameter, exception);
+                if (CancelledHandler != null || CancelledHandlerAsync != null)
+                {
+                    CancelledHandler?.Invoke(parameter, exception);
+                    await (CancelledHandlerAsync?.Invoke(parameter, exception) ?? Task.CompletedTask);
+                }
+                else
+                {
+                    throw;
+                }
             }
             catch (Exception exception)
             {
                 IsFaulted = true;
-                (FaultedHandler ?? FaultedHandlerInternal).Invoke(parameter, exception);
-                await (FaultedHandlerAsync ?? FaultedHandlerAsyncInternal).Invoke(parameter, exception);
+                if (FaultedHandler != null || FaultedHandlerAsync != null)
+                {
+                    FaultedHandler?.Invoke(parameter, exception);
+                    await (FaultedHandlerAsync?.Invoke(parameter, exception) ?? Task.CompletedTask);
+                }
+                else
+                {
+                    throw;
+                }
             }
             finally
             {
@@ -87,15 +101,7 @@ namespace Aqua.Core.Commands
         public void Cancel() => _cancellationTokenSource?.Cancel();
         
         protected virtual Task ExecuteAsyncInternal(TParam parameter, CancellationToken token) => Task.CompletedTask;
-
-        protected virtual void CancelledHandlerInternal(TParam parameter, OperationCanceledException exception) { }
         
-        protected virtual void FaultedHandlerInternal(TParam parameter, Exception exception) { }
-
-        protected virtual Task CancelledHandlerAsyncInternal(TParam parameter, OperationCanceledException exception) => Task.CompletedTask;
-        
-        protected virtual Task FaultedHandlerAsyncInternal(TParam parameter, Exception exception) => Task.CompletedTask;
-
         protected virtual bool CanExecuteInternal(TParam parameter) => true;
 
         private protected sealed override async void ExecuteCore(object parameter)
