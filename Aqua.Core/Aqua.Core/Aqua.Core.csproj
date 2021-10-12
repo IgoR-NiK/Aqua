@@ -38,17 +38,17 @@
       <Compile Update="Services\Config\JsonConfigProvider.cs">
         <DependentUpon>IConfigProvider.cs</DependentUpon>
       </Compile>
-      <Compile Update="Services\Config\JsonConfigNameDefaultProvider.cs">
+      <Compile Update="Services\Config\JsonConfigNamesProvider.cs">
         <DependentUpon>IJsonConfigNamesProvider.cs</DependentUpon>
       </Compile>
       <Compile Update="Services\Config\CacheConfigService.cs">
         <DependentUpon>IConfigService.cs</DependentUpon>
       </Compile>
-      <Compile Update="Services\Config\JsonConfigNameReleaseProvider.cs">
-        <DependentUpon>IJsonConfigNameProvider.cs</DependentUpon>
+      <Compile Update="Services\Config\JsonConfigNamespaceProvider.cs">
+        <DependentUpon>IJsonConfigNamespaceProvider.cs</DependentUpon>
       </Compile>
-      <Compile Update="Services\Config\JsonConfigNameDebugProvider.cs">
-        <DependentUpon>IJsonConfigNameProvider.cs</DependentUpon>
+      <Compile Update="Services\Config\JsonConfigAssembliesProvider.cs">
+        <DependentUpon>IJsonConfigAssembliesProvider.cs</DependentUpon>
       </Compile>
     </ItemGroup>
 
