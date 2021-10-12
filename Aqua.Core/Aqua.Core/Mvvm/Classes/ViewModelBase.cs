@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-using Aqua.Core.Contexts;
 using Aqua.Core.Utils;
 
 namespace Aqua.Core.Mvvm
@@ -15,19 +12,13 @@ namespace Aqua.Core.Mvvm
             get => _title;
             set => SetProperty(ref _title, value);
         }
-
-        public IContext ParentContext { get; }
         
-        public IEnumerable<IContext> ChildrenContexts { get; }
+        public virtual void OnAppearing() { }
 
-        public IViewModel ParentViewModel => ParentContext as IViewModel;
+        public virtual Task OnAppearingAsync() => Task.CompletedTask;
 
-        public IViewModel MainViewModel => this.FindContext<IViewModel>(it => !(it.ParentContext is IViewModel));
+        public virtual void OnDisappearing() { }
 
-        public IEnumerable<IViewModel> ChildrenViewModels => ChildrenContexts.OfType<IViewModel>();
-
-        public virtual Task OnAppearing() => Task.CompletedTask;
-
-        public virtual Task OnDisappearing() => Task.CompletedTask;
+        public virtual Task OnDisappearingAsync() => Task.CompletedTask;
     }
 }

@@ -8,6 +8,7 @@
         <StackLayout>
             <Editor Text="{Binding Text}" />
             <Button Command="{Binding GoToSecondCommand}" Text="Goto second" />
+            <Button Command="{Binding ReadConfig}" Text="Read Config" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

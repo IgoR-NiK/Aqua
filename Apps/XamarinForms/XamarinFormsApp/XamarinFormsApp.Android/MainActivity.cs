@@ -6,7 +6,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-
+using Aqua.Core;
+using Aqua.XamarinForms.Core;
 using Rg.Plugins.Popup;
 
 namespace XamarinFormsApp.Android
@@ -22,7 +23,10 @@ namespace XamarinFormsApp.Android
             base.OnCreate(savedInstanceState);
             Popup.Init(this);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App());
+            LoadApplication(AquaBootstrapper.GetApp<App>(
+                new AquaCoreIocModule(), 
+                new AquaXamarinFormsCoreIocModule(),
+                new AppIocModule()));
         }
     }
 }

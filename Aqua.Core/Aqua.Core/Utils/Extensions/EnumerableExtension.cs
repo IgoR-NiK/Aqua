@@ -15,13 +15,9 @@ namespace Aqua.Core.Utils
         }
 
         public static bool IsOneOf<T>(this T value, params T[] source)
-        {
-            return source.Contains(value);
-        }
+            => source.Contains(value);
         
         public static bool IsOneOf<T>(this T value, IEnumerable<T> source)
-        {
-            return source.Contains(value);
-        }
+            => source.Contains(value);
     }
 }

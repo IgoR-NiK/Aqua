@@ -1,19 +1,19 @@
-﻿using Aqua.XamarinForms.Autofac;
-
+﻿using Aqua.Core.Utils;
+using Aqua.XamarinForms.Core.Services.Navigation;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XamarinFormsApp.ViewModels;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
-
 namespace XamarinFormsApp
 {
-    public partial class App : AquaApplication
+    public partial class App : Application, IAquaApplication
     {
-        public App()
+        public App(INavigationService navigationService)
         {
             InitializeComponent();
             
-            Run<MainViewModel>();
+            navigationService.SetMainView<MainViewModel>();
         }
     }
 }

@@ -48,7 +48,8 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="DryIoc.dll" Version="4.8.1" />
+        <PackageReference Include="DryIoc.dll" Version="4.8.2" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.13" />
         <PackageReference Include="Xamarin.AndroidX.Core" Version="1.6.0.3" />
         <PackageReference Include="Xamarin.AndroidX.MediaRouter" Version="1.2.5.2" />
@@ -82,10 +83,6 @@
         <ProjectReference Include="..\..\..\..\Aqua.Core\Aqua.Core\Aqua.Core.csproj">
           <Project>{340bf694-a598-496d-b76e-652df6bb8eb1}</Project>
           <Name>Aqua.Core</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\..\..\..\Aqua.Modules\XamarinForms\Aqua.XamarinForms.Autofac\Aqua.XamarinForms.Autofac.csproj">
-          <Project>{d73dce97-f92e-4481-9d2a-cc6e6f979a21}</Project>
-          <Name>Aqua.XamarinForms.Autofac</Name>
         </ProjectReference>
         <ProjectReference Include="..\..\..\..\Aqua.Modules\XamarinForms\Aqua.XamarinForms.Controls\Aqua.XamarinForms.Controls.csproj">
           <Project>{933dfa82-d184-46d4-8b80-e3ddb42fa31f}</Project>

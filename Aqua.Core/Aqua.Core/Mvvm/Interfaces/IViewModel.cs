@@ -1,20 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using Aqua.Core.Contexts;
+﻿using System.Threading.Tasks;
+using Aqua.Core.Ioc;
 
 namespace Aqua.Core.Mvvm
 {
-    public interface IViewModel : IViewModelContext
+    public interface IViewModel : IResolvable
     {
-        IViewModel ParentViewModel { get; }
+        void OnAppearing();
         
-        IViewModel MainViewModel { get; }
-        
-        IEnumerable<IViewModel> ChildrenViewModels { get; }
-        
-        Task OnAppearing();
+        Task OnAppearingAsync();
 
-        Task OnDisappearing();
+        void OnDisappearing();
+        
+        Task OnDisappearingAsync();
     }
 }

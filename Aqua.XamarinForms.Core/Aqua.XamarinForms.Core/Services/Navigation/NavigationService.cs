@@ -7,7 +7,9 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using Aqua.Core.Mvvm;
+using Aqua.Core.Services;
 using Aqua.Core.Utils;
+using DryIoc;
 using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
@@ -16,26 +18,31 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 {
     public sealed class NavigationService : INavigationService
     {
-	    private readonly INavigationServiceConfigurator _navigationServiceConfigurator;
+	    private readonly INavigationMapper _navigationMapper;
+	    private readonly INavigationPageFactory _navigationPageFactory;
 	    private readonly IResolver _resolver;
         
 		private readonly CanNavigateNow _canNavigateNow = new CanNavigateNow(true);
 		private readonly Dictionary<ViewModelBase, IViewModelWrapper> _viewModelWrappers = new Dictionary<ViewModelBase, IViewModelWrapper>();
 
+		private bool _firstSetMainView = true;
+		
 		private NavigationPage NavigationView
 			=> Application.Current.MainPage is FlyoutPage flyoutPage
 				? (NavigationPage)flyoutPage.Detail
 				: (NavigationPage)Application.Current.MainPage;
 
-		public NavigationService(INavigationServiceConfigurator navigationServiceConfigurator, IResolver resolver)
+		public NavigationService(
+			IEnumerable<INavigationModule> navigationModules,
+			INavigationMapper navigationMapper,
+			INavigationPageFactory navigationPageFactory,
+			IResolver resolver)
 		{
-			_navigationServiceConfigurator = navigationServiceConfigurator;
+			_navigationMapper = navigationMapper;
+			_navigationPageFactory = navigationPageFactory;
 			_resolver = resolver;
 			
-			_navigationServiceConfigurator.AutoMappingViewModelToView();
-
-			PopupNavigation.Instance.Popped += (sender, args) => Clear(args.Page);
-			Application.Current.ModalPopped += (sender, args) => Clear(args.Modal);
+			navigationModules.ForEach(it => it.Map(navigationMapper));
 		}
 		
 		#region Stacks
@@ -959,9 +966,17 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 			
 			var newView = CreateView<TViewModel, TParam, object>(param, viewModelInitialization, null);
 
-			Application.Current.MainPage = newView is FlyoutPage ? newView : _navigationServiceConfigurator.NavigationPageCreator.Invoke(newView);
+			Application.Current.MainPage = newView is FlyoutPage ? newView : _navigationPageFactory.Create(newView);
 			
 			NavigationView.Popped += (sender, args) => Clear(args.Page);
+
+			if (_firstSetMainView)
+			{
+				_firstSetMainView = false;
+				
+				PopupNavigation.Instance.Popped += (sender, args) => Clear(args.Page);
+				Application.Current.ModalPopped += (sender, args) => Clear(args.Modal);
+			}
 		}
 
 		private async Task NavigateToPrivateAsync<TViewModel, TParam, TResult>(
@@ -1089,7 +1104,7 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 			
 			var newView = CreateView<TViewModel, TParam, object>(param, viewModelInitialization, null);
 
-			flyoutPage.Detail = _navigationServiceConfigurator.NavigationPageCreator.Invoke(newView);
+			flyoutPage.Detail = _navigationPageFactory.Create(newView);
 			
 			if (withCloseFlyoutView)
 				CloseFlyoutView();
@@ -1103,7 +1118,7 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 			CallbackParam<TResult> callbackParam) 
 			where TViewModel : ViewModelBase
 		{
-			var viewType = _navigationServiceConfigurator.GetViewTypeFor<TViewModel>();
+			var viewType = _navigationMapper.GetViewTypeFor<TViewModel>();
 			var view = (Page)_resolver.Resolve(viewType, param);
 			
 			var viewModel = (TViewModel)_resolver.Resolve(typeof(TViewModel), param);
@@ -1111,8 +1126,10 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 
 			view.BindingContext = viewModel;
 			
-			view.Appearing += async (sender, args) => await viewModel.OnAppearing();
-			view.Disappearing += async (sender, args) => await viewModel.OnDisappearing();
+			view.Appearing += (sender, args) => viewModel.OnAppearing();
+			view.Appearing += async (sender, args) => await viewModel.OnAppearingAsync();
+			view.Disappearing += (sender, args) => viewModel.OnDisappearing();
+			view.Disappearing += async (sender, args) => await viewModel.OnDisappearingAsync();
 
 			var children = SetBingingContextForChildren(
 				view,
@@ -1155,7 +1172,7 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 
 				if (!currentView.GetType().IsDefined(typeof(ParentBindingContextAttribute)))
 				{
-					var viewModelType = _navigationServiceConfigurator.GetViewModelTypeFor(currentView);
+					var viewModelType = _navigationMapper.GetViewModelTypeFor(currentView);
 					currentViewModel = (ViewModelBase)_resolver.Resolve(viewModelType, param);
 					if (currentViewModel is TParentViewModel parentViewModelType)
 					{
@@ -1164,8 +1181,10 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 
 					currentView.BindingContext = currentViewModel;
 					
-					currentView.Appearing += async (sender, args) => await currentViewModel.OnAppearing();
-					currentView.Disappearing += async (sender, args) => await currentViewModel.OnDisappearing();
+					currentView.Appearing += (sender, args) => currentViewModel.OnAppearing();
+					currentView.Appearing += async (sender, args) => await currentViewModel.OnAppearingAsync();
+					currentView.Disappearing += (sender, args) => currentViewModel.OnDisappearing();
+					currentView.Disappearing += async (sender, args) => await currentViewModel.OnDisappearingAsync();
 				}
 
 				var children = SetBingingContextForChildren(

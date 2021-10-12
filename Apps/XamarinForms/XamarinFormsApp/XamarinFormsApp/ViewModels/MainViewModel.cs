@@ -1,6 +1,8 @@
 ﻿using Aqua.Core.Commands;
 using Aqua.Core.Mvvm;
+using Aqua.Core.Services;
 using Aqua.XamarinForms.Core.Services.Navigation;
+using XamarinFormsApp.Configs;
 
 namespace XamarinFormsApp.ViewModels
 {
@@ -14,10 +16,21 @@ namespace XamarinFormsApp.ViewModels
         }
         
         public AsyncCommand GoToSecondCommand { get; }
+        
+        public AquaCommand ReadConfig { get; }
+        
+        private IConfigService ConfigService { get; }
 
-        public MainViewModel(INavigationService navigationService)
+        public MainViewModel(INavigationService navigationService, IConfigService configService)
         {
+            ConfigService = configService;
+            
             GoToSecondCommand = new AsyncCommand(_ => navigationService.NavigateToAsync<SecondViewModel, string>(Text));
+            ReadConfig = new AquaCommand(() =>
+            {
+                var testConfig = ConfigService.Get<TestConfig>();
+                Text = testConfig.Name;
+            });
         }
     }
 }

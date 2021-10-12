@@ -17,21 +17,6 @@
       <Compile Update="Commands\Classes\AsyncCommand{T1}.cs">
         <DependentUpon>AquaCommandBase.cs</DependentUpon>
       </Compile>
-      <Compile Update="Contexts\Interfaces\IAppContext.cs">
-        <DependentUpon>IContext.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Contexts\Interfaces\IViewContext.cs">
-        <DependentUpon>IContext.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Contexts\Interfaces\IViewModelContext.cs">
-        <DependentUpon>IContext.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Configs\Interfaces\INavigationConfig{T1}.cs">
-        <DependentUpon>IConfig{T1}.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Configs\Interfaces\INavigationConfig.cs">
-        <DependentUpon>IConfig.cs</DependentUpon>
-      </Compile>
       <Compile Update="Commands\Interfaces\IAquaCommand.cs">
         <DependentUpon>IAquaCommandBase.cs</DependentUpon>
       </Compile>
@@ -44,10 +29,32 @@
       <Compile Update="Commands\Interfaces\IAsyncCommand{T1}.cs">
         <DependentUpon>IAquaCommandBase.cs</DependentUpon>
       </Compile>
+      <Compile Update="Services\Config\ConfigService.cs">
+        <DependentUpon>IConfigService.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Services\Config\DefaultConfigProvider.cs">
+        <DependentUpon>IConfigProvider.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Services\Config\JsonConfigProvider.cs">
+        <DependentUpon>IConfigProvider.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Services\Config\JsonConfigNameDefaultProvider.cs">
+        <DependentUpon>IJsonConfigNamesProvider.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Services\Config\CacheConfigService.cs">
+        <DependentUpon>IConfigService.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Services\Config\JsonConfigNameReleaseProvider.cs">
+        <DependentUpon>IJsonConfigNameProvider.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Services\Config\JsonConfigNameDebugProvider.cs">
+        <DependentUpon>IJsonConfigNameProvider.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="DryIoc.dll" Version="4.8.1" />
+      <PackageReference Include="DryIoc.dll" Version="4.8.2" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
 </Project>

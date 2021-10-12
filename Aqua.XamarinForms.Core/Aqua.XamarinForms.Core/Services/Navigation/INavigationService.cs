@@ -8,7 +8,6 @@ using Aqua.Core.Utils;
 
 namespace Aqua.XamarinForms.Core.Services.Navigation
 {
-    [AsSingleInstance]
     public interface INavigationService : IResolvable
     {
         #region Stacks
