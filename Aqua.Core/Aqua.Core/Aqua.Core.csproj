@@ -50,6 +50,9 @@
       <Compile Update="Services\Config\JsonConfigAssembliesProvider.cs">
         <DependentUpon>IJsonConfigAssembliesProvider.cs</DependentUpon>
       </Compile>
+      <Compile Update="Services\Config\CodeConfigProvider.cs">
+        <DependentUpon>IConfigProvider.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

@@ -1,6 +1,8 @@
-﻿namespace Aqua.Core.Services
+﻿using Aqua.Core.Ioc;
+
+namespace Aqua.Core.Services
 {
-    public interface IConfig
+    public interface IConfig : IResolvable
     {
     }
 }

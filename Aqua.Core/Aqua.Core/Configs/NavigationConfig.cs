@@ -4,6 +4,7 @@ using Aqua.Core.Services;
 namespace Aqua.Core.Configs
 {
     [JsonConfig]
+    [CodeConfig]
     public class NavigationConfig : IConfig
     {
         public Type StackType { get; set; }

@@ -23,6 +23,7 @@ namespace Aqua.Core.Services
         }
 
         private static bool CanBeCached<TConfig>() where TConfig : class, IConfig, new()
-            => Attribute.IsDefined(typeof(TConfig), typeof(JsonConfigAttribute));
+            => Attribute.IsDefined(typeof(TConfig), typeof(JsonConfigAttribute))
+               || Attribute.IsDefined(typeof(TConfig), typeof(CodeConfigAttribute));
     }
 }
