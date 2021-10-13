@@ -8,9 +8,7 @@ namespace Aqua.Core.Utils
     public abstract class RaisableObject : INotifyPropertyChanged
     {
         protected void SetProperty<T>(ref T property, T value, [CallerMemberName] string propertyName = null)
-        {
-            SetProperty(ref property, value, null, propertyName);
-        }
+            => SetProperty(ref property, value, null, propertyName);
 
         protected void SetProperty<T>(ref T property, T value, Action<T> onValueChanged, [CallerMemberName] string propertyName = null)
         {
@@ -25,8 +23,6 @@ namespace Aqua.Core.Utils
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

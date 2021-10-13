@@ -23,7 +23,7 @@ namespace XamarinFormsApp.Android
             base.OnCreate(savedInstanceState);
             Popup.Init(this);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(AquaBootstrapper.GetApp<App>(
+            LoadApplication(new AquaBootstrapper().GetApp<App>(
                 new AquaCoreIocModule(), 
                 new AquaXamarinFormsCoreIocModule(),
                 new AppIocModule()));

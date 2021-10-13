@@ -8,20 +8,14 @@ namespace Aqua.Core.Utils
     public static class AssemblyHelper
     {
         public static IEnumerable<Assembly> GetDependentAssemblies(this Type type)
-        {
-            return type.Assembly.GetDependentAssemblies();
-        }
+            => type.Assembly.GetDependentAssemblies();
         
         public static IEnumerable<Assembly> GetDependentAssemblies(this Assembly assembly)
-        {
-            return AppDomain.CurrentDomain.GetAssemblies()
+            => AppDomain.CurrentDomain.GetAssemblies()
                 .Where(it => assembly.FullName.IsOneOf(GetNamesOfAssembliesReferencedBy(it)));
-        }
 
         public static IEnumerable<string> GetNamesOfAssembliesReferencedBy(Assembly assembly)
-        {
-            return assembly.GetReferencedAssemblies()
+            => assembly.GetReferencedAssemblies()
                 .Select(assemblyName => assemblyName.FullName);
-        }
     }
 }

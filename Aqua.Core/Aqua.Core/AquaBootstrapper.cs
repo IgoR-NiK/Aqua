@@ -4,11 +4,11 @@ using DryIoc;
 
 namespace Aqua.Core
 {
-    public static class AquaBootstrapper
+    public class AquaBootstrapper
     {
-        private static readonly IContainer Container = new Container();
+        private IContainer Container { get; } = new Container();
 
-        public static TApp GetApp<TApp>(params IIocModule[] modules) 
+        public TApp GetApp<TApp>(params IIocModule[] modules) 
             where TApp : IAquaApplication
         {
             Container.RegisterModules(modules);
