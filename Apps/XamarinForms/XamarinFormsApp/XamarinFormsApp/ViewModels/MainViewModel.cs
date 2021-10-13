@@ -19,16 +19,16 @@ namespace XamarinFormsApp.ViewModels
         
         public AquaCommand ReadConfig { get; }
         
-        private IConfigService ConfigService { get; }
+        private IConfigService<TestConfig> ConfigService { get; }
 
-        public MainViewModel(INavigationService navigationService, IConfigService configService)
+        public MainViewModel(INavigationService navigationService, IConfigService<TestConfig> configService)
         {
             ConfigService = configService;
             
             GoToSecondCommand = new AsyncCommand(_ => navigationService.NavigateToAsync<SecondViewModel, string>(Text));
             ReadConfig = new AquaCommand(() =>
             {
-                var testConfig = ConfigService.Get<TestConfig>();
+                var testConfig = ConfigService.Get();
                 Text = testConfig.Name;
             });
         }
