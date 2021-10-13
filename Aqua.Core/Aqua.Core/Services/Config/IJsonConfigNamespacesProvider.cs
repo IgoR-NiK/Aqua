@@ -4,9 +4,9 @@ using Aqua.Core.Ioc;
 
 namespace Aqua.Core.Services
 {
-    public interface IJsonConfigAssembliesProvider<TConfig> : IResolvable
+    public interface IJsonConfigNamespacesProvider<TConfig> : IResolvable
         where TConfig : class, IConfig, new()
     {
-        IEnumerable<Assembly> GetAssemblies();
+        IEnumerable<string> GetNamespaces(Assembly assembly);
     }
 }

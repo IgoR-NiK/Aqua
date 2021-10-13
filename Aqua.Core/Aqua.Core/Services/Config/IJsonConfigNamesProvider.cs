@@ -3,9 +3,9 @@ using Aqua.Core.Ioc;
 
 namespace Aqua.Core.Services
 {
-    public interface IJsonConfigNamesProvider : IResolvable
+    public interface IJsonConfigNamesProvider<TConfig> : IResolvable
+        where TConfig : class, IConfig, new()
     {
-        IEnumerable<string> GetConfigNames<TConfig>() 
-            where TConfig : class, IConfig, new();
+        IEnumerable<string> GetConfigNames();
     }
 }

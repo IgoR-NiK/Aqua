@@ -29,29 +29,23 @@
       <Compile Update="Commands\Interfaces\IAsyncCommand{T1}.cs">
         <DependentUpon>IAquaCommandBase.cs</DependentUpon>
       </Compile>
-      <Compile Update="Services\Config\ConfigService.cs">
+      <Compile Update="Services\Config\DefaultConfigService.cs">
         <DependentUpon>IConfigService.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Services\Config\DefaultConfigProvider.cs">
-        <DependentUpon>IConfigProvider.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Services\Config\JsonConfigProvider.cs">
-        <DependentUpon>IConfigProvider.cs</DependentUpon>
       </Compile>
       <Compile Update="Services\Config\JsonConfigNamesProvider.cs">
         <DependentUpon>IJsonConfigNamesProvider.cs</DependentUpon>
       </Compile>
-      <Compile Update="Services\Config\CacheConfigService.cs">
-        <DependentUpon>IConfigService.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Services\Config\JsonConfigNamespaceProvider.cs">
-        <DependentUpon>IJsonConfigNamespaceProvider.cs</DependentUpon>
+      <Compile Update="Services\Config\JsonConfigNamespacesProvider.cs">
+        <DependentUpon>IJsonConfigNamespacesProvider.cs</DependentUpon>
       </Compile>
       <Compile Update="Services\Config\JsonConfigAssembliesProvider.cs">
         <DependentUpon>IJsonConfigAssembliesProvider.cs</DependentUpon>
       </Compile>
-      <Compile Update="Services\Config\CodeConfigProvider.cs">
-        <DependentUpon>IConfigProvider.cs</DependentUpon>
+      <Compile Update="Services\Config\JsonConfigService.cs">
+        <DependentUpon>IConfigService.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Services\Config\CacheConfigService.cs">
+        <DependentUpon>IConfigService.cs</DependentUpon>
       </Compile>
     </ItemGroup>
 

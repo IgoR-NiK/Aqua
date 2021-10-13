@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace Aqua.Core.Services
+namespace Aqua.Core.Utils
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class CodeConfigAttribute : Attribute
+    public class CanBeCachedAttribute : Attribute
     {
     }
 }

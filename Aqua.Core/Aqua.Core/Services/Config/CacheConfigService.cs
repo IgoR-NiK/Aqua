@@ -1,29 +1,26 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using Aqua.Core.Ioc;
+using Aqua.Core.Utils;
 
 namespace Aqua.Core.Services
 {
-    public class CacheConfigService : IDecorator<IConfigService>, IConfigService 
+    public class CacheConfigService<TConfig> : IDecorator<IConfigService<TConfig>>, IConfigService<TConfig>
+        where TConfig : class, IConfig, new()
     {
-        private ConcurrentDictionary<Type, object> Cache { get; } = new ConcurrentDictionary<Type, object>();
+        private TConfig _cached;
+            
+        public IConfigService<TConfig> Decoratee { get; }
         
-        public IConfigService Decoratee { get; }
-        
-        public CacheConfigService(IConfigService decoratee)
+        public CacheConfigService(IConfigService<TConfig> decoratee)
         {
             Decoratee = decoratee;
         }
-
-        public TConfig Get<TConfig>() where TConfig : class, IConfig, new()
+        
+        public TConfig Get()
         {
-            return CanBeCached<TConfig>()
-                ? (TConfig)Cache.GetOrAdd(typeof(TConfig), _ => Decoratee.Get<TConfig>())
-                : Decoratee.Get<TConfig>();
+            return Attribute.IsDefined(typeof(TConfig), typeof(CanBeCachedAttribute))
+                ? _cached ??= Decoratee.Get()
+                : Decoratee.Get();
         }
-
-        private static bool CanBeCached<TConfig>() where TConfig : class, IConfig, new()
-            => Attribute.IsDefined(typeof(TConfig), typeof(JsonConfigAttribute))
-               || Attribute.IsDefined(typeof(TConfig), typeof(CodeConfigAttribute));
     }
 }

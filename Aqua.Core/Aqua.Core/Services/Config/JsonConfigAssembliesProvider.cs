@@ -5,10 +5,10 @@ using Aqua.Core.Utils;
 
 namespace Aqua.Core.Services
 {
-    public class JsonConfigAssembliesProvider : IJsonConfigAssembliesProvider
+    public class JsonConfigAssembliesProvider<TConfig> : IJsonConfigAssembliesProvider<TConfig>
+        where TConfig : class, IConfig, new()
     {
-        public IEnumerable<Assembly> GetAssemblies<TConfig>()
-            where TConfig : class, IConfig, new()
+        public IEnumerable<Assembly> GetAssemblies()
             => new[] { typeof(TConfig).Assembly }.Union(typeof(TConfig).GetDependentAssemblies());
     }
 }
