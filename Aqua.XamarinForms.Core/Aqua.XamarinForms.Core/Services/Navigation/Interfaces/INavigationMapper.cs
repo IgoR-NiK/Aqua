@@ -2,7 +2,7 @@
 using Aqua.Core.Mvvm;
 using Xamarin.Forms;
 
-namespace Aqua.XamarinForms.Core.Services.Navigation
+namespace Aqua.XamarinForms.Core.Services
 {
     public interface INavigationMapper
     {

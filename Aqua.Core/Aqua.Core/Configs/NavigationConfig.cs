@@ -8,7 +8,7 @@ namespace Aqua.Core.Configs
     [CanBeCached]
     public class NavigationConfig : IConfig
     {
-        public Type StackType { get; set; }
+        public Type StackType { get; set; } = typeof(NavigationStack);
         
         public bool WithAnimation { get; set; } = true;
     }

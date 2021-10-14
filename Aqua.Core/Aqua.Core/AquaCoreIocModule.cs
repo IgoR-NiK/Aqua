@@ -4,7 +4,7 @@ using DryIoc;
 
 namespace Aqua.Core
 {
-    public class AquaCoreIocModule : IIocModule
+    public sealed class AquaCoreIocModule : IIocModule
     {
         public void RegisterTypes(IRegistrator container)
         {

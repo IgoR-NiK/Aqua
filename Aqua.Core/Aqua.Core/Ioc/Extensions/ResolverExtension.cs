@@ -1,9 +1,8 @@
 ﻿using System;
-
 using Aqua.Core.Utils;
 using DryIoc;
 
-namespace Aqua.XamarinForms.Core.Services.Navigation
+namespace Aqua.Core.Ioc
 {
     public static class ResolverExtension
     {

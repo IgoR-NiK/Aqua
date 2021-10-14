@@ -8,6 +8,7 @@ using Android.Widget;
 using Android.OS;
 using Aqua.Core;
 using Aqua.XamarinForms.Core;
+using Aqua.XamarinForms.Popup;
 using Rg.Plugins.Popup;
 
 namespace XamarinFormsApp.Android
@@ -26,6 +27,7 @@ namespace XamarinFormsApp.Android
             LoadApplication(new AquaBootstrapper().GetApp<App>(
                 new AquaCoreIocModule(), 
                 new AquaXamarinFormsCoreIocModule(),
+                new AquaXamarinFormsPopupIocModule(),
                 new AppIocModule()));
         }
     }

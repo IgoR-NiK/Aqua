@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Aqua.Core.Services
 {
-    public class JsonConfigService<TConfig> : IDecorator<IConfigService<TConfig>>, IConfigService<TConfig>
+    public sealed class JsonConfigService<TConfig> : IDecorator<IConfigService<TConfig>>, IConfigService<TConfig>
         where TConfig : class, IConfig, new()
     {
         public IConfigService<TConfig> Decoratee { get; }

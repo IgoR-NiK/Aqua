@@ -47,6 +47,9 @@
       <Compile Update="Services\Config\CacheConfigService.cs">
         <DependentUpon>IConfigService.cs</DependentUpon>
       </Compile>
+      <Compile Update="Builders\NavigationConfigBuilder.cs">
+        <DependentUpon>IBuilder{T1}.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

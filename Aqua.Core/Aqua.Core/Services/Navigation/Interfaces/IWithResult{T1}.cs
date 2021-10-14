@@ -1,4 +1,4 @@
-﻿namespace Aqua.XamarinForms.Core.Services.Navigation
+﻿namespace Aqua.Core.Services
 {
     public interface IWithResult<out TResult>
     {

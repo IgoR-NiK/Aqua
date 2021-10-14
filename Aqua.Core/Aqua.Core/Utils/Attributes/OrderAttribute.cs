@@ -7,7 +7,7 @@ namespace Aqua.Core.Utils
     /// У первого в списке большее значение Weight
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class OrderAttribute : Attribute
+    public sealed class OrderAttribute : Attribute
     {
         public int Weight { get; }
         

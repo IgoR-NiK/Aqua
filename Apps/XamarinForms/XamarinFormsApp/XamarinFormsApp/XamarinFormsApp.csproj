@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\Aqua.Modules\XamarinForms\Aqua.XamarinForms.Controls\Aqua.XamarinForms.Controls.csproj" />
+      <ProjectReference Include="..\..\..\..\Aqua.Modules\XamarinForms\Aqua.XamarinForms.Popup\Aqua.XamarinForms.Popup.csproj" />
       <ProjectReference Include="..\..\..\..\Aqua.XamarinForms.Core\Aqua.XamarinForms.Core\Aqua.XamarinForms.Core.csproj" />
     </ItemGroup>
 

@@ -88,6 +88,10 @@
           <Project>{933dfa82-d184-46d4-8b80-e3ddb42fa31f}</Project>
           <Name>Aqua.XamarinForms.Controls</Name>
         </ProjectReference>
+        <ProjectReference Include="..\..\..\..\Aqua.Modules\XamarinForms\Aqua.XamarinForms.Popup\Aqua.XamarinForms.Popup.csproj">
+          <Project>{b5c50e3d-6aef-4de6-a972-e9cd552eb7d5}</Project>
+          <Name>Aqua.XamarinForms.Popup</Name>
+        </ProjectReference>
         <ProjectReference Include="..\..\..\..\Aqua.XamarinForms.Core\Aqua.XamarinForms.Core\Aqua.XamarinForms.Core.csproj">
           <Project>{eb0c0869-7501-4e2d-8b36-c52a8683d661}</Project>
           <Name>Aqua.XamarinForms.Core</Name>

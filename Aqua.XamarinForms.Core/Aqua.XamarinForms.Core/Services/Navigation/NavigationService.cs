@@ -1,99 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using Aqua.Core.Builders;
+using Aqua.Core.Ioc;
 using Aqua.Core.Mvvm;
 using Aqua.Core.Services;
 using Aqua.Core.Utils;
+
 using DryIoc;
-using Rg.Plugins.Popup.Pages;
-using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
 
-namespace Aqua.XamarinForms.Core.Services.Navigation
+namespace Aqua.XamarinForms.Core.Services
 {
     public sealed class NavigationService : INavigationService
     {
+	    private readonly Dictionary<Type, IStackAlgorithm> _stackAlgorithms;
+	    private readonly INavigationViewProvider _navigationViewProvider;
+	    private readonly IViewModelWrapperStorage _viewModelWrapperStorage;
 	    private readonly INavigationMapper _navigationMapper;
 	    private readonly INavigationPageFactory _navigationPageFactory;
 	    private readonly IResolver _resolver;
         
-		private readonly CanNavigateNow _canNavigateNow = new CanNavigateNow(true);
-		private readonly Dictionary<ViewModelBase, IViewModelWrapper> _viewModelWrappers = new Dictionary<ViewModelBase, IViewModelWrapper>();
-
-		private bool _firstSetMainView = true;
-		
-		private NavigationPage NavigationView
-			=> Application.Current.MainPage is FlyoutPage flyoutPage
-				? (NavigationPage)flyoutPage.Detail
-				: (NavigationPage)Application.Current.MainPage;
+	    private readonly CanNavigateNow _canNavigateNow = new CanNavigateNow(true);
+	    private bool _firstSetMainView = true;
 
 		public NavigationService(
+			IEnumerable<KeyValuePair<Type, IStackAlgorithm>> stackAlgorithms,
 			IEnumerable<INavigationModule> navigationModules,
+			INavigationViewProvider navigationViewProvider,
+			IViewModelWrapperStorage viewModelWrapperStorage,
 			INavigationMapper navigationMapper,
 			INavigationPageFactory navigationPageFactory,
 			IResolver resolver)
 		{
+			_stackAlgorithms = stackAlgorithms.ToDictionary(it => it.Key, it => it.Value);
+			_navigationViewProvider = navigationViewProvider;
+			_viewModelWrapperStorage = viewModelWrapperStorage;
 			_navigationMapper = navigationMapper;
 			_navigationPageFactory = navigationPageFactory;
 			_resolver = resolver;
 			
 			navigationModules.ForEach(it => it.Map(navigationMapper));
 		}
-		
-		#region Stacks
 
-		public IReadOnlyList<ViewModelBase> NavigationStack => GetStack(StackType.Navigation);
-		
-		public IReadOnlyList<ViewModelBase> ModalStack => GetStack(StackType.Modal);
-
-		public IReadOnlyList<ViewModelBase> PopupStack => GetStack(StackType.Popup);
-
-		public IReadOnlyList<ViewModelBase> GetStack(StackType stackType)
+		public IReadOnlyList<ViewModelBase> GetStack<TStack>()
+			where TStack : IStack
 		{
-			return new StackAlgorithmsFactory(NavigationView)
-				.Create(stackType)
-				.GetStack();
+			return _stackAlgorithms[typeof(TStack)].GetStack();
 		}
 
-		public bool TryGetFromStack<TViewModel>(TViewModel viewModel, StackType stackType, out IReadOnlyList<ViewModelBase> stack, out int index)
+		public bool TryGetFromStack<TViewModel, TStack>(TViewModel viewModel, out IReadOnlyList<ViewModelBase> stack, out int index)
 			where TViewModel : ViewModelBase
+			where TStack : IStack
 		{
-			stack = GetStack(stackType);
-			index = ((List<ViewModelBase>)stack).IndexOf(viewModel);
-
-			return index >= 0;
+			return _stackAlgorithms[typeof(TStack)].TryGetFromStack(viewModel, out stack, out index);
 		}
 
-		public bool TryGetStackFor<TViewModel>(TViewModel viewModel, [NotNullWhen(true)] out StackType? stackType, out IReadOnlyList<ViewModelBase> stack, out int index)
-			where TViewModel : ViewModelBase
-		{
-			foreach (var type in StackAlgorithmsFactory.StackTypes)
-			{
-				if (TryGetFromStack(viewModel, type, out stack, out index))
-				{
-					stackType = type;
-					return true;
-				}
-			}
-
-			stackType = null;
-			stack = new List<ViewModelBase>();
-			index = -1;
-			
-			return false;
-		}
-
-		#endregion
-		
 		public ViewModelBase GetParentFor<TViewModel>(TViewModel viewModel)
 			where TViewModel : ViewModelBase
 		{
-			return _viewModelWrappers.GetValueOrDefault(viewModel)?.Parent;
+			return _viewModelWrapperStorage.GetValueOrDefault(viewModel)?.Parent;
 		}
 
 		public ViewModelBase GetMainParentFor<TViewModel>(TViewModel viewModel)
@@ -112,7 +82,7 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 		public IReadOnlyList<ViewModelBase> GetChildrenFor<TViewModel>(TViewModel viewModel)
 			where TViewModel : ViewModelBase
 		{
-			return _viewModelWrappers.GetValueOrDefault(viewModel)?.Children ?? new List<ViewModelBase>();
+			return _viewModelWrapperStorage.GetValueOrDefault(viewModel)?.Children ?? new List<ViewModelBase>();
 		}
 
 		public ViewModelBase GetPreviousFor<TViewModel>(TViewModel viewModel) 
@@ -120,7 +90,7 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 		{
 			var mainParent = GetMainParentFor(viewModel);
 
-			if (TryGetStackFor(mainParent, out _, out var stack, out var index))
+			if (TryGetStackAlgorithmFor(mainParent, out _, out var stack, out var index))
 			{
 				return index == 0
 					? null
@@ -128,6 +98,19 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 			}
 
 			return null;
+		}
+
+		public async Task ExecuteInNavigateSafelyAsync(Func<Task> actionAsync)
+		{
+			if (!_canNavigateNow.Value)
+				return;
+
+			using (_canNavigateNow)
+			{
+				_canNavigateNow.Value = false;
+				
+				await actionAsync();
+			}
 		}
 
 		#region SetMainView
@@ -189,222 +172,192 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 		#region NavigateToAsync
 
 		public async Task NavigateToAsync<TViewModel>(
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 			where TViewModel : ViewModelBase
 		{
 			await NavigateToAsync<TViewModel>(
 				null, 
-				stackType, 
-				withAnimation);
+				config);
 		}
 		
 		public async Task NavigateToAsync<TViewModel>(
 			Action<TViewModel> viewModelInitialization,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 			where TViewModel : ViewModelBase
 		{
 			await NavigateToPrivateAsync<TViewModel, object, object>(
 				null, 
 				viewModelInitialization,
 				null, 
-				stackType,
-				withAnimation);
+				config);
 		}
 
 		public async Task NavigateToAsync<TViewModel, TParam>(
 			TParam param,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 			where TViewModel : ViewModelBase, IWithInit<TParam>
 		{
 			await NavigateToAsync<TViewModel, TParam>(
 				param,
 				null,
-				stackType,
-				withAnimation);
+				config);
 		}
 
 		public async Task NavigateToAsync<TViewModel, TParam>(
 			TParam param,
 			Action<TViewModel> viewModelInitialization,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 			where TViewModel : ViewModelBase, IWithInit<TParam>
 		{
 			await NavigateToPrivateAsync<TViewModel, TParam, object>(
 				param,
 				viewModelInitialization,
 				null,
-				stackType,
-				withAnimation);
+				config);
 		}
 
 		public async Task NavigateToAsync<TViewModel, TResult>(
 			CallbackParam<TResult> callbackParam,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 			where TViewModel : ViewModelBase, IWithResult<TResult>
 		{
 			await NavigateToAsync<TViewModel, TResult>(
 				null,
 				callbackParam,
-				stackType,
-				withAnimation);
+				config);
 		}
 
 		public async Task NavigateToAsync<TViewModel, TResult>(
 			Action<TViewModel> viewModelInitialization,
 			CallbackParam<TResult> callbackParam,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 			where TViewModel : ViewModelBase, IWithResult<TResult>
 		{
 			await NavigateToPrivateAsync<TViewModel, object, TResult>(
 				null,
 				viewModelInitialization,
 				callbackParam,
-				stackType,
-				withAnimation);
+				config);
 		}
 
 		public async Task NavigateToAsync<TViewModel, TParam, TResult>(
 			TParam param,
 			CallbackParam<TResult> callbackParam,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 			where TViewModel : ViewModelBase, IWithInit<TParam>, IWithResult<TResult>
 		{
 			await NavigateToAsync<TViewModel, TParam, TResult>(
 				param,
 				null,
 				callbackParam,
-				stackType,
-				withAnimation);
+				config);
 		}
 
 		public async Task NavigateToAsync<TViewModel, TParam, TResult>(
 			TParam param,
 			Action<TViewModel> viewModelInitialization,
 			CallbackParam<TResult> callbackParam,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 			where TViewModel : ViewModelBase, IWithInit<TParam>, IWithResult<TResult>
 		{
 			await NavigateToPrivateAsync(
 				param,
 				viewModelInitialization,
 				callbackParam,
-				stackType,
-				withAnimation);
+				config);
 		}
 
 		public async Task NavigateToAsync(
 			Type viewModelType,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 		{
 			await NavigateToAsync<object>(
 				viewModelType,
 				null,
 				null,
 				null,
-				stackType,
-				withAnimation);
+				config);
 		}
 		
 		public async Task NavigateToAsync(
 			Type viewModelType,
 			Action<ViewModelBase> viewModelInitialization,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 		{
 			await NavigateToAsync<object>(
 				viewModelType,
 				null,
 				viewModelInitialization,
 				null,
-				stackType,
-				withAnimation);
+				config);
 		}
 
 		public async Task NavigateToAsync(
 			Type viewModelType,
 			object param,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 		{
 			await NavigateToAsync<object>(
 				viewModelType,
 				param,
 				null,
 				null,
-				stackType,
-				withAnimation);
+				config);
 		}
 
 		public async Task NavigateToAsync(
 			Type viewModelType,
 			object param,
 			Action<ViewModelBase> viewModelInitialization,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 		{
 			await NavigateToAsync<object>(
 				viewModelType,
 				param,
 				viewModelInitialization,
 				null,
-				stackType,
-				withAnimation);
+				config);
 		}
 
 		public async Task NavigateToAsync<TResult>(
 			Type viewModelType,
 			CallbackParam<TResult> callbackParam,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 		{
 			await NavigateToAsync(
 				viewModelType,
 				null,
 				null,
 				callbackParam,
-				stackType,
-				withAnimation);
+				config);
 		}
 
 		public async Task NavigateToAsync<TResult>(
 			Type viewModelType,
 			Action<ViewModelBase> viewModelInitialization,
 			CallbackParam<TResult> callbackParam,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 		{
 			await NavigateToAsync(
 				viewModelType,
 				null,
 				viewModelInitialization,
 				callbackParam,
-				stackType,
-				withAnimation);
+				config);
 		}
 
 		public async Task NavigateToAsync<TResult>(
 			Type viewModelType,
 			object param,
 			CallbackParam<TResult> callbackParam,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 		{
 			await NavigateToAsync(
 				viewModelType,
 				param,
 				null,
 				callbackParam,
-				stackType,
-				withAnimation);
+				config);
 		}
 
 		public async Task NavigateToAsync<TResult>(
@@ -412,8 +365,7 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 			object param,
 			Action<ViewModelBase> viewModelInitialization,
 			CallbackParam<TResult> callbackParam,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 		{
 			if (!typeof(ViewModelBase).IsAssignableFrom(viewModelType))
 				throw new ArgumentException($"{viewModelType.Name} must be inherited from the {nameof(ViewModelBase)}");
@@ -425,8 +377,7 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 				param, 
 				viewModelInitialization,
 				callbackParam, 
-				stackType, 
-				withAnimation);
+				config);
 		}
 
 		#endregion
@@ -651,10 +602,15 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 	        bool withAnimation = true)
 	        where TViewModel : ViewModelBase
         {
-	        if (!CanClose(viewModel, out var stackType))
+	        if (!CanClose(viewModel, out var stackAlgorithm))
 		        return;
 
-	        await CloseAsync(stackType.Value, withAnimation);
+	        await ClosePrivateAsync<object>(
+		        stackAlgorithm,
+		        null,
+		        null,
+		        null,
+		        withAnimation);
         }
 
         public async Task CloseAsync<TViewModel, TResult>(
@@ -663,29 +619,30 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 	        bool withAnimation = true)
 	        where TViewModel : ViewModelBase, IWithResult<TResult>
         {
-	        if (!CanClose(viewModel, out var stackType))
+	        if (!CanClose(viewModel, out var stackAlgorithm))
 		        return;
 
-	        _viewModelWrappers.TryGetValue(viewModel, out var viewModelWrapper);
+	        var viewModelWrapper = _viewModelWrapperStorage.GetValueOrDefault(viewModel);
 	        
 	        await ClosePrivateAsync(
-		        stackType.Value,
-		        (viewModelWrapper as IViewModelWrapperWithResult<TResult>)?.ViewClosing,
-		        (viewModelWrapper as IViewModelWrapperWithResult<TResult>)?.ViewClosed,
+		        stackAlgorithm,
+		        (viewModelWrapper as IViewModelWrapper<TResult>)?.ViewClosing,
+		        (viewModelWrapper as IViewModelWrapper<TResult>)?.ViewClosed,
 		        result,
 		        withAnimation);
         }
         
         public async Task CloseAsync(
-	        StackType stackType, 
-	        bool withAnimation = true)
+	        Action<NavigationConfigBuilder> config)
         {
+	        var navigationConfig = new NavigationConfigBuilder(config).Instance;
+
 	        await ClosePrivateAsync<object>(
-		        stackType,
+		        _stackAlgorithms[navigationConfig.StackType],
 		        null,
 		        null,
 		        null,
-		        withAnimation);
+		        navigationConfig.WithAnimation);
         }
 
         #endregion
@@ -800,12 +757,11 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 
         public async Task RemoveByAsync(
 	        int index, 
-	        StackType stackType = StackType.Navigation,
-	        bool withAnimation = true)
+	        Action<NavigationConfigBuilder> config = null)
         {
-	        var view = await new StackAlgorithmsFactory(NavigationView)
-		        .Create(stackType)
-		        .RemoveAsync(index);
+	        var navigationConfig = new NavigationConfigBuilder(config).Instance;
+	        
+	        var view = await _stackAlgorithms[navigationConfig.StackType].RemoveAsync(index);
 	        
 	        Clear(view);
         }
@@ -820,9 +776,11 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 
 	        var mainParent = GetMainParentFor(viewModel);
 
-	        if (TryGetStackFor(mainParent, out var stackType, out _, out var index))
+	        if (TryGetStackAlgorithmFor(mainParent, out var stackAlgorithm, out _, out var index))
 	        {
-		        await RemoveByAsync(index, stackType.Value, withAnimation);
+		        var view = await stackAlgorithm.RemoveAsync(index);
+	        
+		        Clear(view);
 	        }
         }
         
@@ -940,41 +898,24 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 
 		#endregion
 
-		#region CloseAllPopupViewsAsync
-
-		public async Task CloseAllPopupViewsAsync(bool withAnimation = true)
-		{
-			if (!_canNavigateNow.Value)
-				return;
-
-			using (_canNavigateNow)
-			{
-				_canNavigateNow.Value = false;
-				
-				await PopupNavigation.Instance.PopAllAsync(withAnimation);
-			}
-		}
-
-		#endregion
 
 		#region Private methods
 
 		private void SetMainViewPrivate<TViewModel, TParam>(TParam param, Action<TViewModel> viewModelInitialization)
 			where TViewModel : ViewModelBase
 		{
-			ClearAll();
+			_viewModelWrapperStorage.ClearAll();
 			
 			var newView = CreateView<TViewModel, TParam, object>(param, viewModelInitialization, null);
 
 			Application.Current.MainPage = newView is FlyoutPage ? newView : _navigationPageFactory.Create(newView);
 			
-			NavigationView.Popped += (sender, args) => Clear(args.Page);
+			_navigationViewProvider.NavigationView.Popped += (sender, args) => Clear(args.Page);
 
 			if (_firstSetMainView)
 			{
 				_firstSetMainView = false;
 				
-				PopupNavigation.Instance.Popped += (sender, args) => Clear(args.Page);
 				Application.Current.ModalPopped += (sender, args) => Clear(args.Modal);
 			}
 		}
@@ -983,23 +924,16 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 			TParam param, 
 			Action<TViewModel> viewModelInitialization, 
 			CallbackParam<TResult> callbackParam,
-			StackType stackType = StackType.Navigation,
-			bool withAnimation = true)
+			Action<NavigationConfigBuilder> config = null)
 			where TViewModel : ViewModelBase
 		{
-			if (!_canNavigateNow.Value)
-				return;
-
-			using (_canNavigateNow)
+			await ExecuteInNavigateSafelyAsync(async () =>
 			{
-				_canNavigateNow.Value = false;
-
+				var navigationConfig = new NavigationConfigBuilder(config).Instance;
 				var newView = CreateView(param, viewModelInitialization, callbackParam);
 
-				await new StackAlgorithmsFactory(NavigationView)
-					.Create(stackType)
-					.NavigateToAsync(newView, withAnimation);
-			}
+				await _stackAlgorithms[navigationConfig.StackType].NavigateToAsync(newView, navigationConfig.WithAnimation);
+			});
 		}
 
 		private void InsertBeforePrivate<TViewModel, TParam, TResult>(
@@ -1011,69 +945,57 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 		{
 			var mainParent = GetMainParentFor(beforeViewModel);
 			
-			if (TryGetFromStack(mainParent, StackType.Navigation, out _, out var index))
+			if (_stackAlgorithms[typeof(NavigationStack)].TryGetFromStack(mainParent, out _, out var index))
 			{
-				var beforeView = NavigationView.Navigation.NavigationStack[index];
+				var beforeView = _navigationViewProvider.NavigationView.Navigation.NavigationStack[index];
 				var newView = CreateView(param, viewModelInitialization, callbackParam);
 				
-				NavigationView.Navigation.InsertPageBefore(newView, beforeView);
+				_navigationViewProvider.NavigationView.Navigation.InsertPageBefore(newView, beforeView);
 			}
 		}
 		
-		private bool CanClose<TViewModel>(TViewModel viewModel, [NotNullWhen(true)] out StackType? stackType)
+		private bool CanClose<TViewModel>(TViewModel viewModel, [NotNullWhen(true)] out IStackAlgorithm stackAlgorithm)
 			where TViewModel : ViewModelBase
 		{
 			var mainParent = GetMainParentFor(viewModel);
 
-			if (TryGetStackFor(mainParent, out stackType, out var stack, out var index))
+			if (TryGetStackAlgorithmFor(mainParent, out stackAlgorithm, out var stack, out var index))
 			{
 				return stack.Count - 1 == index;
 			}
 
 			return false;
 		}
-		
+
 		private async Task ClosePrivateAsync<TResult>(
-			StackType stackType,
+			IStackAlgorithm stackAlgorithm,
 			Action<TResult, ViewClosingArgs> viewClosing,
 			Action<TResult> viewClosed,
 			TResult result,
 			bool withAnimation = true)
 		{
-			if (!_canNavigateNow.Value)
-				return;
-
-			var args = new ViewClosingArgs();
-			viewClosing?.Invoke(result, args);
-			
-			if (args.Cancel)
-				return;
-
-			using (_canNavigateNow)
+			await ExecuteInNavigateSafelyAsync(async () =>
 			{
-				_canNavigateNow.Value = false;
+				var args = new ViewClosingArgs();
+				viewClosing?.Invoke(result, args);
 
-				await new StackAlgorithmsFactory(NavigationView)
-					.Create(stackType)
-					.CloseAsync(withAnimation);
-			}
-			
-			viewClosed?.Invoke(result);
+				if (args.Cancel)
+					return;
+
+				await stackAlgorithm.CloseAsync(withAnimation);
+
+				viewClosed?.Invoke(result);
+			});
 		}
 
 		private async Task CloseToRootPrivateAsync(
 			bool withAnimation = true)
 		{
-			if (!_canNavigateNow.Value)
-				return;
-			
-			using (_canNavigateNow)
+			await ExecuteInNavigateSafelyAsync(async () =>
 			{
-				_canNavigateNow.Value = false;
-
 				ClearToRoot();
-				await NavigationView.PopToRootAsync(withAnimation);
-			}
+				await _navigationViewProvider.NavigationView.PopToRootAsync(withAnimation);
+			});
 		}
 		
 		private async Task CloseToRootPrivateAsync<TViewModel, TParam>(
@@ -1083,7 +1005,7 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 			where TViewModel : ViewModelBase
 		{
 			InsertBeforePrivate<TViewModel, TParam, object>(
-				NavigationStack.First(),
+				GetStack<NavigationStack>().First(),
 				param, 
 				viewModelInitialization, 
 				null);
@@ -1100,7 +1022,7 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 			if (!(Application.Current.MainPage is FlyoutPage flyoutPage))
 				throw new Exception($"Application.Current.MainPage must be the {nameof(FlyoutPage)} to call the method '{nameof(SetDetailView)}'.");
 			
-			ClearAll();
+			_viewModelWrapperStorage.ClearAll();
 			
 			var newView = CreateView<TViewModel, TParam, object>(param, viewModelInitialization, null);
 
@@ -1109,7 +1031,7 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 			if (withCloseFlyoutView)
 				CloseFlyoutView();
 			
-			NavigationView.Popped += (sender, args) => Clear(args.Page);
+			_navigationViewProvider.NavigationView.Popped += (sender, args) => Clear(args.Page);
 		}
 
 		private Page CreateView<TViewModel, TParam, TResult>(
@@ -1138,9 +1060,9 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 				viewModelInitialization,
 				callbackParam);
 
-			_viewModelWrappers.Add(
+			_viewModelWrapperStorage.Add(
 				viewModel,
-				new ViewModelWrapperWithResult<TResult>(callbackParam)
+				new ViewModelWrapper<TResult>(callbackParam)
 				{
 					Parent = null,
 					Children = children
@@ -1198,8 +1120,8 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 				{
 					resultChildren.Add(currentViewModel);
 
-					_viewModelWrappers.Add(currentViewModel,
-						new ViewModelWrapperWithResult<TResult>(callbackParam)
+					_viewModelWrapperStorage.Add(currentViewModel,
+						new ViewModelWrapper<TResult>(callbackParam)
 						{
 							Parent = parentViewModel,
 							Children = children
@@ -1217,252 +1139,37 @@ namespace Aqua.XamarinForms.Core.Services.Navigation
 		private void Clear(Page page)
 		{
 			var viewModel = (ViewModelBase)page.BindingContext;
-			Clear(viewModel);
-		}
-
-		private void Clear<TViewModel>(TViewModel viewModel)
-			where TViewModel : ViewModelBase
-		{
-			if (_viewModelWrappers.TryGetValue(viewModel, out var viewModelWrapper))
-			{
-				foreach (var children in viewModelWrapper.Children)
-				{
-					Clear(children);
-				}
-
-				_viewModelWrappers.Remove(viewModel);
-			}
-		}
-
-		private void ClearAll()
-		{
-			_viewModelWrappers.Clear();
+			_viewModelWrapperStorage.Clear(viewModel);
 		}
 
 		private void ClearToRoot()
 		{
-			for (var i = 1; i < NavigationStack.Count; i++)
+			var navigationStack = GetStack<NavigationStack>();
+			for (var i = 1; i < navigationStack.Count; i++)
 			{
-				var viewModel = NavigationStack[i];
-				Clear(viewModel);
+				var viewModel = navigationStack[i];
+				_viewModelWrapperStorage.Clear(viewModel);
 			}
 		}
-		
-		#endregion
 
-		#region Private classes
-
-		#region CanNavigateNow
-
-		private sealed class CanNavigateNow : IDisposable
+		private bool TryGetStackAlgorithmFor<TViewModel>(TViewModel viewModel, [NotNullWhen(true)] out IStackAlgorithm stackAlgorithm, out IReadOnlyList<ViewModelBase> stack, out int index)
+			where TViewModel : ViewModelBase
 		{
-			private volatile bool _value;
-
-			public bool Value
+			foreach (var (_, value) in _stackAlgorithms)
 			{
-				get => _value;
-				set => _value = value;
+				if (value.TryGetFromStack(viewModel, out stack, out index))
+				{
+					stackAlgorithm = value;
+					return true;
+				}
 			}
 
-			public CanNavigateNow(bool value)
-			{
-				Value = value;
-			}
+			stackAlgorithm = null;
+			stack = new List<ViewModelBase>();
+			index = -1;
 
-			public void Dispose()
-			{
-				Value = true;
-			}
+			return false;
 		}
-		
-		#endregion
-
-		#region ViewModelWrapper
-		
-		private interface IViewModelWrapper
-		{
-			ViewModelBase Parent { get; }
-			
-			List<ViewModelBase> Children { get; }
-		}
-		
-		private interface IViewModelWrapperWithResult<in TResult> : IViewModelWrapper
-		{
-			Action<TResult, ViewClosingArgs> ViewClosing { get; }
-			
-			Action<TResult> ViewClosed { get; }
-		}
-
-		private sealed class ViewModelWrapperWithResult<TResult> : IViewModelWrapperWithResult<TResult>
-		{
-			public ViewModelBase Parent { get; set; }
-
-			public List<ViewModelBase> Children { get; set; } = new List<ViewModelBase>();
-			
-			public Action<TResult, ViewClosingArgs> ViewClosing  { get; }
-
-			public Action<TResult> ViewClosed { get; }
-
-			public ViewModelWrapperWithResult(CallbackParam<TResult> callbackParam)
-			{
-				ViewClosing = callbackParam?.ViewClosing;
-				ViewClosed = callbackParam?.ViewClosed;
-			}
-		}
-		
-		#endregion
-
-		#region StackAlgorithms
-
-		private interface IStackAlgorithms
-		{
-			List<ViewModelBase> GetStack();
-
-			Task<Page> RemoveAsync(int index, bool withAnimation = true);
-
-			Task NavigateToAsync(Page page, bool withAnimation = true);
-
-			Task CloseAsync(bool withAnimation = true);
-		}
-
-		private class StackAlgorithmsFactory
-		{
-			private NavigationPage NavigationPage { get; }
-			
-			public static readonly StackType[] StackTypes =
-			{
-				StackType.Navigation,
-				StackType.Modal,
-				StackType.Popup
-			};
-
-			public StackAlgorithmsFactory(NavigationPage navigationPage)
-			{
-				NavigationPage = navigationPage;
-			}
-
-			public IStackAlgorithms Create(StackType stackType)
-			{
-				switch (stackType)
-				{
-					case StackType.Navigation: 
-						return new NavigationStackAlgorithms(NavigationPage);
-					
-					case StackType.Modal: 
-						return new ModalStackAlgorithms(NavigationPage);
-					
-					case StackType.Popup: 
-						return new PopupStackAlgorithms();
-					
-					default:
-						throw new InvalidEnumArgumentException(
-							$"Value {stackType} of enum {nameof(StackType)} is not supported");
-				}
-			}
-			
-			private class NavigationStackAlgorithms : IStackAlgorithms
-			{
-				private NavigationPage NavigationPage { get; }
-				
-				public NavigationStackAlgorithms(NavigationPage navigationPage)
-				{
-					NavigationPage = navigationPage;
-				}
-				
-				public List<ViewModelBase> GetStack()
-				{
-					return NavigationPage.Navigation.NavigationStack
-						.Select(it => (ViewModelBase)it.BindingContext)
-						.ToList();
-				}
-
-				public async Task<Page> RemoveAsync(int index, bool withAnimation = true)
-				{
-					return await Task.Run(() =>
-					{
-						var view = NavigationPage.Navigation.NavigationStack[index];
-						NavigationPage.Navigation.RemovePage(view);
-
-						return view;
-					});
-				}
-
-				public async Task NavigateToAsync(Page page, bool withAnimation = true)
-				{
-					await NavigationPage.PushAsync(page, withAnimation);
-				}
-
-				public async Task CloseAsync(bool withAnimation = true)
-				{
-					await NavigationPage.PopAsync(withAnimation);
-				}
-			}
-			
-			private class ModalStackAlgorithms : IStackAlgorithms
-			{
-				private NavigationPage NavigationPage { get; }
-
-				public ModalStackAlgorithms(NavigationPage navigationPage)
-				{
-					NavigationPage = navigationPage;
-				}
-				
-				public List<ViewModelBase> GetStack()
-				{
-					return NavigationPage.Navigation.ModalStack
-						.Select(it => (ViewModelBase)it.BindingContext)
-						.ToList();
-				}
-
-				public Task<Page> RemoveAsync(int index, bool withAnimation = true)
-				{
-					throw new NotImplementedException();
-				}
-
-				public async Task NavigateToAsync(Page page, bool withAnimation = true)
-				{
-					await NavigationPage.Navigation.PushModalAsync(page, withAnimation);
-				}
-
-				public async Task CloseAsync(bool withAnimation = true)
-				{
-					await NavigationPage.Navigation.PopModalAsync(withAnimation);
-				}
-			}
-			
-			private class PopupStackAlgorithms : IStackAlgorithms
-			{
-				public List<ViewModelBase> GetStack()
-				{
-					return PopupNavigation.Instance.PopupStack
-						.Select(it => (ViewModelBase)it.BindingContext)
-						.ToList();
-				}
-
-				public async Task<Page> RemoveAsync(int index, bool withAnimation = true)
-				{
-					var view = PopupNavigation.Instance.PopupStack[index];
-					await PopupNavigation.Instance.RemovePageAsync(view, withAnimation);
-
-					return view;
-				}
-
-				public async Task NavigateToAsync(Page page, bool withAnimation = true)
-				{
-					if (!(page is PopupPage popupPage))
-						throw new ArgumentException($"{nameof(page)} must be inherited from the {nameof(PopupPage)}");
-					
-					await PopupNavigation.Instance.PushAsync(popupPage, withAnimation);
-				}
-
-				public async Task CloseAsync(bool withAnimation = true)
-				{
-					await PopupNavigation.Instance.PopAsync(withAnimation);
-				}
-			}
-		}
-
-		#endregion
 
 		#endregion
     }

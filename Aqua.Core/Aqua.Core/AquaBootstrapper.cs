@@ -4,7 +4,7 @@ using DryIoc;
 
 namespace Aqua.Core
 {
-    public class AquaBootstrapper
+    public sealed class AquaBootstrapper
     {
         private IContainer Container { get; } = new Container();
 

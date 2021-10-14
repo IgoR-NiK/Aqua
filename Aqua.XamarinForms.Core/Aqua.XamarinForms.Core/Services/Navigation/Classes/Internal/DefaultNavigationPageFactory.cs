@@ -1,8 +1,8 @@
 ﻿using Xamarin.Forms;
 
-namespace Aqua.XamarinForms.Core.Services.Navigation
+namespace Aqua.XamarinForms.Core.Services
 {
-    public class DefaultNavigationPageFactory : INavigationPageFactory
+    internal sealed class DefaultNavigationPageFactory : INavigationPageFactory
     {
         public NavigationPage Create(Page page)
             => new NavigationPage(page);

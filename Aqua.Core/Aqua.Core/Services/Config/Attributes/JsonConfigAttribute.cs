@@ -3,7 +3,7 @@
 namespace Aqua.Core.Services
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class JsonConfigAttribute : Attribute
+    public sealed class JsonConfigAttribute : Attribute
     {
     }
 }

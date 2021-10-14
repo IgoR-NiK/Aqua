@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Aqua.XamarinForms.Core.Services.Navigation
+namespace Aqua.Core.Services
 {
-    public sealed class CallbackParam<TResult>
+    public class CallbackParam<TResult>
     {
         public Action<TResult, ViewClosingArgs> ViewClosing { get; set; }
         

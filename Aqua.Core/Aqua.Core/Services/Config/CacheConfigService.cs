@@ -4,7 +4,7 @@ using Aqua.Core.Utils;
 
 namespace Aqua.Core.Services
 {
-    public class CacheConfigService<TConfig> : IDecorator<IConfigService<TConfig>>, IConfigService<TConfig>
+    public sealed class CacheConfigService<TConfig> : IDecorator<IConfigService<TConfig>>, IConfigService<TConfig>
         where TConfig : class, IConfig, new()
     {
         private TConfig _cached;

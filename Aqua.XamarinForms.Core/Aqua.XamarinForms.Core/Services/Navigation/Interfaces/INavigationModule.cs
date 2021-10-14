@@ -1,4 +1,4 @@
-﻿namespace Aqua.XamarinForms.Core.Services.Navigation
+﻿namespace Aqua.XamarinForms.Core.Services
 {
     public interface INavigationModule
     {

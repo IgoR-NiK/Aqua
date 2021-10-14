@@ -3,7 +3,8 @@ using System.Threading.Tasks;
 using Aqua.Core.Commands;
 using Aqua.Core.Mvvm;
 using Aqua.Core.Utils;
-using Aqua.XamarinForms.Core.Services.Navigation;
+using Aqua.XamarinForms.Core.Services;
+using Aqua.XamarinForms.Popup;
 
 namespace XamarinFormsApp.ViewModels
 {
@@ -48,7 +49,7 @@ namespace XamarinFormsApp.ViewModels
                 for (var i = 0; i < 50; i++)
                     await Task.Delay(100, token);
 
-                await NavigationService.NavigateToAsync<ErrorPopupViewModel, string>(param, StackType.Popup);
+                await NavigationService.NavigateToAsync<ErrorPopupViewModel, string>(param, config => config.In<PopupStack>());
             }, token);
         }
     }

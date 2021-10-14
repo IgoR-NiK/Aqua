@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Aqua.Core;
 using Aqua.XamarinForms.Core;
+using Aqua.XamarinForms.Popup;
 using Rg.Plugins.Popup;
 
 using Foundation;
@@ -30,6 +31,7 @@ namespace XamarinFormsApp.iOS
             LoadApplication(new AquaBootstrapper().GetApp<App>(
                 new AquaCoreIocModule(), 
                 new AquaXamarinFormsCoreIocModule(),
+                new AquaXamarinFormsPopupIocModule(),
                 new AppIocModule()));
 
             return base.FinishedLaunching(app, options);

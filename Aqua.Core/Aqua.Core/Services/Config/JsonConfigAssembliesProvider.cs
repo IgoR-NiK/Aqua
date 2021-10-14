@@ -5,7 +5,7 @@ using Aqua.Core.Utils;
 
 namespace Aqua.Core.Services
 {
-    public class JsonConfigAssembliesProvider<TConfig> : IJsonConfigAssembliesProvider<TConfig>
+    public sealed class JsonConfigAssembliesProvider<TConfig> : IJsonConfigAssembliesProvider<TConfig>
         where TConfig : class, IConfig, new()
     {
         public IEnumerable<Assembly> GetAssemblies()

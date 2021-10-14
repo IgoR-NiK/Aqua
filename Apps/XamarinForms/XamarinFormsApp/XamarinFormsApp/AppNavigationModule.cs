@@ -1,4 +1,4 @@
-﻿using Aqua.XamarinForms.Core.Services.Navigation;
+﻿using Aqua.XamarinForms.Core.Services;
 using XamarinFormsApp.ViewModels;
 using XamarinFormsApp.Views;
 

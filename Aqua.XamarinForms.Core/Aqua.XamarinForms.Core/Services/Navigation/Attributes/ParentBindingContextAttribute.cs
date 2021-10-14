@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace Aqua.XamarinForms.Core.Services.Navigation
+namespace Aqua.XamarinForms.Core.Services
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class ParentBindingContextAttribute : Attribute
+    public sealed class ParentBindingContextAttribute : Attribute
     {
     }
 }

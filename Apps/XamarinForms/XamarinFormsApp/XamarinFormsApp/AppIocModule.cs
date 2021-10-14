@@ -1,5 +1,5 @@
 ﻿using Aqua.Core.Ioc;
-using Aqua.XamarinForms.Core.Services.Navigation;
+using Aqua.XamarinForms.Core.Services;
 using DryIoc;
 using XamarinFormsApp.ViewModels;
 using XamarinFormsApp.Views;

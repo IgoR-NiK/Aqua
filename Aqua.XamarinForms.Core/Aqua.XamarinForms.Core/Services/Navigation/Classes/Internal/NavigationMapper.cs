@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Aqua.Core.Mvvm;
 using Xamarin.Forms;
 
-namespace Aqua.XamarinForms.Core.Services.Navigation
+namespace Aqua.XamarinForms.Core.Services
 {
-    public class NavigationMapper : INavigationMapper
+    internal sealed class NavigationMapper : INavigationMapper
     {
         private Dictionary<Type, Type> ViewModelTypeToViewTypeMap { get; } = new Dictionary<Type, Type>();
         private Dictionary<Type, Type> ViewTypeToViewModelTypeMap { get; } = new Dictionary<Type, Type>();

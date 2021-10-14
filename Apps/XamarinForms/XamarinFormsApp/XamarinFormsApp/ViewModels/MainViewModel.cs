@@ -1,7 +1,7 @@
 ﻿using Aqua.Core.Commands;
 using Aqua.Core.Mvvm;
 using Aqua.Core.Services;
-using Aqua.XamarinForms.Core.Services.Navigation;
+using Aqua.XamarinForms.Core.Services;
 using XamarinFormsApp.Configs;
 
 namespace XamarinFormsApp.ViewModels

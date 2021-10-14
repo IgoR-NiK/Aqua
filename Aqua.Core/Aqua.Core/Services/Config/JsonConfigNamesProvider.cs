@@ -2,7 +2,7 @@
 
 namespace Aqua.Core.Services
 {
-    public class JsonConfigNamesProvider<TConfig> : IJsonConfigNamesProvider<TConfig>
+    public sealed class JsonConfigNamesProvider<TConfig> : IJsonConfigNamesProvider<TConfig>
         where TConfig : class, IConfig, new()
     {
         public IEnumerable<string> GetConfigNames()
