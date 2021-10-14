@@ -6,14 +6,22 @@ namespace Aqua.Core.Builders
 {
     public sealed class NavigationConfigBuilder : IBuilder<NavigationConfig, NavigationConfigBuilder>
     {
-        public NavigationConfig Instance { get; private set; } = new NavigationConfig();
+        public NavigationConfig Instance { get; private set; }
 
         public NavigationConfigBuilder()
         {
         }
 
         public NavigationConfigBuilder(Action<NavigationConfigBuilder> action)
+            : this(new NavigationConfig(), action)
         {
+        }
+
+        public NavigationConfigBuilder(
+            NavigationConfig defaultConfig,
+            Action<NavigationConfigBuilder> action)
+        {
+            Instance = defaultConfig;
             action?.Invoke(this);
         }
 

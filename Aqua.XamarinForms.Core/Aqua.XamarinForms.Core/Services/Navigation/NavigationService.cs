@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using Aqua.Core.Builders;
+using Aqua.Core.Configs;
 using Aqua.Core.Ioc;
 using Aqua.Core.Mvvm;
 using Aqua.Core.Services;
@@ -23,6 +24,7 @@ namespace Aqua.XamarinForms.Core.Services
 	    private readonly IViewModelWrapperStorage _viewModelWrapperStorage;
 	    private readonly INavigationMapper _navigationMapper;
 	    private readonly INavigationPageFactory _navigationPageFactory;
+	    private readonly IConfigService<NavigationConfig> _navigationConfigService;
 	    private readonly IResolver _resolver;
         
 	    private readonly CanNavigateNow _canNavigateNow = new CanNavigateNow(true);
@@ -35,6 +37,7 @@ namespace Aqua.XamarinForms.Core.Services
 			IViewModelWrapperStorage viewModelWrapperStorage,
 			INavigationMapper navigationMapper,
 			INavigationPageFactory navigationPageFactory,
+			IConfigService<NavigationConfig> navigationConfigService,
 			IResolver resolver)
 		{
 			_stackAlgorithms = stackAlgorithms.ToDictionary(it => it.Key, it => it.Value);
@@ -42,6 +45,7 @@ namespace Aqua.XamarinForms.Core.Services
 			_viewModelWrapperStorage = viewModelWrapperStorage;
 			_navigationMapper = navigationMapper;
 			_navigationPageFactory = navigationPageFactory;
+			_navigationConfigService = navigationConfigService;
 			_resolver = resolver;
 			
 			navigationModules.ForEach(it => it.Map(navigationMapper));
@@ -635,7 +639,7 @@ namespace Aqua.XamarinForms.Core.Services
         public async Task CloseAsync(
 	        Action<NavigationConfigBuilder> config)
         {
-	        var navigationConfig = new NavigationConfigBuilder(config).Instance;
+	        var navigationConfig = new NavigationConfigBuilder(_navigationConfigService.Get(), config).Instance;
 
 	        await ClosePrivateAsync<object>(
 		        _stackAlgorithms[navigationConfig.StackType],
@@ -759,7 +763,7 @@ namespace Aqua.XamarinForms.Core.Services
 	        int index, 
 	        Action<NavigationConfigBuilder> config = null)
         {
-	        var navigationConfig = new NavigationConfigBuilder(config).Instance;
+	        var navigationConfig = new NavigationConfigBuilder(_navigationConfigService.Get(), config).Instance;
 	        
 	        var view = await _stackAlgorithms[navigationConfig.StackType].RemoveAsync(index);
 	        
@@ -929,7 +933,7 @@ namespace Aqua.XamarinForms.Core.Services
 		{
 			await ExecuteInNavigateSafelyAsync(async () =>
 			{
-				var navigationConfig = new NavigationConfigBuilder(config).Instance;
+				var navigationConfig = new NavigationConfigBuilder(_navigationConfigService.Get(), config).Instance;
 				var newView = CreateView(param, viewModelInitialization, callbackParam);
 
 				await _stackAlgorithms[navigationConfig.StackType].NavigateToAsync(newView, navigationConfig.WithAnimation);
