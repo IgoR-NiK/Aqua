@@ -5,10 +5,10 @@ using Newtonsoft.Json;
 
 namespace Aqua.Core.Services
 {
-    public sealed class JsonConfigService<TConfig> : IDecorator<IConfigService<TConfig>>, IConfigService<TConfig>
+    public sealed class JsonConfigProvider<TConfig> : IDecorator<IConfigProvider<TConfig>>, IConfigProvider<TConfig>
         where TConfig : class, IConfig, new()
     {
-        public IConfigService<TConfig> Decoratee { get; }
+        public IConfigProvider<TConfig> Decoratee { get; }
         
         private IJsonConfigAssembliesProvider<TConfig> JsonConfigAssembliesProvider { get; }
         
@@ -16,8 +16,8 @@ namespace Aqua.Core.Services
         
         private IJsonConfigNamesProvider<TConfig> JsonConfigNamesProvider { get; }
 
-        public JsonConfigService(
-            IConfigService<TConfig> decoratee,
+        public JsonConfigProvider(
+            IConfigProvider<TConfig> decoratee,
             IJsonConfigAssembliesProvider<TConfig> jsonConfigAssembliesProvider,
             IJsonConfigNamespacesProvider<TConfig> jsonConfigNamespacesProvider,
             IJsonConfigNamesProvider<TConfig> jsonConfigNamesProvider)

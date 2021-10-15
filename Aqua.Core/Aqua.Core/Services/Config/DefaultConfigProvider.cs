@@ -1,6 +1,6 @@
 ﻿namespace Aqua.Core.Services
 {
-    public sealed class DefaultConfigService<TConfig> : IConfigService<TConfig>
+    public sealed class DefaultConfigProvider<TConfig> : IConfigProvider<TConfig>
         where TConfig : class, IConfig, new()
     {
         public TConfig Get() => new TConfig();

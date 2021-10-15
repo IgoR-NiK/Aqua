@@ -2,7 +2,7 @@
 
 namespace Aqua.Core.Services
 {
-    public interface IConfigService<out TConfig> : IResolvable
+    public interface IConfigProvider<out TConfig> : IResolvable
         where TConfig : class, IConfig, new()
     {
         TConfig Get();

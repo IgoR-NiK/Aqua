@@ -12,7 +12,7 @@ namespace Aqua.Core
             container.Register(typeof(IJsonConfigAssembliesProvider<>), typeof(JsonConfigAssembliesProvider<>), Reuse.Singleton);
             container.Register(typeof(IJsonConfigNamespacesProvider<>), typeof(JsonConfigNamespacesProvider<>), Reuse.Singleton);
             container.Register(typeof(IJsonConfigNamesProvider<>), typeof(JsonConfigNamesProvider<>), Reuse.Singleton);
-            container.Register(typeof(IConfigService<>), typeof(DefaultConfigService<>), Reuse.Singleton);
+            container.Register(typeof(IConfigProvider<>), typeof(DefaultConfigProvider<>), Reuse.Singleton);
         }
     }
 }

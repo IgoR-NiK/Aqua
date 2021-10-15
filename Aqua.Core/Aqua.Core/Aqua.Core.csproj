@@ -29,7 +29,7 @@
       <Compile Update="Commands\Interfaces\IAsyncCommand{T1}.cs">
         <DependentUpon>IAquaCommandBase.cs</DependentUpon>
       </Compile>
-      <Compile Update="Services\Config\DefaultConfigService.cs">
+      <Compile Update="Services\Config\DefaultConfigProvider.cs">
         <DependentUpon>IConfigService.cs</DependentUpon>
       </Compile>
       <Compile Update="Services\Config\JsonConfigNamesProvider.cs">
@@ -41,10 +41,10 @@
       <Compile Update="Services\Config\JsonConfigAssembliesProvider.cs">
         <DependentUpon>IJsonConfigAssembliesProvider.cs</DependentUpon>
       </Compile>
-      <Compile Update="Services\Config\JsonConfigService.cs">
+      <Compile Update="Services\Config\JsonConfigProvider.cs">
         <DependentUpon>IConfigService.cs</DependentUpon>
       </Compile>
-      <Compile Update="Services\Config\CacheConfigService.cs">
+      <Compile Update="Services\Config\CacheConfigProvider.cs">
         <DependentUpon>IConfigService.cs</DependentUpon>
       </Compile>
       <Compile Update="Builders\NavigationConfigBuilder.cs">
