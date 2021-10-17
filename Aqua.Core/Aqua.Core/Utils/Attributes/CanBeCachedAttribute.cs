@@ -2,7 +2,7 @@
 
 namespace Aqua.Core.Utils
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class)]
     public sealed class CanBeCachedAttribute : Attribute
     {
     }
