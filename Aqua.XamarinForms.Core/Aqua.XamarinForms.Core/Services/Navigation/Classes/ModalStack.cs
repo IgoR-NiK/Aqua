@@ -2,7 +2,7 @@
 
 namespace Aqua.XamarinForms.Core.Services
 {
-    public class ModalStack : IStack
+    public sealed class ModalStack : IStack
     {
     }
 }

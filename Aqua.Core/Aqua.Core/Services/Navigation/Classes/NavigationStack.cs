@@ -1,6 +1,6 @@
 ﻿namespace Aqua.Core.Services
 {
-    public class NavigationStack : IStack
+    public sealed class NavigationStack : IStack
     {
     }
 }
