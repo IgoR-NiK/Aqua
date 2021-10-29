@@ -3,6 +3,6 @@
     public sealed class DefaultConfigProvider<TConfig> : IConfigProvider<TConfig>
         where TConfig : class, IConfig, new()
     {
-        public TConfig Get() => new TConfig();
+        public TConfig GetConfig() => new TConfig();
     }
 }

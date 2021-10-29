@@ -14,11 +14,11 @@ namespace Aqua.Core.Services
         {
         }
         
-        public TConfig Get()
+        public TConfig GetConfig()
         {
             return Attribute.IsDefined(typeof(TConfig), typeof(CanBeCachedAttribute))
-                ? _cached ??= Decoratee.Get()
-                : Decoratee.Get();
+                ? _cached ??= Decoratee.GetConfig()
+                : Decoratee.GetConfig();
         }
     }
 }

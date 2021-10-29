@@ -26,11 +26,11 @@ namespace Aqua.Core.Services
             JsonConfigNamesProvider = jsonConfigNamesProvider;
         }
         
-        public TConfig Get()
+        public TConfig GetConfig()
         {
             if (!Attribute.IsDefined(typeof(TConfig),typeof(JsonConfigAttribute)))
             {
-                return Decoratee.Get();
+                return Decoratee.GetConfig();
             }
 
             foreach (var assembly in JsonConfigAssembliesProvider.GetAssemblies())
@@ -55,7 +55,7 @@ namespace Aqua.Core.Services
                 }
             }
             
-            return Decoratee.Get();
+            return Decoratee.GetConfig();
         }
     }
 }
