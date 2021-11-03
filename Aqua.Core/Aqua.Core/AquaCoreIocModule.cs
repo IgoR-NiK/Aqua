@@ -8,7 +8,7 @@ namespace Aqua.Core
     {
         public void RegisterTypes(IRegistrator container)
         {
-            // ConfigService
+            // ConfigProvider
             container.Register(typeof(IJsonConfigAssembliesProvider<>), typeof(JsonConfigAssembliesProvider<>), Reuse.Singleton);
             container.Register(typeof(IJsonConfigNamespacesProvider<>), typeof(JsonConfigNamespacesProvider<>), Reuse.Singleton);
             container.Register(typeof(IJsonConfigNamesProvider<>), typeof(JsonConfigNamesProvider<>), Reuse.Singleton);

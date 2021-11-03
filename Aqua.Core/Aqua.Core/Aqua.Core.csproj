@@ -59,6 +59,7 @@
 
     <ItemGroup>
       <Folder Include="Builders" />
+      <Folder Include="Configs" />
     </ItemGroup>
 
 </Project>

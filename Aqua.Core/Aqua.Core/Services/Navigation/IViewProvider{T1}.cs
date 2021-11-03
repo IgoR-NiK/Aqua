@@ -3,9 +3,9 @@ using Aqua.Core.Mvvm;
 
 namespace Aqua.Core.Services
 {
-    public interface IViewProvider<TViewModel> : IResolvable
-        where TViewModel : IViewModel
+    public interface IViewProvider<in TViewModel> : IResolvable
+        where TViewModel : class, IViewModel
     {
-        IView GetView();
+        IView GetView(TViewModel viewModel);
     }
 }
