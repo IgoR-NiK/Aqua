@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
@@ -11,7 +12,7 @@ using Aqua.Core.Ioc;
 using Aqua.Core.Mvvm;
 using Aqua.Core.Services;
 using Aqua.Core.Utils;
-
+using Aqua.XamarinForms.Core.Configs;
 using DryIoc;
 using Xamarin.Forms;
 
@@ -973,14 +974,14 @@ namespace Aqua.XamarinForms.Core.Services
 
 		private async Task ClosePrivateAsync<TResult>(
 			IStackAlgorithm stackAlgorithm,
-			Action<TResult, ViewClosingArgs> viewClosing,
+			Action<TResult, CancelEventArgs> viewClosing,
 			Action<TResult> viewClosed,
 			TResult result,
 			bool withAnimation = true)
 		{
 			await ExecuteInNavigateSafelyAsync(async () =>
 			{
-				var args = new ViewClosingArgs();
+				var args = new CancelEventArgs();
 				viewClosing?.Invoke(result, args);
 
 				if (args.Cancel)
