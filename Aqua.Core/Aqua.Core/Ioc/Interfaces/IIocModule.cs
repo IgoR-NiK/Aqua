@@ -4,6 +4,6 @@ namespace Aqua.Core.Ioc
 {
     public interface IIocModule
     {
-        void RegisterTypes(IRegistrator container);
+        void RegisterTypes(IRegistrator registrator);
     }
 }

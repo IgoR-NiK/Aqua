@@ -6,9 +6,9 @@ namespace Aqua.XamarinForms.Popup
 {
     public sealed class AquaXamarinFormsPopupIocModule : IIocModule
     {
-        public void RegisterTypes(IRegistrator container)
+        public void RegisterTypes(IRegistrator registrator)
         {
-            container.Register<IStackAlgorithm, PopupStackAlgorithm>(Reuse.Singleton, serviceKey: typeof(PopupStack));
+            registrator.Register<IStackAlgorithm, PopupStackAlgorithm>(Reuse.Singleton, serviceKey: typeof(PopupStack));
         }
     }
 }

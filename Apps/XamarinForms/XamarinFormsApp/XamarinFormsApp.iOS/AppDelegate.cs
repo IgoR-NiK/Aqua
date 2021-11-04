@@ -28,7 +28,7 @@ namespace XamarinFormsApp.iOS
         {
             Popup.Init();
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new AquaBootstrapper().GetApp<App>(
+            LoadApplication(AquaBootstrapper.GetApp<App>(
                 new AquaCoreIocModule(), 
                 new AquaXamarinFormsCoreIocModule(),
                 new AquaXamarinFormsPopupIocModule(),

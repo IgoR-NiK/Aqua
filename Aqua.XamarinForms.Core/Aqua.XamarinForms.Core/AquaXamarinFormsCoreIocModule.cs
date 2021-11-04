@@ -7,16 +7,16 @@ namespace Aqua.XamarinForms.Core
 {
     public sealed class AquaXamarinFormsCoreIocModule : IIocModule
     {
-        public void RegisterTypes(IRegistrator container)
+        public void RegisterTypes(IRegistrator registrator)
         {
             // Navigation
-            container.Register<IStackAlgorithm, NavigationStackAlgorithm>(Reuse.Singleton, serviceKey: typeof(NavigationStack));
-            container.Register<IStackAlgorithm, ModalStackAlgorithm>(Reuse.Singleton, serviceKey: typeof(ModalStack));
-            container.Register<IViewModelWrapperStorage, ViewModelWrapperStorage>(Reuse.Singleton);
-            container.Register<INavigationViewProvider, NavigationViewProvider>(Reuse.Singleton);
-            container.Register<INavigationPageFactory, DefaultNavigationPageFactory>(Reuse.Singleton);
-            container.Register<INavigationMapper, NavigationMapper>(Reuse.Singleton);
-            container.Register<INavigationService, NavigationService>(Reuse.Singleton);
+            registrator.Register<IStackAlgorithm, NavigationStackAlgorithm>(Reuse.Singleton, serviceKey: typeof(NavigationStack));
+            registrator.Register<IStackAlgorithm, ModalStackAlgorithm>(Reuse.Singleton, serviceKey: typeof(ModalStack));
+            registrator.Register<IViewModelWrapperStorage, ViewModelWrapperStorage>(Reuse.Singleton);
+            registrator.Register<INavigationViewProvider, NavigationViewProvider>(Reuse.Singleton);
+            registrator.Register<INavigationPageFactory, DefaultNavigationPageFactory>(Reuse.Singleton);
+            registrator.Register<INavigationMapper, NavigationMapper>(Reuse.Singleton);
+            registrator.Register<INavigationService, NavigationService>(Reuse.Singleton);
         }
     }
 }

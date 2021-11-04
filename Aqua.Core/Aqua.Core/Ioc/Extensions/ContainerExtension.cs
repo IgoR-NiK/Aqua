@@ -6,8 +6,11 @@ namespace Aqua.Core.Ioc
 {
     public static class ContainerExtension
     {
-        internal static void RegisterModules<TModule>(this IContainer container, IEnumerable<TModule> modules) 
+        internal static IContainer RegisterModules<TModule>(this IContainer container, IEnumerable<TModule> modules)
             where TModule : IIocModule
-            => modules.ForEach(it => it.RegisterTypes(container));
+        {
+            modules.ForEach(it => it.RegisterTypes(container));
+            return container;
+        }
     }
 }

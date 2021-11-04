@@ -8,12 +8,13 @@ namespace XamarinFormsApp
     {
         public void Map(INavigationMapper navigationMapper)
         {
-            navigationMapper.Map<ErrorPopupViewModel, ErrorPopupView>();
-            navigationMapper.Map<ExceptionViewModel, ExceptionView>();
-            navigationMapper.Map<LoginViewModel, LoginView>();
-            navigationMapper.Map<LoginTwoViewModel, LoginTwoView>();
-            navigationMapper.Map<MainViewModel, MainView>();
-            navigationMapper.Map<SecondViewModel, SecondView>();
+            navigationMapper
+                .Map<ErrorPopupViewModel, ErrorPopupView>()
+                .Map<ExceptionViewModel, ExceptionView>()
+                .Map<LoginViewModel, LoginView>()
+                .Map<LoginTwoViewModel, LoginTwoView>()
+                .Map<MainViewModel, MainView>()
+                .Map<SecondViewModel, SecondView>();
         }
     }
 }

@@ -5,7 +5,7 @@
     {
         public TService Decoratee { get; }
 
-        public Decorator(TService decoratee)
+        protected Decorator(TService decoratee)
         {
             Decoratee = decoratee;
         }

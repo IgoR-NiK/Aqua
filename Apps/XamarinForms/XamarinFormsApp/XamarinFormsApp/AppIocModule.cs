@@ -8,29 +8,29 @@ namespace XamarinFormsApp
 {
     public class AppIocModule : IIocModule
     {
-        public void RegisterTypes(IRegistrator container)
+        public void RegisterTypes(IRegistrator registrator)
         {
             // View Models
-            container.Register<ErrorPopupViewModel>();
-            container.Register<ExceptionViewModel>();
-            container.Register<LoginViewModel>();
-            container.Register<LoginTwoViewModel>();
-            container.Register<MainViewModel>();
-            container.Register<SecondViewModel>();
+            registrator.Register<ErrorPopupViewModel>();
+            registrator.Register<ExceptionViewModel>();
+            registrator.Register<LoginViewModel>();
+            registrator.Register<LoginTwoViewModel>();
+            registrator.Register<MainViewModel>();
+            registrator.Register<SecondViewModel>();
             
             // Views
-            container.Register<ErrorPopupView>();
-            container.Register<ExceptionView>();
-            container.Register<LoginView>();
-            container.Register<LoginTwoView>();
-            container.Register<MainView>();
-            container.Register<SecondView>();
+            registrator.Register<ErrorPopupView>();
+            registrator.Register<ExceptionView>();
+            registrator.Register<LoginView>();
+            registrator.Register<LoginTwoView>();
+            registrator.Register<MainView>();
+            registrator.Register<SecondView>();
             
             // Navigation
-            container.Register<INavigationModule, AppNavigationModule>();
+            registrator.Register<INavigationModule, AppNavigationModule>();
             
             // App
-            container.Register<App>();
+            registrator.Register<App>();
         }
     }
 }

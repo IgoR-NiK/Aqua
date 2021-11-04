@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Aqua.Core.Ioc;
+using Aqua.Core.Utils;
 using Newtonsoft.Json;
 
 namespace Aqua.Core.Services
@@ -8,6 +10,8 @@ namespace Aqua.Core.Services
     public sealed class JsonConfigProvider<TConfig> : Decorator<IConfigProvider<TConfig>>, IConfigProvider<TConfig>
         where TConfig : class, IConfig, new()
     {
+        private Dictionary<Type, bool> IsJsonConfig { get; } = new Dictionary<Type, bool>();
+        
         private IJsonConfigAssembliesProvider<TConfig> JsonConfigAssembliesProvider { get; }
         
         private IJsonConfigNamespacesProvider<TConfig> JsonConfigNamespacesProvider { get; }
@@ -28,7 +32,7 @@ namespace Aqua.Core.Services
         
         public TConfig GetConfig()
         {
-            if (!Attribute.IsDefined(typeof(TConfig),typeof(JsonConfigAttribute)))
+            if (!IsJsonConfig.GetOrAdd(typeof(TConfig), type => Attribute.IsDefined(type, typeof(JsonConfigAttribute))))
             {
                 return Decoratee.GetConfig();
             }

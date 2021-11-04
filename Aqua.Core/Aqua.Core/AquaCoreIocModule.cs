@@ -6,13 +6,13 @@ namespace Aqua.Core
 {
     public sealed class AquaCoreIocModule : IIocModule
     {
-        public void RegisterTypes(IRegistrator container)
+        public void RegisterTypes(IRegistrator registrator)
         {
             // ConfigProvider
-            container.Register(typeof(IJsonConfigAssembliesProvider<>), typeof(JsonConfigAssembliesProvider<>), Reuse.Singleton);
-            container.Register(typeof(IJsonConfigNamespacesProvider<>), typeof(JsonConfigNamespacesProvider<>), Reuse.Singleton);
-            container.Register(typeof(IJsonConfigNamesProvider<>), typeof(JsonConfigNamesProvider<>), Reuse.Singleton);
-            container.Register(typeof(IConfigProvider<>), typeof(DefaultConfigProvider<>), Reuse.Singleton);
+            registrator.Register(typeof(IJsonConfigAssembliesProvider<>), typeof(JsonConfigAssembliesProvider<>), Reuse.Singleton);
+            registrator.Register(typeof(IJsonConfigNamespacesProvider<>), typeof(JsonConfigNamespacesProvider<>), Reuse.Singleton);
+            registrator.Register(typeof(IJsonConfigNamesProvider<>), typeof(JsonConfigNamesProvider<>), Reuse.Singleton);
+            registrator.Register(typeof(IConfigProvider<>), typeof(DefaultConfigProvider<>), Reuse.Singleton);
         }
     }
 }
