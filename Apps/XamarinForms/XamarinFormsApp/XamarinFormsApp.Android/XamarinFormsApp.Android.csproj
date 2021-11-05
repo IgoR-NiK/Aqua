@@ -48,7 +48,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="DryIoc.dll" Version="4.8.3" />
+        <PackageReference Include="DryIoc.dll" Version="4.8.4" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.14" />
         <PackageReference Include="Xamarin.AndroidX.Core" Version="1.6.0.3" />
