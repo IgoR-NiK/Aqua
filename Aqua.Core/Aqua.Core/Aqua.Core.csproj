@@ -50,6 +50,18 @@
       <Compile Update="Services\Navigation\NavigationStack.cs">
         <DependentUpon>IStack.cs</DependentUpon>
       </Compile>
+      <Compile Update="Services\Navigation\DefaultNavigationMappingTypeStorage.cs">
+        <DependentUpon>INavigationMappingTypeStorage.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Services\Navigation\DefaultNavigationMapper.cs">
+        <DependentUpon>INavigationMapper.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Services\Navigation\DefaultViewProvider{T1}.cs">
+        <DependentUpon>IViewProvider{T1}.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Services\Navigation\DefaultViewProvider{T1, T2}.cs">
+        <DependentUpon>IViewProvider{T1, T2}.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
